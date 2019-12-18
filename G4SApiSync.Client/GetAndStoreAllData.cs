@@ -38,11 +38,13 @@ namespace G4SApiSync.Client
 
             if (Sucess)
             {
-                StatusMessage = StatusMessage + "Students endpoint suceeded." + Environment.NewLine;
+                //StatusMessage = StatusMessage + "Students endpoint suceeded." + Environment.NewLine;
+                Console.WriteLine("Students endpoint suceeded" + Environment.NewLine);
             }
             else
             {
-                StatusMessage = StatusMessage + "Students endpoint failed." + Environment.NewLine;
+                //StatusMessage = StatusMessage + "Students endpoint failed." + Environment.NewLine;
+                Console.WriteLine("Students endpoint failed" + Environment.NewLine);
             }
 
             //GET Education Details
