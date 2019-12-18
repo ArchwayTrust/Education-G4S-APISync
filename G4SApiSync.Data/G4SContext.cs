@@ -1,19 +1,20 @@
+using G4SApiSync.Data.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
+
+
 namespace G4SApiSync.Data
 {
-    using G4SApiSync.Data.Entities;
-    using Microsoft.EntityFrameworkCore;
-    using System;
-
     public class G4SContext : DbContext
     {
-        public G4SContext()
+        public G4SContext(DbContextOptions<G4SContext> options) : base(options)
         {
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=core-sql-svc;Database=G4S;Trusted_Connection=True;");
-            //optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=G4S;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=core-sql-svc;Database=G4S;Trusted_Connection=True;");
+            //optionsBuilder.UseSqlServer("Server=(localdb)\MSSQLLocalDB;Database=G4S;Trusted_Connection=True;");
         }
 
         //Academy List
@@ -41,7 +42,10 @@ namespace G4SApiSync.Data
         //Fluent API Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            if (modelBuilder == null) throw new ArgumentNullException(nameof(modelBuilder));
+            if (modelBuilder == null)
+            {
+                throw new ArgumentNullException(nameof(modelBuilder));
+            }
 
             modelBuilder.HasDefaultSchema("g4s");
 
