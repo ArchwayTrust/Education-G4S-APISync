@@ -6,6 +6,16 @@ namespace G4SApiSync.Data
 
     public class G4SContext : DbContext
     {
+        public G4SContext()
+        {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=core-sql-svc;Database=G4S;Trusted_Connection=True;");
+            //optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=G4S;Trusted_Connection=True;");
+        }
+
         //Academy List
         public virtual DbSet<AcademySecurity> AcademySecurity { get; set; }
 
@@ -14,12 +24,10 @@ namespace G4SApiSync.Data
         public virtual DbSet<EducationDetail> EducationDetails { get; set; }
         public virtual DbSet<StudentAttribute> StudentAttributes { get; set; }
         public virtual DbSet<StudentAttributeValue> StudentAttributeValues { get; set; }
-
         public virtual DbSet<AttributeType> AttributeTypes { get; set; }
         public virtual DbSet<AttributeValue> AttributeValues { get; set; }
 
         //Assessment
-
         public virtual DbSet<Marksheet> Marksheets { get; set; }
         public virtual DbSet<MarksheetGrade> MarksheetGrades { get; set; }
         public virtual DbSet<Markslot> Markslots { get; set; }
@@ -29,12 +37,8 @@ namespace G4SApiSync.Data
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=core-sql-svc;Database=G4S;Trusted_Connection=True;");
-            //optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=G4S;Trusted_Connection=True;");
-        }
 
+        //Fluent API Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             if (modelBuilder == null) throw new ArgumentNullException(nameof(modelBuilder));
