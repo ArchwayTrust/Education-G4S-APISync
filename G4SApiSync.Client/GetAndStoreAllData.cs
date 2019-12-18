@@ -1,4 +1,5 @@
 ﻿using G4SApiSync.Client.EndPoints;
+using G4SApiSync.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,16 @@ namespace G4SApiSync.Client
         private string pAcYear;
         private string pCurrentStatus;
 
-        public GetAndStoreAllData(string APIKey, string Academy, string AcYear, string CurrentStatusMessage)
+        private readonly G4SContext _context;
+
+        public GetAndStoreAllData(G4SContext context, string APIKey, string Academy, string AcYear, string CurrentStatusMessage)
         {
             pAPIKey = APIKey;
             pAcademy = Academy;
             pAcYear = AcYear;
             pCurrentStatus = CurrentStatusMessage;
+
+            _context = context;
         }
 
         public async Task<string> RunStudents()
@@ -32,7 +37,7 @@ namespace G4SApiSync.Client
 
             //GET Student Details
 
-            GETStudentDetails StudentEndPoint = new GETStudentDetails();
+            GETStudentDetails StudentEndPoint = new GETStudentDetails(_context);
 
             Sucess = await StudentEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
 

@@ -19,7 +19,12 @@ namespace G4SApiSync.Client.EndPoints
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/students";
         const string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=G4S;Trusted_Connection=True;";
         //const string _connectionString = "Server=core-sql-svc;Database=G4S;Trusted_Connection=True;";
+        G4SContext _context;
 
+        public GETStudentDetails(G4SContext context)
+        {
+            _context = context;
+        }
         public string EndPoint
         {
             get { return _endPoint; }
@@ -73,12 +78,10 @@ namespace G4SApiSync.Client.EndPoints
                     dtStudents.Rows.Add(row);
                 }
 
-                //using (G4SContext context = new G4SContext())
-                //{
-                //    var currentStudents = context.Students.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
-                //    context.Students.RemoveRange(currentStudents);
-                //    await context.SaveChangesAsync();
-                //}
+                var currentStudents = _context.Students.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
+                _context.Students.RemoveRange(currentStudents);
+                await _context.SaveChangesAsync();
+
 
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {

@@ -21,10 +21,7 @@ namespace G4SApiSync
         static void Main(string[] args)
         {
             var services = new ServiceCollection();
-            services.AddDbContext<G4SContext>(options => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=G4S;Trusted_Connection=True;"));
-
-            var serviceProvider = services.BuildServiceProvider();
-            _context = serviceProvider.GetService<G4SContext>();
+            ConfigureServices(services);
 
             _AcademyKeys = _context.AcademySecurity.ToList();
 
@@ -34,7 +31,7 @@ namespace G4SApiSync
             }
 
             //Run main sync code
-            //RunApiSync().Wait();
+            RunApiSync().Wait();
         }
 
         static private async Task RunApiSync()
@@ -44,7 +41,7 @@ namespace G4SApiSync
 
             foreach (var academy in _AcademyKeys)
             {
-                var GetData = new GetAndStoreAllData(academy.APIKey, academy.AcademyCode, academy.CurrentAcademicYear, StatusMessage);
+                var GetData = new GetAndStoreAllData(_context, academy.APIKey, academy.AcademyCode, academy.CurrentAcademicYear, StatusMessage);
 
                 StatusMessage = await GetData.RunStudents();
 
