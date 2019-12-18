@@ -9,7 +9,6 @@ namespace G4SApiSync
 {
     class Program
     {
-        public static IConfiguration configuration;
         static void Main(string[] args)
         {
             //Run main sync code
@@ -18,7 +17,6 @@ namespace G4SApiSync
 
         public static void RunApiSync()
         {
-            Console.WriteLine(configuration.GetConnectionString("G4SContext"));
             Console.WriteLine("Hello World!");
         }
 

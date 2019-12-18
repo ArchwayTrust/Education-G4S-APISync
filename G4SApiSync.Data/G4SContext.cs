@@ -7,7 +7,7 @@ namespace G4SApiSync.Data
 {
     public class G4SContext : DbContext
     {
-        public G4SContext(DbContextOptions<G4SContext> options) : base(options)
+        public G4SContext()
         {
         }
 
