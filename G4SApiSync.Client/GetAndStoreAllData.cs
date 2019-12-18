@@ -1,5 +1,6 @@
 ﻿using G4SApiSync.Client.EndPoints;
 using G4SApiSync.Data;
+using G4SApiSync.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,62 +11,51 @@ namespace G4SApiSync.Client
 {
     public class GetAndStoreAllData
     {
-        private string pAPIKey;
-        private string pAcademy;
-        private string pAcYear;
-        private string pCurrentStatus;
-
+        private readonly AcademySecurity _academy;
         private readonly G4SContext _context;
+        private readonly string _connectionString;
 
-        public GetAndStoreAllData(G4SContext context, string APIKey, string Academy, string AcYear, string CurrentStatusMessage)
+        public GetAndStoreAllData(G4SContext context, string connectionString, AcademySecurity academy)
         {
-            pAPIKey = APIKey;
-            pAcademy = Academy;
-            pAcYear = AcYear;
-            pCurrentStatus = CurrentStatusMessage;
-
+            _academy = academy;
             _context = context;
+            _connectionString = connectionString;
         }
 
-        public async Task<string> RunStudents()
+        public async Task<bool> RunStudents()
         {
             
             bool Sucess;
 
-            //Add line describing which academy and academic year.
-            string StatusMessage = pCurrentStatus + pAcademy + " " + pAcYear + " - Student Endpoints" + Environment.NewLine;
-
             //GET Student Details
 
-            GETStudentDetails StudentEndPoint = new GETStudentDetails(_context);
+            GETStudentDetails StudentEndPoint = new GETStudentDetails(_context, _connectionString);
 
-            Sucess = await StudentEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
+            Sucess = await StudentEndPoint.UpdateDatabase(_academy.APIKey, _academy.CurrentAcademicYear, _academy.AcademyCode);
 
             if (Sucess)
             {
-                //StatusMessage = StatusMessage + "Students endpoint suceeded." + Environment.NewLine;
                 Console.WriteLine("Students endpoint suceeded" + Environment.NewLine);
             }
             else
             {
-                //StatusMessage = StatusMessage + "Students endpoint failed." + Environment.NewLine;
                 Console.WriteLine("Students endpoint failed" + Environment.NewLine);
             }
 
             //GET Education Details
 
-            var EducationDetailsEndPoint = new GETEducationDetails();
+            //var EducationDetailsEndPoint = new GETEducationDetails();
 
-            Sucess = await EducationDetailsEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
+            //Sucess = await EducationDetailsEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
 
-            if (Sucess)
-            {
-                StatusMessage = StatusMessage + "Education details endpoint suceeded." + Environment.NewLine;
-            }
-            else
-            {
-                StatusMessage = StatusMessage + "Education details endpoint failed." + Environment.NewLine;
-            }
+            //if (Sucess)
+            //{
+            //    StatusMessage = StatusMessage + "Education details endpoint suceeded." + Environment.NewLine;
+            //}
+            //else
+            //{
+            //    StatusMessage = StatusMessage + "Education details endpoint failed." + Environment.NewLine;
+            //}
 
             //GET General Attributes
 
@@ -127,48 +117,48 @@ namespace G4SApiSync.Client
             //}
 
 
-            return StatusMessage;
+            return true;
         }
 
-        public async Task<string> RunTeaching()
-        {
+    //    public async Task<string> RunTeaching()
+    //    {
 
-            bool Sucess;
+    //        bool Sucess;
 
-            //Add line describing which academy and academic year.
-            string StatusMessage = pCurrentStatus + pAcademy + " " + pAcYear + " - Teaching Endpoints" + Environment.NewLine;
+    //        //Add line describing which academy and academic year.
+    //        string StatusMessage = pCurrentStatus + pAcademy + " " + pAcYear + " - Teaching Endpoints" + Environment.NewLine;
 
-            //GET Departments
+    //        //GET Departments
 
-            GETDepartments DepartmentEndPoint = new GETDepartments();
+    //        GETDepartments DepartmentEndPoint = new GETDepartments();
 
-            Sucess = await DepartmentEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
+    //        Sucess = await DepartmentEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
 
-            if (Sucess)
-            {
-                StatusMessage = StatusMessage + "Department endpoint suceeded." + Environment.NewLine;
-            }
-            else
-            {
-                StatusMessage = StatusMessage + "Department endpoint failed." + Environment.NewLine;
-            }
+    //        if (Sucess)
+    //        {
+    //            StatusMessage = StatusMessage + "Department endpoint suceeded." + Environment.NewLine;
+    //        }
+    //        else
+    //        {
+    //            StatusMessage = StatusMessage + "Department endpoint failed." + Environment.NewLine;
+    //        }
 
-            //GET Subjects
+    //        //GET Subjects
 
-            GETSubjects SubjectEndPoint = new GETSubjects();
+    //        GETSubjects SubjectEndPoint = new GETSubjects();
 
-            Sucess = await SubjectEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
+    //        Sucess = await SubjectEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
 
-            if (Sucess)
-            {
-                StatusMessage = StatusMessage + "Subject endpoint suceeded." + Environment.NewLine;
-            }
-            else
-            {
-                StatusMessage = StatusMessage + "Subject endpoint failed." + Environment.NewLine;
-            }
+    //        if (Sucess)
+    //        {
+    //            StatusMessage = StatusMessage + "Subject endpoint suceeded." + Environment.NewLine;
+    //        }
+    //        else
+    //        {
+    //            StatusMessage = StatusMessage + "Subject endpoint failed." + Environment.NewLine;
+    //        }
 
-            return StatusMessage;
-        }
+    //        return StatusMessage;
+    //    }
     }
 }

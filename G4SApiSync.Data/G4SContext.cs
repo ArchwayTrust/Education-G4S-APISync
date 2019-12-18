@@ -11,14 +11,8 @@ namespace G4SApiSync.Data
         {
         }
 
-        //public G4SContext()
-        //{
-        //}
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("Server=core-sql-svc;Database=G4S;Trusted_Connection=True;");
-            //optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=G4S;Trusted_Connection=True;");
         }
 
         //Academy List

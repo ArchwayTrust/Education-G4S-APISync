@@ -17,13 +17,13 @@ namespace G4SApiSync.Client.EndPoints
     public class GETStudentDetails : IEndPoint<StudentDTO>
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/students";
-        const string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=G4S;Trusted_Connection=True;";
-        //const string _connectionString = "Server=core-sql-svc;Database=G4S;Trusted_Connection=True;";
+        private string _connectionString;
         G4SContext _context;
 
-        public GETStudentDetails(G4SContext context)
+        public GETStudentDetails(G4SContext context, string connectionString)
         {
             _context = context;
+            _connectionString = connectionString;
         }
         public string EndPoint
         {

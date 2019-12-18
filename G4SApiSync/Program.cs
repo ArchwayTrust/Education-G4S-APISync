@@ -14,18 +14,19 @@ namespace G4SApiSync
 {
     class Program
     {
-        private static List<AcademySecurity> _AcademyKeys;
-        public static IConfigurationRoot configuration;
-
+        private static List<AcademySecurity> _academyList;
         private static G4SContext _context;
+        private static string _connectionString;
+
+        public static IConfigurationRoot configuration;
         static void Main(string[] args)
         {
             var services = new ServiceCollection();
             ConfigureServices(services);
 
-            _AcademyKeys = _context.AcademySecurity.ToList();
+            _academyList = _context.AcademySecurity.ToList();
 
-            foreach(var academy in _AcademyKeys)
+            foreach(var academy in _academyList)
             {
                 Console.WriteLine(academy.AcademyCode + Environment.NewLine);
             }
@@ -36,14 +37,14 @@ namespace G4SApiSync
 
         static private async Task RunApiSync()
         {
-            string StatusMessage = "Running API Sync. This will take some time." + Environment.NewLine;
-            Console.WriteLine(StatusMessage);
+            Console.WriteLine("Running API Sync. This will take some time." + Environment.NewLine);
 
-            foreach (var academy in _AcademyKeys)
+            foreach (var academy in _academyList)
             {
-                var GetData = new GetAndStoreAllData(_context, academy.APIKey, academy.AcademyCode, academy.CurrentAcademicYear, StatusMessage);
+                bool result;
+                var GetData = new GetAndStoreAllData(_context, _connectionString, academy);
 
-                StatusMessage = await GetData.RunStudents();
+                result = await GetData.RunStudents();
 
                 //StatusMessage = await GetData.RunTeaching();
                 //tb1.Text = StatusMessage;
@@ -59,14 +60,15 @@ namespace G4SApiSync
                 .Build();
 
             // Add access to generic IConfigurationRoot
-            services.AddSingleton<IConfigurationRoot>(configuration);
+            //services.AddSingleton<IConfigurationRoot>(configuration);
+
+            _connectionString = configuration.GetConnectionString("G4SContext");
 
             services.AddDbContext<G4SContext>(options =>
-                    options.UseSqlServer(configuration.GetConnectionString("G4SContext")));
+                    options.UseSqlServer(_connectionString));
 
             var serviceProvider = services.BuildServiceProvider();
             _context = serviceProvider.GetService<G4SContext>();
         }
-
     }
 }
