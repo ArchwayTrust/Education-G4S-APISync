@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using System;
 using System.Globalization;
+using System.Data;
+using Microsoft.Data.SqlClient;
 
 namespace G4SApiSync.Client.EndPoints
 {
@@ -15,6 +17,8 @@ namespace G4SApiSync.Client.EndPoints
     public class GETStudentDetails : IEndPoint<StudentDTO>
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/students";
+        const string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=G4S;Trusted_Connection=True;";
+        //const string _connectionString = "Server=core-sql-svc;Database=G4S;Trusted_Connection=True;";
 
         public string EndPoint
         {
@@ -37,26 +41,36 @@ namespace G4SApiSync.Client.EndPoints
                 APIRequest<GETStudentDetails, StudentDTO> getStudents = new APIRequest<GETStudentDetails, StudentDTO>(_endPoint, APIKey, AcYear);
                 var studentsDTO = getStudents.ToList();
 
-                List<Student> students = new List<Student>();
+                var dtStudents = new DataTable();
+                dtStudents.Columns.Add("StudentId", typeof(String));
+                dtStudents.Columns.Add("AcademicYear", typeof(String));
+                dtStudents.Columns.Add("Academy", typeof(String));
+                dtStudents.Columns.Add("G4SStuId", typeof(int));
+                dtStudents.Columns.Add("LegalFirstName", typeof(String));
+                dtStudents.Columns.Add("LegalLastName", typeof(String));
+                dtStudents.Columns.Add("PreferredFirstName", typeof(String));
+                dtStudents.Columns.Add("PreferredLastName", typeof(String));
+                dtStudents.Columns.Add("MiddleNames", typeof(String));
+                dtStudents.Columns.Add("Sex", typeof(String));
+                dtStudents.Columns.Add("DateOfBirth", typeof(DateTime));
 
                 foreach (var studentDTO in studentsDTO)
                 {
-                    Student student = new Student
-                    {
-                        StudentId = AcademyCode + AcYear + "-" + studentDTO.Id.ToString(),
-                        AcademicYear = AcYear,
-                        Academy = AcademyCode,
-                        G4SStuId = studentDTO.Id,
-                        LegalFirstName = studentDTO.LegalFirstName,
-                        LegalLastName = studentDTO.LegalLastName,
-                        PreferredFirstName = studentDTO.PreferredFirstName,
-                        PreferredLastName = studentDTO.PreferredLastName,
-                        MiddleNames = studentDTO.MiddleNames,
-                        Sex = studentDTO.Sex,
-                        DateOfBirth = DateTime.ParseExact(studentDTO.DateOfBirth, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture).Date
-                    };
+                    var row = dtStudents.NewRow();
 
-                    students.Add(student);
+                    row["StudentId"] = AcademyCode + AcYear + "-" + studentDTO.Id.ToString();
+                    row["AcademicYear"] = AcYear;
+                    row["Academy"] = AcademyCode;
+                    row["G4SStuId"] = studentDTO.Id;
+                    row["LegalFirstName"] = studentDTO.LegalFirstName;
+                    row["LegalLastName"] = studentDTO.LegalLastName;
+                    row["PreferredFirstName"] = studentDTO.PreferredFirstName;
+                    row["PreferredLastName"] = studentDTO.PreferredLastName;
+                    row["MiddleNames"] = studentDTO.MiddleNames;
+                    row["Sex"] = studentDTO.Sex;
+                    row["DateOfBirth"] = DateTime.ParseExact(studentDTO.DateOfBirth, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture);
+
+                    dtStudents.Rows.Add(row);
                 }
 
                 using (G4SContext context = new G4SContext())
@@ -64,9 +78,23 @@ namespace G4SApiSync.Client.EndPoints
                     var currentStudents = context.Students.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
                     context.Students.RemoveRange(currentStudents);
                     await context.SaveChangesAsync();
+                }
 
-                    context.Students.AddRange(students);
-                    await context.SaveChangesAsync();
+                using (var sqlBulk = new SqlBulkCopy(_connectionString))
+                {
+                    sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
+                    sqlBulk.ColumnMappings.Add("G4SStuId", "G4SStuId");
+                    sqlBulk.ColumnMappings.Add("AcademicYear", "AcademicYear");
+                    sqlBulk.ColumnMappings.Add("Academy", "Academy");
+                    sqlBulk.ColumnMappings.Add("DateOfBirth", "DateOfBirth");
+                    sqlBulk.ColumnMappings.Add("Sex", "Sex");
+                    sqlBulk.ColumnMappings.Add("LegalFirstName", "LegalFirstName");
+                    sqlBulk.ColumnMappings.Add("LegalLastName", "LegalLastName");
+                    sqlBulk.ColumnMappings.Add("PreferredFirstName", "PreferredFirstName");
+                    sqlBulk.ColumnMappings.Add("PreferredLastName", "PreferredLastName");
+                    sqlBulk.ColumnMappings.Add("MiddleNames", "MiddleNames");
+                    sqlBulk.DestinationTableName = "g4s.Students";
+                    sqlBulk.WriteToServer(dtStudents);
                 }
                 return true;
             }

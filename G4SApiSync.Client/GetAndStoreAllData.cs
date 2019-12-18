@@ -62,62 +62,62 @@ namespace G4SApiSync.Client
 
             //GET General Attributes
 
-            var GeneralAttributesEndPoint = new GETGeneralAttributes();
+            //var GeneralAttributesEndPoint = new GETGeneralAttributes();
 
-            Sucess = await GeneralAttributesEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
+            //Sucess = await GeneralAttributesEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
 
-            if (Sucess)
-            {
-                StatusMessage = StatusMessage + "General attributes endpoint suceeded." + Environment.NewLine;
-            }
-            else
-            {
-                StatusMessage = StatusMessage + "General attributes endpoint failed." + Environment.NewLine;
-            }
+            //if (Sucess)
+            //{
+            //    StatusMessage = StatusMessage + "General attributes endpoint suceeded." + Environment.NewLine;
+            //}
+            //else
+            //{
+            //    StatusMessage = StatusMessage + "General attributes endpoint failed." + Environment.NewLine;
+            //}
 
-            //GET Sensitive Attributes
-            var SensitiveAttributesEndPoint = new GETSensitiveAttributes();
+            ////GET Sensitive Attributes
+            //var SensitiveAttributesEndPoint = new GETSensitiveAttributes();
 
-            Sucess = await SensitiveAttributesEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
+            //Sucess = await SensitiveAttributesEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
 
-            if (Sucess)
-            {
-                StatusMessage = StatusMessage + "Sensitive attributes endpoint suceeded." + Environment.NewLine;
-            }
-            else
-            {
-                StatusMessage = StatusMessage + "Sensitive attributes endpoint failed." + Environment.NewLine;
-            }
+            //if (Sucess)
+            //{
+            //    StatusMessage = StatusMessage + "Sensitive attributes endpoint suceeded." + Environment.NewLine;
+            //}
+            //else
+            //{
+            //    StatusMessage = StatusMessage + "Sensitive attributes endpoint failed." + Environment.NewLine;
+            //}
 
-            //GET Send Attributes
+            ////GET Send Attributes
 
-            var SendAttributesEndPoint = new GETSendAttributes();
+            //var SendAttributesEndPoint = new GETSendAttributes();
 
-            Sucess = await SendAttributesEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
+            //Sucess = await SendAttributesEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
 
-            if (Sucess)
-            {
-                StatusMessage = StatusMessage + "Send attributes endpoint suceeded." + Environment.NewLine;
-            }
-            else
-            {
-                StatusMessage = StatusMessage + "Send attributes endpoint failed." + Environment.NewLine;
-            }
+            //if (Sucess)
+            //{
+            //    StatusMessage = StatusMessage + "Send attributes endpoint suceeded." + Environment.NewLine;
+            //}
+            //else
+            //{
+            //    StatusMessage = StatusMessage + "Send attributes endpoint failed." + Environment.NewLine;
+            //}
 
-            //GET Demographic Attributes
+            ////GET Demographic Attributes
 
-            var DemographicAttributesEndPoint = new GETDemographicAttributes();
+            //var DemographicAttributesEndPoint = new GETDemographicAttributes();
 
-            Sucess = await DemographicAttributesEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
+            //Sucess = await DemographicAttributesEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
 
-            if (Sucess)
-            {
-                StatusMessage = StatusMessage + "Demographic attributes endpoint suceeded." + Environment.NewLine;
-            }
-            else
-            {
-                StatusMessage = StatusMessage + "Demographic attributes endpoint failed." + Environment.NewLine;
-            }
+            //if (Sucess)
+            //{
+            //    StatusMessage = StatusMessage + "Demographic attributes endpoint suceeded." + Environment.NewLine;
+            //}
+            //else
+            //{
+            //    StatusMessage = StatusMessage + "Demographic attributes endpoint failed." + Environment.NewLine;
+            //}
 
 
             return StatusMessage;
