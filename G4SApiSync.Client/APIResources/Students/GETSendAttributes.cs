@@ -89,18 +89,18 @@ namespace G4SApiSync.Client.EndPoints
                     attributeTypes.Add(attribType);
                 }
 
-                using (G4SContext context = new G4SContext())
-                {
-                    var currentAttributes = context.AttributeTypes
-                                                    .Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode && i.AttributeGroup == "Send");
+                //using (G4SContext context = new G4SContext())
+                //{
+                //    var currentAttributes = context.AttributeTypes
+                //                                    .Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode && i.AttributeGroup == "Send");
 
-                    context.AttributeTypes.RemoveRange(currentAttributes);
-                    await context.SaveChangesAsync();
+                //    context.AttributeTypes.RemoveRange(currentAttributes);
+                //    await context.SaveChangesAsync();
 
-                    context.AttributeTypes.AddRange(attributeTypes);
+                //    context.AttributeTypes.AddRange(attributeTypes);
 
-                    await context.SaveChangesAsync();
-                }
+                //    await context.SaveChangesAsync();
+                //}
 
 
                 return true;

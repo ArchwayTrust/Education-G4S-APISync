@@ -73,12 +73,12 @@ namespace G4SApiSync.Client.EndPoints
                     dtStudents.Rows.Add(row);
                 }
 
-                using (G4SContext context = new G4SContext())
-                {
-                    var currentStudents = context.Students.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
-                    context.Students.RemoveRange(currentStudents);
-                    await context.SaveChangesAsync();
-                }
+                //using (G4SContext context = new G4SContext())
+                //{
+                //    var currentStudents = context.Students.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
+                //    context.Students.RemoveRange(currentStudents);
+                //    await context.SaveChangesAsync();
+                //}
 
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {

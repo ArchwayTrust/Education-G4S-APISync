@@ -58,15 +58,15 @@ namespace G4SApiSync.Client.EndPoints
                     subjects.Add(subject);
                 }
 
-                using (G4SContext context = new G4SContext())
-                {
-                    var currentSubjects = context.Subjects.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
-                    context.Subjects.RemoveRange(currentSubjects);
-                    await context.SaveChangesAsync();
+                //using (G4SContext context = new G4SContext())
+                //{
+                //    var currentSubjects = context.Subjects.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
+                //    context.Subjects.RemoveRange(currentSubjects);
+                //    await context.SaveChangesAsync();
 
-                    context.Subjects.AddRange(subjects);
-                    await context.SaveChangesAsync();
-                }
+                //    context.Subjects.AddRange(subjects);
+                //    await context.SaveChangesAsync();
+                //}
                 return true;
             //}
             //catch

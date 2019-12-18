@@ -196,14 +196,14 @@ namespace G4SApiSync.Client.EndPoints
                 }
 
 
-                using (G4SContext context = new G4SContext())
-                {
-                    var currentEducationDetails = context.EducationDetails
-                                                    .Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
+                //using (G4SContext context = new G4SContext())
+                //{
+                //    var currentEducationDetails = context.EducationDetails
+                //                                    .Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
 
-                    context.EducationDetails.RemoveRange(currentEducationDetails);
-                    await context.SaveChangesAsync();
-                }
+                //    context.EducationDetails.RemoveRange(currentEducationDetails);
+                //    await context.SaveChangesAsync();
+                //}
 
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {

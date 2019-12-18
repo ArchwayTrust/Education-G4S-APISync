@@ -16,19 +16,25 @@ namespace G4SApiSync
     {
         private static List<AcademySecurity> _AcademyKeys;
         public static IConfigurationRoot configuration;
+
+        private static G4SContext _context;
         static void Main(string[] args)
         {
-            // Create service collection
-            ServiceCollection serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
+            var services = new ServiceCollection();
+            services.AddDbContext<G4SContext>(options => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=G4S;Trusted_Connection=True;"));
 
-            using (G4SContext context = new G4SContext())
+            var serviceProvider = services.BuildServiceProvider();
+            _context = serviceProvider.GetService<G4SContext>();
+
+            _AcademyKeys = _context.AcademySecurity.ToList();
+
+            foreach(var academy in _AcademyKeys)
             {
-                _AcademyKeys = context.AcademySecurity.ToList();
+                Console.WriteLine(academy.AcademyCode + Environment.NewLine);
             }
 
             //Run main sync code
-            RunApiSync().Wait();
+            //RunApiSync().Wait();
         }
 
         static private async Task RunApiSync()
@@ -60,6 +66,9 @@ namespace G4SApiSync
 
             services.AddDbContext<G4SContext>(options =>
                     options.UseSqlServer(configuration.GetConnectionString("G4SContext")));
+
+            var serviceProvider = services.BuildServiceProvider();
+            _context = serviceProvider.GetService<G4SContext>();
         }
 
     }
