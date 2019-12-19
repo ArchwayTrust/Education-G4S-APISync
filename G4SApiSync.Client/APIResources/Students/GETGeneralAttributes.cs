@@ -73,6 +73,7 @@ namespace G4SApiSync.Client.EndPoints
                 dtAttributeTypes.Columns.Add("G4SAttributeId", typeof(int));
                 dtAttributeTypes.Columns.Add("AcademicYear", typeof(String));
                 dtAttributeTypes.Columns.Add("AttributeGroup", typeof(String));
+                dtAttributeTypes.Columns.Add("Academy", typeof(String));
                 dtAttributeTypes.Columns.Add("Code", typeof(String));
                 dtAttributeTypes.Columns.Add("AttributeName", typeof(String));
                 dtAttributeTypes.Columns.Add("IsSystem", typeof(bool));
@@ -128,7 +129,6 @@ namespace G4SApiSync.Client.EndPoints
                     rowAttribType["Code"] = attributeDTO.Code;
                     rowAttribType["AttributeName"] = attributeDTO.Name;
                     rowAttribType["IsSystem"] = attributeDTO.IsSystem;
-                    rowAttribType["AttributeValues"] = AttValueList;
                 }
 
                 //Use EF to delete existing data.

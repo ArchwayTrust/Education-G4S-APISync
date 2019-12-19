@@ -57,6 +57,36 @@ namespace G4SApiSync.Client
                 }
             }
 
+            //GET Demographic Attributes
+            foreach (var academy in _academyList)
+            {
+                using (var getDemographicAttributes = new GETDemographicAttributes(_context, _connectionString))
+                {
+                    bool result = await getDemographicAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getDemographicAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
+                }
+            }
+
+            //GET Send Attributes
+            foreach (var academy in _academyList)
+            {
+                using (var getSendAttributes = new GETSendAttributes(_context, _connectionString))
+                {
+                    bool result = await getSendAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getSendAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
+                }
+            }
+
+            //GET Sensitive Attributes
+            foreach (var academy in _academyList)
+            {
+                using (var getSensitiveAttributes = new GETSensitiveAttributes(_context, _connectionString))
+                {
+                    bool result = await getSensitiveAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getSensitiveAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
+                }
+            }
+
 
             return syncResults;
 
