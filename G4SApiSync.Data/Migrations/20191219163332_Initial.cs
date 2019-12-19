@@ -71,6 +71,26 @@ namespace G4SApiSync.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SyncResults",
+                schema: "g4s",
+                columns: table => new
+                {
+                    SyncResultId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LoggedAt = table.Column<DateTime>(nullable: false),
+                    AcademyCode = table.Column<string>(maxLength: 500, nullable: true),
+                    EndPoint = table.Column<string>(nullable: true),
+                    AcademicYear = table.Column<string>(maxLength: 4, nullable: true),
+                    YearGroup = table.Column<int>(nullable: true),
+                    Result = table.Column<bool>(nullable: false),
+                    Exception = table.Column<string>(maxLength: 1000, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SyncResults", x => x.SyncResultId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AcademySecurity",
                 schema: "sec",
                 columns: table => new
@@ -422,6 +442,10 @@ namespace G4SApiSync.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "StudentAttributeValues",
+                schema: "g4s");
+
+            migrationBuilder.DropTable(
+                name: "SyncResults",
                 schema: "g4s");
 
             migrationBuilder.DropTable(

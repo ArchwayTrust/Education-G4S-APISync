@@ -114,6 +114,8 @@ namespace G4SApiSync.Client.EndPoints
                             {
                                 rowAttribVal["Date"] = dateValueNullable.Value;
                             }
+
+                            dtAttributeValues.Rows.Add(rowAttribVal);
                         }
 
                     }
@@ -129,6 +131,9 @@ namespace G4SApiSync.Client.EndPoints
                     rowAttribType["Code"] = attributeDTO.Code;
                     rowAttribType["AttributeName"] = attributeDTO.Name;
                     rowAttribType["IsSystem"] = attributeDTO.IsSystem;
+
+
+                    dtAttributeTypes.Rows.Add(rowAttribType);
                 }
 
                 //Use EF to delete existing data.

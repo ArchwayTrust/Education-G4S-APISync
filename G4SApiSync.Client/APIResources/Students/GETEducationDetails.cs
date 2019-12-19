@@ -130,6 +130,8 @@ namespace G4SApiSync.Client.EndPoints
                             {
                                 rowStuAttribVal["Date"] = dateAttribNullable.Value;
                             }
+
+                            dtStuAttribValues.Rows.Add(rowStuAttribVal);
                         }
                         //Populate Student Arribute DataTable
                         var rowStuAttrib = dtStuAttributes.NewRow();
@@ -140,6 +142,8 @@ namespace G4SApiSync.Client.EndPoints
                         rowStuAttrib["Code"] = stuAttrib.Code;
                         rowStuAttrib["Name"] = stuAttrib.Name;
                         rowStuAttrib["IsSystem"] = stuAttrib.IsSystem;
+
+                        dtStuAttributes.Rows.Add(rowStuAttrib);
                     }
 
                     //Populate Education Details DataTable
