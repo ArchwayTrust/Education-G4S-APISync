@@ -33,7 +33,7 @@ namespace G4SApiSync.Client
                 using (var getStudentDetails = new GETStudentDetails(_context, _connectionString))
                 {
                     bool result = await getStudentDetails.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentDetails.EndPoint, Result = result, LoggedAt = DateTime.Now });
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentDetails.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear});
                 }
             }
 
@@ -43,28 +43,23 @@ namespace G4SApiSync.Client
                 using (var getEducationDetails = new GETEducationDetails(_context, _connectionString))
                 {
                     bool result = await getEducationDetails.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getEducationDetails.EndPoint, Result = result, LoggedAt = DateTime.Now });
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getEducationDetails.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear});
+                }
+            }
+
+            //GET General Attributes
+            foreach (var academy in _academyList)
+            {
+                using (var getGeneralAttributes = new GETGeneralAttributes(_context, _connectionString))
+                {
+                    bool result = await getGeneralAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGeneralAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
                 }
             }
 
 
             return syncResults;
 
-
-            //GET Education Details
-
-            //var EducationDetailsEndPoint = new GETEducationDetails();
-
-            //Sucess = await EducationDetailsEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
-
-            //if (Sucess)
-            //{
-            //    StatusMessage = StatusMessage + "Education details endpoint suceeded." + Environment.NewLine;
-            //}
-            //else
-            //{
-            //    StatusMessage = StatusMessage + "Education details endpoint failed." + Environment.NewLine;
-            //}
 
             //GET General Attributes
 

@@ -1,13 +1,10 @@
 ﻿using G4SApiSync.Client;
 using G4SApiSync.Data;
-using G4SApiSync.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace G4SApiSync

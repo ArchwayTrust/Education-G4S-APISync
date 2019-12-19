@@ -99,13 +99,13 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.DestinationTableName = "g4s.Students";
                     sqlBulk.WriteToServer(dtStudents);
                 }
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, AcademicYear = AcYear });
                 await _context.SaveChangesAsync();
                 return true;
             }
             catch(Exception e)
             {
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, AcademicYear = AcYear});
                 await _context.SaveChangesAsync();
                 return false;
             }
