@@ -14,15 +14,21 @@ using Microsoft.Data.SqlClient;
 namespace G4SApiSync.Client.EndPoints
 {
     [JsonObject]
-    public class GETEducationDetails : IEndPoint<StudentEducationDetailsDTO>
+    public class GETEducationDetails : IEndPoint<StudentEducationDetailsDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/students/education-details";
-        //const string _connectionString = "Server=core-sql-svc;Database=G4S;Trusted_Connection=True;";
-        const string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=G4S;Trusted_Connection=True;";
+        private string _connectionString;
+        private G4SContext _context;
 
         public string EndPoint
         {
             get { return _endPoint; }
+        }
+
+        public GETEducationDetails(G4SContext context, string connectionString)
+        {
+            _context = context;
+            _connectionString = connectionString;
         }
 
         [JsonProperty("students_and_education_details")]
@@ -36,8 +42,8 @@ namespace G4SApiSync.Client.EndPoints
 
         public async Task<bool> UpdateDatabase(string APIKey, string AcYear, string AcademyCode)
         {
-            //try
-            //{
+            try
+            {
                 APIRequest<GETEducationDetails, StudentEducationDetailsDTO> getEducationDetails = new APIRequest<GETEducationDetails, StudentEducationDetailsDTO>(_endPoint, APIKey, AcYear);
                 var educationDetailsDTOs = getEducationDetails.ToList();
 
@@ -115,8 +121,8 @@ namespace G4SApiSync.Client.EndPoints
                             rowStuAttribVal["StudentAttributeId"] = AcademyCode + AcYear + "-" + item.G4SStuId.ToString() + "-" + stuAttrib.AttributeId.ToString();
                             rowStuAttribVal["Value"] = attribValue.Value;
                             rowStuAttribVal["AcademicYear"] = attribValue.AcademicYear;
-                            
-                            if(dateAttribNullable == null)
+
+                            if (dateAttribNullable == null)
                             {
                                 rowStuAttribVal["Date"] = DBNull.Value;
                             }
@@ -196,14 +202,12 @@ namespace G4SApiSync.Client.EndPoints
                 }
 
 
-                //using (G4SContext context = new G4SContext())
-                //{
-                //    var currentEducationDetails = context.EducationDetails
-                //                                    .Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
+                var currentEducationDetails = _context.EducationDetails
+                                                .Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
 
-                //    context.EducationDetails.RemoveRange(currentEducationDetails);
-                //    await context.SaveChangesAsync();
-                //}
+                _context.EducationDetails.RemoveRange(currentEducationDetails);
+                await _context.SaveChangesAsync();
+
 
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {
@@ -247,16 +251,37 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.DestinationTableName = "g4s.StudentAttributeValues";
                     sqlBulk.WriteToServer(dtStuAttribValues);
                 }
-
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true });
                 return true;
             }
 
-            //catch
+            catch(Exception e)
+            {
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false });
+                await _context.SaveChangesAsync();
+                return false;
+            }
+        }
+
+        //Implements IDisposable
+        //private bool isDisposed = false;
+        public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+        protected virtual void Dispose(bool disposing)
+        {
+            //if (!isDisposed)
             //{
-            //    return false;
+            //    if (disposing)
+            //    {
+            //        if (_context != null)
+            //        {
+            //            _context.Dispose();
+            //        }
+            //    }
             //}
+            //isDisposed = true;
         }
     }
+}
 
 
 

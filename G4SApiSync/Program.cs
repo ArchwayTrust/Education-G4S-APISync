@@ -14,7 +14,6 @@ namespace G4SApiSync
 {
     class Program
     {
-        private static List<AcademySecurity> _academyList;
         private static G4SContext _context;
         private static string _connectionString;
 
@@ -24,13 +23,6 @@ namespace G4SApiSync
             var services = new ServiceCollection();
             ConfigureServices(services);
 
-            _academyList = _context.AcademySecurity.ToList();
-
-            foreach(var academy in _academyList)
-            {
-                Console.WriteLine(academy.AcademyCode + Environment.NewLine);
-            }
-
             //Run main sync code
             RunApiSync().Wait();
         }
@@ -38,16 +30,12 @@ namespace G4SApiSync
         static private async Task RunApiSync()
         {
             Console.WriteLine("Running API Sync. This will take some time." + Environment.NewLine);
+            var GetData = new GetAndStoreAllData(_context, _connectionString);
+            var results = await GetData.SyncStudents();
 
-            foreach (var academy in _academyList)
+            foreach(var result in results)
             {
-                bool result;
-                var GetData = new GetAndStoreAllData(_context, _connectionString, academy);
-
-                result = await GetData.RunStudents();
-
-                //StatusMessage = await GetData.RunTeaching();
-                //tb1.Text = StatusMessage;
+                Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
             }
         }
 

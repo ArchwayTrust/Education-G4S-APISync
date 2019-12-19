@@ -17,6 +17,7 @@ namespace G4SApiSync.Data
 
         //Academy List
         public virtual DbSet<AcademySecurity> AcademySecurity { get; set; }
+        public virtual DbSet<SyncResult> SyncResults { get; set; }
 
         //Students
         public virtual DbSet<Student> Students { get; set; }

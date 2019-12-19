@@ -14,11 +14,11 @@ using Microsoft.Data.SqlClient;
 namespace G4SApiSync.Client.EndPoints
 {
     [JsonObject]
-    public class GETStudentDetails : IEndPoint<StudentDTO>
+    public class GETStudentDetails : IEndPoint<StudentDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/students";
         private string _connectionString;
-        G4SContext _context;
+        private G4SContext _context;
 
         public GETStudentDetails(G4SContext context, string connectionString)
         {
@@ -99,12 +99,35 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.DestinationTableName = "g4s.Students";
                     sqlBulk.WriteToServer(dtStudents);
                 }
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true });
+                await _context.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch(Exception e)
             {
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false });
+                await _context.SaveChangesAsync();
                 return false;
             }
+        }
+
+
+//Implements IDisposable
+        //private bool isDisposed = false;
+        public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+        protected virtual void Dispose(bool disposing)
+        {
+            //if (!isDisposed)
+            //{
+            //    if (disposing)
+            //    {
+            //        if (_context != null)
+            //        { 
+            //            _context.Dispose(); 
+            //        }
+            //    }
+            //}
+            //isDisposed = true;
         }
 
     }

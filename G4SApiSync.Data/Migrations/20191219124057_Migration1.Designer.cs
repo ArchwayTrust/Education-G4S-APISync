@@ -4,14 +4,16 @@ using G4SApiSync.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace G4SApiSync.Data.Migrations
 {
     [DbContext(typeof(G4SContext))]
-    partial class G4SContextModelSnapshot : ModelSnapshot
+    [Migration("20191219124057_Migration1")]
+    partial class Migration1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -501,10 +503,6 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
 
-                    b.Property<string>("AcadmicYear")
-                        .HasColumnType("nvarchar(4)")
-                        .HasMaxLength(4);
-
                     b.Property<string>("EndPoint")
                         .HasColumnType("nvarchar(max)");
 
@@ -517,9 +515,6 @@ namespace G4SApiSync.Data.Migrations
 
                     b.Property<bool>("Result")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("YearGroup")
-                        .HasColumnType("int");
 
                     b.HasKey("SyncResultId");
 

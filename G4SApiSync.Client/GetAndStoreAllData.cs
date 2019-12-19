@@ -11,36 +11,45 @@ namespace G4SApiSync.Client
 {
     public class GetAndStoreAllData
     {
-        private readonly AcademySecurity _academy;
+        private readonly List<AcademySecurity> _academyList;
         private readonly G4SContext _context;
         private readonly string _connectionString;
 
-        public GetAndStoreAllData(G4SContext context, string connectionString, AcademySecurity academy)
+        public GetAndStoreAllData(G4SContext context, string connectionString)
         {
-            _academy = academy;
             _context = context;
             _connectionString = connectionString;
+
+            _academyList = _context.AcademySecurity.ToList();
         }
 
-        public async Task<bool> RunStudents()
+        public async Task<List<SyncResult>> SyncStudents()
         {
-            
-            bool Sucess;
+            List<SyncResult> syncResults = new List<SyncResult>();
 
             //GET Student Details
-
-            GETStudentDetails StudentEndPoint = new GETStudentDetails(_context, _connectionString);
-
-            Sucess = await StudentEndPoint.UpdateDatabase(_academy.APIKey, _academy.CurrentAcademicYear, _academy.AcademyCode);
-
-            if (Sucess)
+            foreach(var academy in _academyList)
             {
-                Console.WriteLine("Students endpoint suceeded" + Environment.NewLine);
+                using (var getStudentDetails = new GETStudentDetails(_context, _connectionString))
+                {
+                    bool result = await getStudentDetails.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentDetails.EndPoint, Result = result, LoggedAt = DateTime.Now });
+                }
             }
-            else
+
+            //GET Education Details
+            foreach (var academy in _academyList)
             {
-                Console.WriteLine("Students endpoint failed" + Environment.NewLine);
+                using (var getEducationDetails = new GETEducationDetails(_context, _connectionString))
+                {
+                    bool result = await getEducationDetails.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getEducationDetails.EndPoint, Result = result, LoggedAt = DateTime.Now });
+                }
             }
+
+
+            return syncResults;
+
 
             //GET Education Details
 
@@ -117,7 +126,7 @@ namespace G4SApiSync.Client
             //}
 
 
-            return true;
+            //return syncResults;
         }
 
     //    public async Task<string> RunTeaching()
