@@ -68,6 +68,12 @@ namespace G4SApiSync.Data
                 .HasForeignKey(s => s.AttributeTypeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<AttributeValue>()
+                .HasOne<Student>(b => b.Student)
+                .WithMany(c => c.AttributeValues)
+                .HasForeignKey(s => s.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             //Teaching
             modelBuilder.Entity<Subject>()
                 .HasOne<Department>(b => b.Department)

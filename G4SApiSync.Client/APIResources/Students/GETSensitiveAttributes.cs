@@ -138,7 +138,7 @@ namespace G4SApiSync.Client.EndPoints
 
                 //Use EF to delete existing data.
                 var currentAttributes = _context.AttributeTypes
-                                                .Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode && i.AttributeGroup == "Sensistive");
+                                                .Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode && i.AttributeGroup == "Sensitive");
 
                 _context.AttributeTypes.RemoveRange(currentAttributes);
                 await _context.SaveChangesAsync();
