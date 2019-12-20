@@ -40,6 +40,13 @@ namespace G4SApiSync.Client
             request.AddParameter("academicYear", pAcYear);
 
             var response = client.Execute(request);
+
+            //Check if api call suceeded and throw an exception if not.
+            if ((int)response.StatusCode != 200)
+                {
+                    throw (new APICallException((int)response.StatusCode + " - " + response.StatusDescription));
+                }
+
             string content = response.Content; // Returned JSON as string.
             return content;
         }
