@@ -89,110 +89,23 @@ namespace G4SApiSync.Client
 
 
             return syncResults;
-
-
-            //GET General Attributes
-
-            //var GeneralAttributesEndPoint = new GETGeneralAttributes();
-
-            //Sucess = await GeneralAttributesEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
-
-            //if (Sucess)
-            //{
-            //    StatusMessage = StatusMessage + "General attributes endpoint suceeded." + Environment.NewLine;
-            //}
-            //else
-            //{
-            //    StatusMessage = StatusMessage + "General attributes endpoint failed." + Environment.NewLine;
-            //}
-
-            ////GET Sensitive Attributes
-            //var SensitiveAttributesEndPoint = new GETSensitiveAttributes();
-
-            //Sucess = await SensitiveAttributesEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
-
-            //if (Sucess)
-            //{
-            //    StatusMessage = StatusMessage + "Sensitive attributes endpoint suceeded." + Environment.NewLine;
-            //}
-            //else
-            //{
-            //    StatusMessage = StatusMessage + "Sensitive attributes endpoint failed." + Environment.NewLine;
-            //}
-
-            ////GET Send Attributes
-
-            //var SendAttributesEndPoint = new GETSendAttributes();
-
-            //Sucess = await SendAttributesEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
-
-            //if (Sucess)
-            //{
-            //    StatusMessage = StatusMessage + "Send attributes endpoint suceeded." + Environment.NewLine;
-            //}
-            //else
-            //{
-            //    StatusMessage = StatusMessage + "Send attributes endpoint failed." + Environment.NewLine;
-            //}
-
-            ////GET Demographic Attributes
-
-            //var DemographicAttributesEndPoint = new GETDemographicAttributes();
-
-            //Sucess = await DemographicAttributesEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
-
-            //if (Sucess)
-            //{
-            //    StatusMessage = StatusMessage + "Demographic attributes endpoint suceeded." + Environment.NewLine;
-            //}
-            //else
-            //{
-            //    StatusMessage = StatusMessage + "Demographic attributes endpoint failed." + Environment.NewLine;
-            //}
-
-
-            //return syncResults;
         }
 
-    //    public async Task<string> RunTeaching()
-    //    {
+        public async Task<List<SyncResult>> SyncTeaching()
+        {
+            List<SyncResult> syncResults = new List<SyncResult>();
 
-    //        bool Sucess;
+            //GET Departments
+            foreach (var academy in _academyList)
+            {
+                using (var getDepartments = new GETDepartments(_context, _connectionString))
+                {
+                    bool result = await getDepartments.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getDepartments.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
+                }
+            }
 
-    //        //Add line describing which academy and academic year.
-    //        string StatusMessage = pCurrentStatus + pAcademy + " " + pAcYear + " - Teaching Endpoints" + Environment.NewLine;
-
-    //        //GET Departments
-
-    //        GETDepartments DepartmentEndPoint = new GETDepartments();
-
-    //        Sucess = await DepartmentEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
-
-    //        if (Sucess)
-    //        {
-    //            StatusMessage = StatusMessage + "Department endpoint suceeded." + Environment.NewLine;
-    //        }
-    //        else
-    //        {
-    //            StatusMessage = StatusMessage + "Department endpoint failed." + Environment.NewLine;
-    //        }
-
-    //        //GET Subjects
-
-    //        GETSubjects SubjectEndPoint = new GETSubjects();
-
-    //        Sucess = await SubjectEndPoint.UpdateDatabase(pAPIKey, pAcYear, pAcademy);
-
-    //        if (Sucess)
-    //        {
-    //            StatusMessage = StatusMessage + "Subject endpoint suceeded." + Environment.NewLine;
-    //        }
-    //        else
-    //        {
-    //            StatusMessage = StatusMessage + "Subject endpoint failed." + Environment.NewLine;
-    //        }
-
-    //        return StatusMessage;
-    //    }
+            return syncResults;
+        }
     }
 }
