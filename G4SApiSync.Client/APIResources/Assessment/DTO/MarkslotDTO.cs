@@ -5,17 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace G4SApiSync.Client.DTOs
 {
         [JsonObject]
-        public class MarksheetDTO
+        public class MarkslotDTO
         {
             [JsonProperty("id")]
-            public int G4SMarksheetId { get; set; }
+            public int G4SMarkslotId { get; set; }
 
             [JsonProperty("name")]
             public string Name { get; set; }
-
-            [JsonProperty("markslots")]
-            public IEnumerable<MarkslotDTO> Markslots { get; set; }
-
-      
         }
 }
