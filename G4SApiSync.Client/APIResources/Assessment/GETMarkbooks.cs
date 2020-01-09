@@ -85,7 +85,7 @@ namespace G4SApiSync.Client.EndPoints
                         mshRow["AcademicYear"] = AcYear;
                         mshRow["Academy"] = AcademyCode;
                         mshRow["Name"] = msh.Name;
-                        dtMarkslots.Rows.Add(mshRow);
+                        dtMarksheets.Rows.Add(mshRow);
 
                     }
                 }
