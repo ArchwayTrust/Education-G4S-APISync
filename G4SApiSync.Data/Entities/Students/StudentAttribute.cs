@@ -19,9 +19,9 @@ namespace G4SApiSync.Data.Entities
         public string StudentId { get; set; }
         public int G4SStuId { get; set; }
         public int AttributeId { get; set; }
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string Code { get; set; }
-        [MaxLength(300)]
+        [MaxLength(500)]
         public string Name { get; set; }
         public bool IsSystem { get; set; }
         

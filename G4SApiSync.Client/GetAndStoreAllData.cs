@@ -122,13 +122,23 @@ namespace G4SApiSync.Client
         {
             List<SyncResult> syncResults = new List<SyncResult>();
 
-            //GET Departments
+            //GET Markbooks
             foreach (var academy in _academyList)
             {
                 using (var getMarkbooks = new GETMarkbooks(_context, _connectionString))
                 {
                     bool result = await getMarkbooks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getMarkbooks.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
+                }
+            }
+
+            //GET Marksheet Grades
+            foreach (var academy in _academyList)
+            {
+                using (var getMarksheetGrades = new GETMarksheetGrades(_context, _connectionString))
+                {
+                    bool result = await getMarksheetGrades.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getMarksheetGrades.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
                 }
             }
 

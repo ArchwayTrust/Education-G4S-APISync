@@ -11,7 +11,7 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(100)]
         public string StudentAttributeId { get; set; } //StudentId + "-" AttributeId
 
-        [MaxLength(300)]
+        [MaxLength(1000)]
         public string Value { get; set; }
 
         [MaxLength(4)]

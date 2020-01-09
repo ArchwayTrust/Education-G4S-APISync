@@ -30,13 +30,13 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(13)]
         public string FormerUPN { get; set; }
 
-        [MaxLength(4)]
+        [MaxLength(20)]
         public string NCYear { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string RegistrationGroup { get; set; }
 
-        [MaxLength(200)]
+        [MaxLength(500)]
         public string House { get; set; }
 
         [Column(TypeName = "Date")]

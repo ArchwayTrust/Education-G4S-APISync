@@ -21,10 +21,10 @@ namespace G4SApiSync.Data.Entities
 
         public string AttributeGroup { get; set; }
         
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string Code { get; set; }
 
-        [MaxLength(300)]
+        [MaxLength(500)]
         public string AttributeName { get; set; }
         public bool IsSystem { get; set; }
 

@@ -94,6 +94,18 @@ namespace G4SApiSync.Data
                 .HasForeignKey(s => s.MarksheetId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<MarksheetGrade>()
+                .HasOne<Marksheet>(b => b.Marksheet)
+                .WithMany(c => c.MarksheetGrades)
+                .HasForeignKey(s => s.MarksheetId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<MarksheetGrade>()
+                .HasOne<Student>(b => b.Student)
+                .WithMany(c => c.MarksheetGrades)
+                .HasForeignKey(s => s.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             //API Keys
             modelBuilder.Entity<AcademySecurity>()
                 .ToTable("AcademySecurity", "sec");

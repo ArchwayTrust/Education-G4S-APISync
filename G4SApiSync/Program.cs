@@ -28,14 +28,14 @@ namespace G4SApiSync
         {
             Console.WriteLine("Running API Sync. This will take some time." + Environment.NewLine);
             var GetData = new GetAndStoreAllData(_context, _connectionString);
-            //var results = await GetData.SyncStudents();
+            var results = await GetData.SyncStudents();
 
-            //foreach(var result in results)
-            //{
-            //    Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
-            //}
+            foreach (var result in results)
+            {
+                Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
+            }
 
-            var results = await GetData.SyncTeaching();
+            results = await GetData.SyncTeaching();
 
             foreach (var result in results)
             {

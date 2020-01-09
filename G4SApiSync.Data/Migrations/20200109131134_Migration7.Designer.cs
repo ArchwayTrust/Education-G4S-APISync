@@ -4,14 +4,16 @@ using G4SApiSync.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace G4SApiSync.Data.Migrations
 {
     [DbContext(typeof(G4SContext))]
-    partial class G4SContextModelSnapshot : ModelSnapshot
+    [Migration("20200109131134_Migration7")]
+    partial class Migration7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,12 +60,12 @@ namespace G4SApiSync.Data.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("AttributeName")
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<int>("G4SAttributeId")
                         .HasColumnType("int");
@@ -99,8 +101,8 @@ namespace G4SApiSync.Data.Migrations
                         .HasMaxLength(100);
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
 
                     b.HasKey("AttributeValueId");
 
@@ -162,19 +164,19 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("House")
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
 
                     b.Property<DateTime?>("LeavingDate")
                         .HasColumnType("Date");
 
                     b.Property<string>("NCYear")
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
+                        .HasColumnType("nvarchar(4)")
+                        .HasMaxLength(4);
 
                     b.Property<string>("RegistrationGroup")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("UPN")
                         .HasColumnType("nvarchar(13)")
@@ -368,8 +370,8 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<int>("G4SStuId")
                         .HasColumnType("int");
@@ -378,8 +380,8 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
 
                     b.Property<string>("StudentId")
                         .HasColumnType("nvarchar(100)")
@@ -411,8 +413,8 @@ namespace G4SApiSync.Data.Migrations
                         .HasMaxLength(100);
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
 
                     b.HasKey("StudentAttributeValueId");
 

@@ -15,7 +15,7 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(100)]
         public string StudentId { get; set; }
 
-        [MaxLength(500)]
+        [MaxLength(1000)]
         public string Value { get; set; }
 
         [MaxLength(4)]

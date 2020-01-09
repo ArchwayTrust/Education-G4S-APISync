@@ -4,14 +4,16 @@ using G4SApiSync.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace G4SApiSync.Data.Migrations
 {
     [DbContext(typeof(G4SContext))]
-    partial class G4SContextModelSnapshot : ModelSnapshot
+    [Migration("20200109132932_Migration8")]
+    partial class Migration8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,19 +164,19 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("House")
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
 
                     b.Property<DateTime?>("LeavingDate")
                         .HasColumnType("Date");
 
                     b.Property<string>("NCYear")
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
+                        .HasColumnType("nvarchar(4)")
+                        .HasMaxLength(4);
 
                     b.Property<string>("RegistrationGroup")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("UPN")
                         .HasColumnType("nvarchar(13)")
