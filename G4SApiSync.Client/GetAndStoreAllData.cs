@@ -142,6 +142,16 @@ namespace G4SApiSync.Client
                 }
             }
 
+            //GET Markslot Marks
+            foreach (var academy in _academyList)
+            {
+                using (var getMarkslotMarks = new GETMarkslotMarks(_context, _connectionString))
+                {
+                    bool result = await getMarkslotMarks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getMarkslotMarks.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
+                }
+            }
+
             return syncResults;
         }
     }

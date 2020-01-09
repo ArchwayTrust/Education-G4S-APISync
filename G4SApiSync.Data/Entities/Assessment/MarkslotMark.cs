@@ -11,13 +11,7 @@ namespace G4SApiSync.Data.Entities
 
         [MaxLength(100)]
         public string StudentId { get; set; }
-
-        [MaxLength(100)]
-        public string SubjectId { get; set; }
-
-        [MaxLength(4)]
-        public string AcademicYear { get; set; }
-
+        
         [MaxLength(50)]
         public string Grade { get; set; }
 
