@@ -71,17 +71,17 @@ namespace G4SApiSync.Client.EndPoints
                         foreach (var msl in msh.Markslots)
                         {
                             var mslRow = dtMarkslots.NewRow();
-                            mslRow["MarkslotId"] = AcademyCode + AcYear + "-" + msl.G4SMarkslotId;
-                            mslRow["SubjectId"] = AcademyCode + AcYear + "-" + mb.G4SSubjectId;
-                            mslRow["MarksheetId"] = AcademyCode + AcYear + "-" + msh.G4SMarksheetId;
+                            mslRow["MarkslotId"] = AcademyCode + AcYear + "-" + msl.G4SMarkslotId.ToString();
+                            mslRow["SubjectId"] = AcademyCode + AcYear + "-" + mb.G4SSubjectId.ToString();
+                            mslRow["MarksheetId"] = AcademyCode + AcYear + "-" + msh.G4SMarksheetId.ToString();
                             mslRow["Name"] = msl.Name;
 
                             dtMarkslots.Rows.Add(mslRow);
                         }
 
                         var mshRow = dtMarksheets.NewRow();
-                        mshRow["MarksheetId"] = AcademyCode + AcYear + "-" + msh.G4SMarksheetId;
-                        mshRow["SubjectId"] = AcademyCode + AcYear + "-" + mb.G4SSubjectId;
+                        mshRow["MarksheetId"] = AcademyCode + AcYear + "-" + msh.G4SMarksheetId.ToString();
+                        mshRow["SubjectId"] = AcademyCode + AcYear + "-" + mb.G4SSubjectId.ToString();
                         mshRow["AcademicYear"] = AcYear;
                         mshRow["Academy"] = AcademyCode;
                         mshRow["Name"] = msh.Name;
@@ -109,15 +109,15 @@ namespace G4SApiSync.Client.EndPoints
                 }
 
                 //Write markslot data table to sql
-                using (var sqlBulk = new SqlBulkCopy(_connectionString))
-                {
-                    sqlBulk.ColumnMappings.Add("MarkslotId", "MarkslotId");
-                    sqlBulk.ColumnMappings.Add("SubjectId", "SubjectId");
-                    sqlBulk.ColumnMappings.Add("Name", "Name");
+                //using (var sqlBulk = new SqlBulkCopy(_connectionString))
+                //{
+                //    sqlBulk.ColumnMappings.Add("MarkslotId", "MarkslotId");
+                //    sqlBulk.ColumnMappings.Add("SubjectId", "SubjectId");
+                //    sqlBulk.ColumnMappings.Add("Name", "Name");
 
-                    sqlBulk.DestinationTableName = "g4s.Markslots";
-                    sqlBulk.WriteToServer(dtMarkslots);
-                }
+                //    sqlBulk.DestinationTableName = "g4s.Markslots";
+                //    sqlBulk.WriteToServer(dtMarkslots);
+                //}
 
                 _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, AcademicYear = AcYear });
                 await _context.SaveChangesAsync();
