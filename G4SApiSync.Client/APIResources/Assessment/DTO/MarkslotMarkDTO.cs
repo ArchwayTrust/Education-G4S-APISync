@@ -11,7 +11,7 @@ namespace G4SApiSync.Client.DTOs
             public int G4SMarkslotId { get; set; }
 
             [JsonProperty("marks")]
-            public IEnumerable<MarkslotMarksDTO> MarksheetslotMarks { get; set; }
+            public IEnumerable<MarkslotMarksDTO> MarkslotMarks { get; set; }
 
       
         }

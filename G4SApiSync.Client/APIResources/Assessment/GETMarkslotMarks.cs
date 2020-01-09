@@ -44,8 +44,8 @@ namespace G4SApiSync.Client.EndPoints
             try
             {
                 //Get marksheets and grades data from API.
-                APIRequest<GETMarkslotMarks, MarkslotMarkDTO> getMarksheetGrades = new APIRequest<GETMarkslotMarks, MarkslotMarkDTO>(_endPoint, APIKey, AcYear);
-                var markslotDTO = getMarksheetGrades.ToList();
+                APIRequest<GETMarkslotMarks, MarkslotMarkDTO> getMarkslotMarks = new APIRequest<GETMarkslotMarks, MarkslotMarkDTO>(_endPoint, APIKey, AcYear);
+                var markslotDTO = getMarkslotMarks.ToList();
 
 
                 //Create datatable to store Markslot Marks
@@ -58,7 +58,7 @@ namespace G4SApiSync.Client.EndPoints
 
                 foreach (var ms in markslotDTO)
                 {
-                    foreach (var msm in ms.MarksheetslotMarks)
+                    foreach (var msm in ms.MarkslotMarks)
                     {
                         var msmRow = dtMarkslotMarks.NewRow();
                         msmRow["MarkslotId"] = AcademyCode + AcYear + "-" + ms.G4SMarkslotId;
