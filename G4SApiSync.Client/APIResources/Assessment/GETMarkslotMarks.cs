@@ -54,7 +54,16 @@ namespace G4SApiSync.Client.EndPoints
                 dtMarkslotMarks.Columns.Add("StudentId", typeof(String));
                 dtMarkslotMarks.Columns.Add("Grade", typeof(String));
                 dtMarkslotMarks.Columns.Add("Alias", typeof(String));
-                dtMarkslotMarks.Columns.Add("Mark", typeof(float));
+                //dtMarkslotMarks.Columns.Add("Mark", typeof(float));
+
+                var colMark = new DataColumn
+                {
+                    DataType = System.Type.GetType("System.Single"),
+                    ColumnName = "Mark",
+                    AllowDBNull = true
+                };
+
+                dtMarkslotMarks.Columns.Add(colMark);
 
                 foreach (var ms in markslotDTO)
                 {
@@ -65,7 +74,16 @@ namespace G4SApiSync.Client.EndPoints
                         msmRow["StudentId"] = AcademyCode + AcYear + "-" + msm.G4SStudentId;
                         msmRow["Grade"] = msm.Grade;
                         msmRow["Alias"] = msm.Alias;
-                        msmRow["Mark"] = msm.Mark;
+
+                        if(msm.Mark != null)
+                        {
+                            msmRow["Mark"] = msm.Mark;
+                            
+                        }
+                        else
+                        {
+                            msmRow["Mark"] = DBNull.Value;
+                        }
 
                         dtMarkslotMarks.Rows.Add(msmRow);
                     }

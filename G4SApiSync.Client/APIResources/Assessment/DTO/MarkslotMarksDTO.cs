@@ -17,6 +17,6 @@ namespace G4SApiSync.Client.DTOs
             public string Alias { get; set; }
 
             [JsonProperty("mark")]
-            public float Mark { get; set; }
+            public float? Mark { get; set; }
         }
 }

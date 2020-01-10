@@ -115,7 +115,7 @@ namespace G4SApiSync.Data
             modelBuilder.Entity<MarkslotMark>()
                 .HasOne<Markslot>(b => b.Markslot)
                 .WithMany(c => c.MarkslotMarks)
-                .HasForeignKey(s => s.MockslotId)
+                .HasForeignKey(s => s.MarkslotId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             //API Keys

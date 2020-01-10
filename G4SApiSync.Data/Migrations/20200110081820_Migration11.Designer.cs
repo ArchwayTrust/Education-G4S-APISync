@@ -4,14 +4,16 @@ using G4SApiSync.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace G4SApiSync.Data.Migrations
 {
     [DbContext(typeof(G4SContext))]
-    partial class G4SContextModelSnapshot : ModelSnapshot
+    [Migration("20200110081820_Migration11")]
+    partial class Migration11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,7 +283,7 @@ namespace G4SApiSync.Data.Migrations
                     b.Property<float?>("Mark")
                         .HasColumnType("real");
 
-                    b.Property<string>("MarkslotId")
+                    b.Property<string>("MockslotId")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
@@ -291,7 +293,7 @@ namespace G4SApiSync.Data.Migrations
 
                     b.HasKey("MarkslotMarkId");
 
-                    b.HasIndex("MarkslotId");
+                    b.HasIndex("MockslotId");
 
                     b.HasIndex("StudentId");
 
@@ -547,7 +549,7 @@ namespace G4SApiSync.Data.Migrations
                 {
                     b.HasOne("G4SApiSync.Data.Entities.Markslot", "Markslot")
                         .WithMany("MarkslotMarks")
-                        .HasForeignKey("MarkslotId")
+                        .HasForeignKey("MockslotId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("G4SApiSync.Data.Entities.Student", "Student")

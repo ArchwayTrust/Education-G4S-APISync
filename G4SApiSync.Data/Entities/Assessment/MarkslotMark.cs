@@ -7,7 +7,7 @@ namespace G4SApiSync.Data.Entities
         public int MarkslotMarkId { get; set; }
 
         [MaxLength(100)]
-        public string MockslotId { get; set; }
+        public string MarkslotId { get; set; }
 
         [MaxLength(100)]
         public string StudentId { get; set; }
@@ -17,7 +17,7 @@ namespace G4SApiSync.Data.Entities
 
         [MaxLength(50)]
         public string Alias { get; set; }
-        public float Mark { get; set; }
+        public float? Mark { get; set; }
 
         public virtual Markslot Markslot { get; set; }
 
