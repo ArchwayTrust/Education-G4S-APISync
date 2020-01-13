@@ -50,11 +50,10 @@ namespace G4SApiSync.Data
 
             //Students
 
-            //modelBuilder.Entity<Student>()
-            //    .HasOne<EducationDetail>(b => b.EducationDetail)
-            //    .WithOne(c => c.Student)
-            //    .HasForeignKey<EducationDetail>(s => s.StudentId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<EducationDetail>()
+                .HasOne(b => b.Student)
+                .WithOne(c => c.EducationDetail)
+                .HasForeignKey<EducationDetail>(s => s.StudentId);
 
             modelBuilder.Entity<StudentAttribute>()
                 .HasOne<EducationDetail>(b => b.EducationDetail)

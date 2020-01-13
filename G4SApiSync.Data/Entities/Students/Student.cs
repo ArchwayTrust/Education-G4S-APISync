@@ -7,9 +7,8 @@ namespace G4SApiSync.Data.Entities
 {
     public class Student
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Key]
-        //[ForeignKey("EducationDetail")]
+        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
+        //[Key]
         [MaxLength(100)]
         public string StudentId { get; set; }
         public int G4SStuId { get; set; }
@@ -41,7 +40,7 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(200)]
         public string MiddleNames { get; set; }
 
-        //public virtual EducationDetail EducationDetail { get; set; }
+        public virtual EducationDetail EducationDetail { get; set; }
 
         public virtual ICollection<AttributeValue> AttributeValues { get; set; }
 

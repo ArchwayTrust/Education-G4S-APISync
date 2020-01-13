@@ -4,14 +4,16 @@ using G4SApiSync.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace G4SApiSync.Data.Migrations
 {
     [DbContext(typeof(G4SContext))]
-    partial class G4SContextModelSnapshot : ModelSnapshot
+    [Migration("20200113164755_Migration22")]
+    partial class Migration22
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -576,15 +578,6 @@ namespace G4SApiSync.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("G4SApiSync.Data.Entities.EducationDetail", b =>
-                {
-                    b.HasOne("G4SApiSync.Data.Entities.Student", "Student")
-                        .WithOne("EducationDetail")
-                        .HasForeignKey("G4SApiSync.Data.Entities.EducationDetail", "StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("G4SApiSync.Data.Entities.Marksheet", b =>
                 {
                     b.HasOne("G4SApiSync.Data.Entities.Subject", "Subject")
@@ -636,6 +629,15 @@ namespace G4SApiSync.Data.Migrations
                     b.HasOne("G4SApiSync.Data.Entities.Student", "Student")
                         .WithMany("PriorAttainmentValues")
                         .HasForeignKey("StudentId");
+                });
+
+            modelBuilder.Entity("G4SApiSync.Data.Entities.Student", b =>
+                {
+                    b.HasOne("G4SApiSync.Data.Entities.EducationDetail", "EducationDetail")
+                        .WithOne("Student")
+                        .HasForeignKey("G4SApiSync.Data.Entities.Student", "StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.StudentAttribute", b =>

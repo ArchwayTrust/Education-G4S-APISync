@@ -7,13 +7,8 @@ namespace G4SApiSync.Data.Entities
 {
     public class EducationDetail
     {
-
-        public EducationDetail()
-        {
-            StudentAttributes = new List<StudentAttribute>();
-        }
-
         [Key]
+        //[ForeignKey("Student")]
         [MaxLength(100)]
         public string StudentId { get; set; }
         public int G4SStuId { get; set; }
@@ -45,7 +40,7 @@ namespace G4SApiSync.Data.Entities
         [Column(TypeName = "Date")]
         public DateTime? LeavingDate { get; set; }
 
-        //public virtual Student Student { get; set; }
+        public virtual Student Student { get; set; }
         public virtual ICollection<StudentAttribute> StudentAttributes { get; set; }
 
     }
