@@ -4,14 +4,16 @@ using G4SApiSync.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace G4SApiSync.Data.Migrations
 {
     [DbContext(typeof(G4SContext))]
-    partial class G4SContextModelSnapshot : ModelSnapshot
+    [Migration("20200113125437_Migration16")]
+    partial class Migration16
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,13 +233,11 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("StudentId")
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MarksheetGradeId");
 
                     b.HasIndex("MarksheetId");
-
-                    b.HasIndex("StudentId");
 
                     b.ToTable("MarksheetGrades");
                 });
@@ -292,8 +292,6 @@ namespace G4SApiSync.Data.Migrations
                     b.HasKey("MarkslotMarkId");
 
                     b.HasIndex("MarkslotId");
-
-                    b.HasIndex("StudentId");
 
                     b.ToTable("MarkslotMarks");
                 });
@@ -528,11 +526,6 @@ namespace G4SApiSync.Data.Migrations
                         .WithMany("MarksheetGrades")
                         .HasForeignKey("MarksheetId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("G4SApiSync.Data.Entities.Student", "Student")
-                        .WithMany("MarksheetGrades")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.Markslot", b =>
@@ -549,11 +542,15 @@ namespace G4SApiSync.Data.Migrations
                         .WithMany("MarkslotMarks")
                         .HasForeignKey("MarkslotId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.HasOne("G4SApiSync.Data.Entities.Student", "Student")
-                        .WithMany("MarkslotMarks")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity("G4SApiSync.Data.Entities.Student", b =>
+                {
+                    b.HasOne("G4SApiSync.Data.Entities.EducationDetail", "EducationDetail")
+                        .WithOne("Student")
+                        .HasForeignKey("G4SApiSync.Data.Entities.Student", "StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.StudentAttribute", b =>

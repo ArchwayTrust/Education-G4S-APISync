@@ -4,14 +4,16 @@ using G4SApiSync.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace G4SApiSync.Data.Migrations
 {
     [DbContext(typeof(G4SContext))]
-    partial class G4SContextModelSnapshot : ModelSnapshot
+    [Migration("20200113141847_Migration18")]
+    partial class Migration18
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -512,6 +514,15 @@ namespace G4SApiSync.Data.Migrations
                         .WithMany("AttributeValues")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("G4SApiSync.Data.Entities.EducationDetail", b =>
+                {
+                    b.HasOne("G4SApiSync.Data.Entities.Student", "Student")
+                        .WithOne("EducationDetail")
+                        .HasForeignKey("G4SApiSync.Data.Entities.EducationDetail", "StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.Marksheet", b =>

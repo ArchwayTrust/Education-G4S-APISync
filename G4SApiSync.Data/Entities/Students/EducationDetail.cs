@@ -45,7 +45,7 @@ namespace G4SApiSync.Data.Entities
         [Column(TypeName = "Date")]
         public DateTime? LeavingDate { get; set; }
 
-        public virtual Student Student { get; set; }
+        //public virtual Student Student { get; set; }
         public virtual ICollection<StudentAttribute> StudentAttributes { get; set; }
 
     }

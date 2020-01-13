@@ -49,6 +49,13 @@ namespace G4SApiSync.Data
             modelBuilder.HasDefaultSchema("g4s");
 
             //Students
+
+            //modelBuilder.Entity<Student>()
+            //    .HasOne<EducationDetail>(b => b.EducationDetail)
+            //    .WithOne(c => c.Student)
+            //    .HasForeignKey<EducationDetail>(s => s.StudentId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<StudentAttribute>()
                 .HasOne<EducationDetail>(b => b.EducationDetail)
                 .WithMany(c => c.StudentAttributes)
