@@ -72,6 +72,9 @@ namespace G4SApiSync.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AttributeValue>()
+                .HasKey(pc => new { pc.StudentId, pc.AttributeTypeId });
+
+            modelBuilder.Entity<AttributeValue>()
                 .HasOne<AttributeType>(b => b.AttributeType)
                 .WithMany(c => c.AttributeValues)
                 .HasForeignKey(s => s.AttributeTypeId)
@@ -91,6 +94,12 @@ namespace G4SApiSync.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             //Assessment
+            modelBuilder.Entity<MarksheetGrade>()
+                .HasKey(pc => new { pc.StudentId, pc.MarksheetId });
+
+            modelBuilder.Entity<MarkslotMark>()
+                .HasKey(pc => new { pc.StudentId, pc.MarkslotId });
+
             modelBuilder.Entity<Marksheet>()
                 .HasOne<Subject>(b => b.Subject)
                 .WithMany(c => c.Marksheets)

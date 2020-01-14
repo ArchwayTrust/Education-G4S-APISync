@@ -5,7 +5,7 @@ namespace G4SApiSync.Data.Entities
 {
     public class MarksheetGrade
     {
-        public int MarksheetGradeId { get; set; }
+        //public int MarksheetGradeId { get; set; }
         public string MarksheetId { get; set; }
         public string StudentId { get; set; }
         public string Grade { get; set; }

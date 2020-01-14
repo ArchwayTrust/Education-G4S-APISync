@@ -6,9 +6,10 @@ namespace G4SApiSync.Data.Entities
 {
     public class StudentAttributeValue
     {
-        public int StudentAttributeValueId { get; set; } //Autoset
+        //public int StudentAttributeValueId { get; set; } //Autoset
 
         [MaxLength(100)]
+        [Key]
         public string StudentAttributeId { get; set; } //StudentId + "-" AttributeId
 
         [MaxLength(1000)]

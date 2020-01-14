@@ -4,7 +4,7 @@ namespace G4SApiSync.Data.Entities
 {
     public class MarkslotMark
     {
-        public int MarkslotMarkId { get; set; }
+        //public int MarkslotMarkId { get; set; }
 
         [MaxLength(100)]
         public string MarkslotId { get; set; }
