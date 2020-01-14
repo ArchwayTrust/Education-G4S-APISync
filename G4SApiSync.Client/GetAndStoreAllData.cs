@@ -154,5 +154,22 @@ namespace G4SApiSync.Client
 
             return syncResults;
         }
+
+        public async Task<List<SyncResult>> SyncAttainment()
+        {
+            List<SyncResult> syncResults = new List<SyncResult>();
+
+            //GET Prior Attainment
+            foreach (var academy in _academyList)
+            {
+                using (var getPA = new GETPriorAttainment(_context, _connectionString))
+                {
+                    bool result = await getPA.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getPA.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
+                }
+            }
+
+            return syncResults;
+        }
     }
 }
