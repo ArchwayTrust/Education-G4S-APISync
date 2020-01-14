@@ -37,6 +37,10 @@ namespace G4SApiSync.Data
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
 
+        //Attainment
+        public virtual DbSet<PriorAttainmentValue> PriorAttainmentValues { get; set; }
+        public virtual DbSet<PriorAttainmentType> PriorAttainmentTypes { get; set; }
+
 
         //Fluent API Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -123,6 +127,21 @@ namespace G4SApiSync.Data
                 .WithMany(c => c.MarkslotMarks)
                 .HasForeignKey(s => s.MarkslotId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //Attainment
+
+            modelBuilder.Entity<PriorAttainmentValue>()
+                .HasOne<Student>(b => b.Student)
+                .WithMany(c => c.PriorAttainmentValues)
+                .HasForeignKey(s => s.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PriorAttainmentValue>()
+                .HasOne<PriorAttainmentType>(b => b.PriorAttainmentType)
+                .WithMany(c => c.PriorAttainmentValues)
+                .HasForeignKey(s => s.PriorAttainmentTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
 
             //API Keys
             modelBuilder.Entity<AcademySecurity>()
