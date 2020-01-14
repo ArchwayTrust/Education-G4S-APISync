@@ -8,7 +8,7 @@ namespace G4SApiSync.Client.DTOs
         public class PriorAttainmentDTO
         {
             [JsonProperty("code")]
-            public string PriorAttainmentTypeId { get; set; }
+            public string Code { get; set; }
 
             [JsonProperty("name")]
              public string Name { get; set; }

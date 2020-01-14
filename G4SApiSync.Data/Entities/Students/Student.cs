@@ -48,7 +48,7 @@ namespace G4SApiSync.Data.Entities
 
         public virtual ICollection<MarkslotMark> MarkslotMarks { get; set; }
 
-        public virtual ICollection<PriorAttainmentValue> PriorAttainmentValues { get; set; }
+        public virtual ICollection<PriorAttainment> PriorAttainment { get; set; }
 
     }
 }

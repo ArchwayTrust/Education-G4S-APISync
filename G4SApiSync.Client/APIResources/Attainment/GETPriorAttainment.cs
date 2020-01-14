@@ -47,26 +47,23 @@ namespace G4SApiSync.Client.EndPoints
                 APIRequest<GETPriorAttainment, PriorAttainmentDTO> getPriorAttainment = new APIRequest<GETPriorAttainment, PriorAttainmentDTO>(_endPoint, APIKey, AcYear);
                 var priorAttainmentDTO = getPriorAttainment.ToList();
 
-                //Create datatable for prior attainment types.
-                var dtPATypes = new DataTable();
-                dtPATypes.Columns.Add("PriorAttainmentTypeId", typeof(String));
-                dtPATypes.Columns.Add("AcademicYear", typeof(String));
-                dtPATypes.Columns.Add("Academy", typeof(String));
-                dtPATypes.Columns.Add("Name", typeof(String));
-
                 //Create datatable for prior attainment values.
                 var dtPAValues = new DataTable();
                 dtPAValues.Columns.Add("StudentId", typeof(String));
-                dtPAValues.Columns.Add("PriorAttainmentTypeId", typeof(String));
-                dtPAValues.Columns.Add("Value", typeof(String));
                 dtPAValues.Columns.Add("AcademicYear", typeof(String));
-                var colDate = new DataColumn
+                dtPAValues.Columns.Add("Academy", typeof(String));
+                dtPAValues.Columns.Add("Name", typeof(String));
+                dtPAValues.Columns.Add("Code", typeof(String));
+                dtPAValues.Columns.Add("ValueAcademicYear", typeof(String));
+                dtPAValues.Columns.Add("Value", typeof(String));
+
+                var colValueDate = new DataColumn
                 {
                     DataType = System.Type.GetType("System.DateTime"),
-                    ColumnName = "Date",
+                    ColumnName = "ValueDate",
                     AllowDBNull = true
                 };
-                dtPAValues.Columns.Add(colDate);
+                dtPAValues.Columns.Add(colValueDate);
 
 
                 //Write the DTOs into the datatable.
@@ -79,59 +76,44 @@ namespace G4SApiSync.Client.EndPoints
                         var vRow = dtPAValues.NewRow();
 
                         vRow["StudentId"] = AcademyCode + AcYear + "-" + paVal.G4SStudentId.ToString();
-                        vRow["PriorAttainmentTypeId"] = AcademyCode + AcYear + "-" + paTyp.PriorAttainmentTypeId;
+                        vRow["AcademicYear"] = AcYear;
+                        vRow["Academy"] = AcademyCode;
+                        vRow["Name"] = paTyp.Name;
+                        vRow["Code"] = paTyp.Code;
                         vRow["Value"] = paVal.Value;
-                        vRow["AcademicYear"] = paVal.AcademicYear;
+                        vRow["ValueAcademicYear"] = paVal.AcademicYear;
 
                         if (DateTime.TryParseExact(paVal.Date, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
                         {
-                            vRow["Date"] = dateValue.Date;
+                            vRow["ValueDate"] = dateValue.Date;
                         }
                         else
                         {
-                            vRow["Date"] = DBNull.Value;
+                            vRow["ValueDate"] = DBNull.Value;
                         }
 
                         dtPAValues.Rows.Add(vRow);
                     }
-
-                    var tRow = dtPATypes.NewRow();
-
-                    tRow["PriorAttainmentTypeId"] = AcademyCode + AcYear + "-" + paTyp.PriorAttainmentTypeId;
-                    tRow["AcademicYear"] = AcYear;
-                    tRow["Academy"] = AcademyCode;
-                    tRow["Name"] = paTyp.Name;
-
-                    dtPATypes.Rows.Add(tRow);
                 }
 
                 //Remove exisitng prior attainment from SQL database
-                var currentPA = _context.PriorAttainmentTypes.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
-                _context.PriorAttainmentTypes.RemoveRange(currentPA);
+                var currentPA = _context.PriorAttainment.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
+                _context.PriorAttainment.RemoveRange(currentPA);
                 await _context.SaveChangesAsync();
 
-                //Write Prior Attainment Types data table to sql
-                using (var sqlBulk = new SqlBulkCopy(_connectionString))
-                {
-                    sqlBulk.ColumnMappings.Add("PriorAttainmentTypeId", "PriorAttainmentTypeId");
-                    sqlBulk.ColumnMappings.Add("AcademicYear", "AcademicYear");
-                    sqlBulk.ColumnMappings.Add("Academy", "Academy");
-                    sqlBulk.ColumnMappings.Add("Name", "Name");
-
-                    sqlBulk.DestinationTableName = "g4s.PriorAttainmentTypes";
-                    sqlBulk.WriteToServer(dtPATypes);
-                }
-
-                //Write markslot data table to sql
+                //Write prior attainment data table to sql
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {
                     sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
-                    sqlBulk.ColumnMappings.Add("PriorAttainmentTypeId", "PriorAttainmentTypeId");
-                    sqlBulk.ColumnMappings.Add("Value", "Value");
+                    sqlBulk.ColumnMappings.Add("Academy", "Academy");
                     sqlBulk.ColumnMappings.Add("AcademicYear", "AcademicYear");
-                    sqlBulk.ColumnMappings.Add("Date", "Date");
+                    sqlBulk.ColumnMappings.Add("Code", "Code");
+                    sqlBulk.ColumnMappings.Add("Name", "Name");
+                    sqlBulk.ColumnMappings.Add("Value", "Value");
+                    sqlBulk.ColumnMappings.Add("ValueAcademicYear", "ValueAcademicYear");
+                    sqlBulk.ColumnMappings.Add("ValueDate", "ValueDate");
 
-                    sqlBulk.DestinationTableName = "g4s.PriorAttainmentValues";
+                    sqlBulk.DestinationTableName = "g4s.PriorAttainment";
                     sqlBulk.WriteToServer(dtPAValues);
                 }
 
