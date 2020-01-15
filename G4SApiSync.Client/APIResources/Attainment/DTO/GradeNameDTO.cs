@@ -7,7 +7,7 @@ namespace G4SApiSync.Client.DTOs
         [JsonObject]
         public class GradeNameDTO
         {
-            [JsonProperty("grade_type")]
+            [JsonProperty("id")]
             public int GradeTypeId { get; set; }
 
             [JsonProperty("name")]

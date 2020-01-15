@@ -91,6 +91,7 @@ namespace G4SApiSync.Client
             return syncResults;
         }
 
+//Sync Teaching
         public async Task<List<SyncResult>> SyncTeaching()
         {
             List<SyncResult> syncResults = new List<SyncResult>();
@@ -138,6 +139,7 @@ namespace G4SApiSync.Client
             return syncResults;
         }
 
+//Sync Assessments
         public async Task<List<SyncResult>> SyncAssessment()
         {
             List<SyncResult> syncResults = new List<SyncResult>();
@@ -175,6 +177,7 @@ namespace G4SApiSync.Client
             return syncResults;
         }
 
+//SyncAttainment
         public async Task<List<SyncResult>> SyncAttainment()
         {
             List<SyncResult> syncResults = new List<SyncResult>();
@@ -185,6 +188,16 @@ namespace G4SApiSync.Client
                 using (var getPA = new GETPriorAttainment(_context, _connectionString))
                 {
                     bool result = await getPA.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getPA.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
+                }
+            }
+
+            //GET Grade Names
+            foreach (var academy in _academyList)
+            {
+                using (var getPA = new GETGradeNames(_context, _connectionString))
+                {
+                    bool result = await getPA.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getPA.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
                 }
             }

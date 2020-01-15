@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace G4SApiSync.Data.Migrations
 {
     [DbContext(typeof(G4SContext))]
-    [Migration("20191219163332_Initial")]
+    [Migration("20200115165449_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,13 +28,25 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("APIKey")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<string>("CurrentAcademicYear")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4)")
+                        .HasMaxLength(4);
+
+                    b.Property<int>("HighestYear")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LowestYear")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.HasKey("AcademyCode");
 
@@ -60,12 +72,12 @@ namespace G4SApiSync.Data.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("AttributeName")
-                        .HasColumnType("nvarchar(300)")
-                        .HasMaxLength(300);
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<int>("G4SAttributeId")
                         .HasColumnType("int");
@@ -101,8 +113,8 @@ namespace G4SApiSync.Data.Migrations
                         .HasMaxLength(100);
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(500)")
-                        .HasMaxLength(500);
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
 
                     b.HasKey("AttributeValueId");
 
@@ -164,19 +176,19 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("House")
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
 
                     b.Property<DateTime?>("LeavingDate")
                         .HasColumnType("Date");
 
                     b.Property<string>("NCYear")
-                        .HasColumnType("nvarchar(4)")
-                        .HasMaxLength(4);
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("RegistrationGroup")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("UPN")
                         .HasColumnType("nvarchar(13)")
@@ -185,6 +197,166 @@ namespace G4SApiSync.Data.Migrations
                     b.HasKey("StudentId");
 
                     b.ToTable("EducationDetails");
+                });
+
+            modelBuilder.Entity("G4SApiSync.Data.Entities.GradeName", b =>
+                {
+                    b.Property<string>("GradeNameId")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("AcademicYear")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Academy")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
+                    b.Property<int>("GradeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NCYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<bool>("PreferredProgressGrade")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PreferredTargetGrade")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("GradeNameId");
+
+                    b.HasIndex("GradeTypeId");
+
+                    b.ToTable("GradeNames");
+                });
+
+            modelBuilder.Entity("G4SApiSync.Data.Entities.GradeType", b =>
+                {
+                    b.Property<int>("GradeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GradeTypeId");
+
+                    b.ToTable("GradeTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            GradeTypeId = 1,
+                            Name = "External target"
+                        },
+                        new
+                        {
+                            GradeTypeId = 2,
+                            Name = "Teacher target"
+                        },
+                        new
+                        {
+                            GradeTypeId = 3,
+                            Name = "Combined target"
+                        },
+                        new
+                        {
+                            GradeTypeId = 4,
+                            Name = "Current"
+                        },
+                        new
+                        {
+                            GradeTypeId = 5,
+                            Name = "Project"
+                        },
+                        new
+                        {
+                            GradeTypeId = 6,
+                            Name = "Actual"
+                        },
+                        new
+                        {
+                            GradeTypeId = 7,
+                            Name = "Honest"
+                        },
+                        new
+                        {
+                            GradeTypeId = 8,
+                            Name = "Aspirational"
+                        },
+                        new
+                        {
+                            GradeTypeId = 9,
+                            Name = "Additional target"
+                        },
+                        new
+                        {
+                            GradeTypeId = 10,
+                            Name = "Baseline grade"
+                        });
+                });
+
+            modelBuilder.Entity("G4SApiSync.Data.Entities.Group", b =>
+                {
+                    b.Property<string>("GroupId")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("AcademicYear")
+                        .HasColumnType("nvarchar(4)")
+                        .HasMaxLength(4);
+
+                    b.Property<string>("Academy")
+                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("SubjectId")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.HasKey("GroupId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("G4SApiSync.Data.Entities.GroupStudent", b =>
+                {
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("GroupId")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.HasKey("StudentId", "GroupId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("GroupStudents");
                 });
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.Marksheet", b =>
@@ -218,10 +390,11 @@ namespace G4SApiSync.Data.Migrations
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.MarksheetGrade", b =>
                 {
-                    b.Property<int>("MarksheetGradeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("MarksheetId")
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Alias")
                         .HasColumnType("nvarchar(max)");
@@ -229,23 +402,9 @@ namespace G4SApiSync.Data.Migrations
                     b.Property<string>("Grade")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Mark")
-                        .HasColumnType("real");
+                    b.HasKey("StudentId", "MarksheetId");
 
-                    b.Property<int>("MarksheetId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MarksheetId1")
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("StudentId")
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("MarksheetGradeId");
-
-                    b.HasIndex("MarksheetId1");
-
-                    b.HasIndex("StudentId");
+                    b.HasIndex("MarksheetId");
 
                     b.ToTable("MarksheetGrades");
                 });
@@ -256,21 +415,13 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<string>("AcademicYear")
-                        .HasColumnType("nvarchar(4)")
-                        .HasMaxLength(4);
-
                     b.Property<string>("MarksheetId")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("SubjectId")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
 
                     b.HasKey("MarkslotId");
 
@@ -281,14 +432,13 @@ namespace G4SApiSync.Data.Migrations
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.MarkslotMark", b =>
                 {
-                    b.Property<int>("MarkslotMarkId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
-                    b.Property<string>("AcademicYear")
-                        .HasColumnType("nvarchar(4)")
-                        .HasMaxLength(4);
+                    b.Property<string>("MarkslotId")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Alias")
                         .HasColumnType("nvarchar(50)")
@@ -298,31 +448,52 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<float>("Mark")
+                    b.Property<float?>("Mark")
                         .HasColumnType("real");
 
-                    b.Property<string>("MarkslotId")
-                        .HasColumnType("nvarchar(100)");
+                    b.HasKey("StudentId", "MarkslotId");
 
-                    b.Property<string>("MockslotId")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                    b.HasIndex("MarkslotId");
 
+                    b.ToTable("MarkslotMarks");
+                });
+
+            modelBuilder.Entity("G4SApiSync.Data.Entities.PriorAttainment", b =>
+                {
                     b.Property<string>("StudentId")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<string>("SubjectId")
+                    b.Property<string>("Code")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.HasKey("MarkslotMarkId");
+                    b.Property<string>("AcademicYear")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
-                    b.HasIndex("MarkslotId");
+                    b.Property<string>("Academy")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
-                    b.HasIndex("StudentId");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
 
-                    b.ToTable("MarkslotMarks");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("ValueAcademicYear")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime?>("ValueDate")
+                        .HasColumnType("Date");
+
+                    b.HasKey("StudentId", "Code");
+
+                    b.ToTable("PriorAttainment");
                 });
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.Student", b =>
@@ -384,8 +555,8 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<int>("G4SStuId")
                         .HasColumnType("int");
@@ -394,8 +565,8 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(300)")
-                        .HasMaxLength(300);
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
 
                     b.Property<string>("StudentId")
                         .HasColumnType("nvarchar(100)")
@@ -410,10 +581,9 @@ namespace G4SApiSync.Data.Migrations
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.StudentAttributeValue", b =>
                 {
-                    b.Property<int>("StudentAttributeValueId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("StudentAttributeId")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("AcademicYear")
                         .HasColumnType("nvarchar(4)")
@@ -422,17 +592,11 @@ namespace G4SApiSync.Data.Migrations
                     b.Property<DateTime?>("Date")
                         .HasColumnType("Date");
 
-                    b.Property<string>("StudentAttributeId")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(300)")
-                        .HasMaxLength(300);
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
 
-                    b.HasKey("StudentAttributeValueId");
-
-                    b.HasIndex("StudentAttributeId");
+                    b.HasKey("StudentAttributeId");
 
                     b.ToTable("StudentAttributeValues");
                 });
@@ -537,50 +701,102 @@ namespace G4SApiSync.Data.Migrations
 
                     b.HasOne("G4SApiSync.Data.Entities.Student", "Student")
                         .WithMany("AttributeValues")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("G4SApiSync.Data.Entities.EducationDetail", b =>
+                {
+                    b.HasOne("G4SApiSync.Data.Entities.Student", "Student")
+                        .WithOne("EducationDetail")
+                        .HasForeignKey("G4SApiSync.Data.Entities.EducationDetail", "StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("G4SApiSync.Data.Entities.GradeName", b =>
+                {
+                    b.HasOne("G4SApiSync.Data.Entities.GradeType", "GradeType")
+                        .WithMany("GradeNames")
+                        .HasForeignKey("GradeTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("G4SApiSync.Data.Entities.Group", b =>
+                {
+                    b.HasOne("G4SApiSync.Data.Entities.Subject", "Subject")
+                        .WithMany("Groups")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("G4SApiSync.Data.Entities.GroupStudent", b =>
+                {
+                    b.HasOne("G4SApiSync.Data.Entities.Group", "Group")
+                        .WithMany("GroupStudents")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("G4SApiSync.Data.Entities.Student", "Student")
+                        .WithMany("StudentGroups")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.Marksheet", b =>
                 {
                     b.HasOne("G4SApiSync.Data.Entities.Subject", "Subject")
                         .WithMany("Marksheets")
-                        .HasForeignKey("SubjectId");
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.MarksheetGrade", b =>
                 {
                     b.HasOne("G4SApiSync.Data.Entities.Marksheet", "Marksheet")
                         .WithMany("MarksheetGrades")
-                        .HasForeignKey("MarksheetId1");
+                        .HasForeignKey("MarksheetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("G4SApiSync.Data.Entities.Student", "Student")
                         .WithMany("MarksheetGrades")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.Markslot", b =>
                 {
                     b.HasOne("G4SApiSync.Data.Entities.Marksheet", "Marksheet")
                         .WithMany("Markslots")
-                        .HasForeignKey("MarksheetId");
+                        .HasForeignKey("MarksheetId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.MarkslotMark", b =>
                 {
                     b.HasOne("G4SApiSync.Data.Entities.Markslot", "Markslot")
                         .WithMany("MarkslotMarks")
-                        .HasForeignKey("MarkslotId");
+                        .HasForeignKey("MarkslotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("G4SApiSync.Data.Entities.Student", "Student")
                         .WithMany("MarkslotMarks")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("G4SApiSync.Data.Entities.Student", b =>
+            modelBuilder.Entity("G4SApiSync.Data.Entities.PriorAttainment", b =>
                 {
-                    b.HasOne("G4SApiSync.Data.Entities.EducationDetail", "EducationDetail")
-                        .WithOne("Student")
-                        .HasForeignKey("G4SApiSync.Data.Entities.Student", "StudentId")
+                    b.HasOne("G4SApiSync.Data.Entities.Student", "Student")
+                        .WithMany("PriorAttainment")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -598,7 +814,8 @@ namespace G4SApiSync.Data.Migrations
                     b.HasOne("G4SApiSync.Data.Entities.StudentAttribute", "StudentAttribute")
                         .WithMany("StudentAttributeValues")
                         .HasForeignKey("StudentAttributeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.Subject", b =>

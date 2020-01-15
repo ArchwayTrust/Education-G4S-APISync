@@ -218,9 +218,8 @@ namespace G4SApiSync.Data.Migrations
                     b.Property<int>("GradeTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("NCYear")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                    b.Property<int>("NCYear")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(100)")

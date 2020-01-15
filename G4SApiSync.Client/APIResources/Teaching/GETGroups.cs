@@ -17,7 +17,7 @@ namespace G4SApiSync.Client.EndPoints
     [JsonObject]
     public class GETGroups : IEndPoint<GroupDTO>, IDisposable
     {
-        const string _endPoint = "customer/v1/academic-years/{academicYear}/teaching/groups";
+        const string _endPoint = "/customer/v1/academic-years/{academicYear}/teaching/groups";
         private string _connectionString;
         private G4SContext _context;
 
