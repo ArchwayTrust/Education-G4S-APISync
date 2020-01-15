@@ -25,7 +25,7 @@ namespace G4SApiSync.Client.EndPoints
         [JsonProperty("cursor")]
         public int? Cursor { get; set; }
 
-        public Task<bool> UpdateDatabase(string APIKey, string AcYear, string AcademyCode)
+        public Task<bool> UpdateDatabase(string APIKey, string AcYear, string AcademyCode, int? LowestYear = null, int? HighestYear = null, int? ReportId = null)
         {
             throw new System.NotImplementedException();
         }

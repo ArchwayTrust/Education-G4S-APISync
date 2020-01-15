@@ -11,12 +11,16 @@ namespace G4SApiSync.Client
         private string pResource;
         private string pBearer;
         private string pAcYear;
+        private string pYearGroup;
+        private string pReportId;
 
-        public APIRequest(string EndPointURL, string Bearer, string AcademicYear)
+        public APIRequest(string EndPointURL, string Bearer, string AcademicYear, string YearGroup=null, string ReportId=null)
         {
             pResource = EndPointURL;
             pBearer = Bearer;
             pAcYear = AcademicYear;
+            pYearGroup = YearGroup;
+            pReportId = ReportId;
         }
 
         public string ReturnedJSON(int? cursor)
@@ -38,6 +42,16 @@ namespace G4SApiSync.Client
             var request = new RestRequest(fullResource, Method.GET);
             request.AddHeader("Authorization", "Bearer " + pBearer);
             request.AddParameter("academicYear", pAcYear);
+
+            if(pYearGroup != null)
+            {
+                request.AddParameter("yearGroup", pYearGroup);
+            }
+
+            if(pReportId != null)
+            {
+                request.AddParameter("reportId", pReportId);
+            }
 
             var response = client.Execute(request);
 

@@ -14,13 +14,13 @@ using Microsoft.Data.SqlClient;
 namespace G4SApiSync.Client.EndPoints
 {
     [JsonObject]
-    public class GETPriorAttainment : IEndPoint<PriorAttainmentDTO>, IDisposable
+    public class GETGradeNames : IEndPoint<GradeNameDTO>, IDisposable
     {
-        const string _endPoint = "/customer/v1/academic-years/{academicYear}/attainment/prior-attainment";
+        const string _endPoint = "/customer/v1/academic-years/{academicYear}/attainment/grade-types/year-group/{yearGroup}";
         private string _connectionString;
         private G4SContext _context;
 
-        public GETPriorAttainment(G4SContext context, string connectionString)
+        public GETGradeNames(G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
@@ -30,8 +30,8 @@ namespace G4SApiSync.Client.EndPoints
             get { return _endPoint; }
         }
 
-        [JsonProperty("prior_attainment")]
-        public IEnumerable<PriorAttainmentDTO> DTOs { get; set; }
+        [JsonProperty("GradeNames")]
+        public IEnumerable<GradeNameDTO> DTOs { get; set; }
 
         [JsonProperty("has_more")]
         public bool HasMore { get; set; }
@@ -39,7 +39,7 @@ namespace G4SApiSync.Client.EndPoints
         [JsonProperty("cursor")]
         public int? Cursor { get; set; }
 
-        public async Task<bool> UpdateDatabase(string APIKey, string AcYear, string AcademyCode)
+        public async Task<bool> UpdateDatabase(string APIKey, string AcYear, string AcademyCode, int? LowestYear = null, int? HighestYear = null, int? ReportId = null)
         {
             try
             {
