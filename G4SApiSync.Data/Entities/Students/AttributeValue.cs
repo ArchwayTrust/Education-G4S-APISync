@@ -7,7 +7,7 @@ namespace G4SApiSync.Data.Entities
 {
     public class AttributeValue
     {
-        //public int AttributeValueId { get; set; }
+        public int AttributeValueId { get; set; }
 
         [MaxLength(100)]
         public string AttributeTypeId { get; set; }

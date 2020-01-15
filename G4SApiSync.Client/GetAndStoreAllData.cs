@@ -20,7 +20,7 @@ namespace G4SApiSync.Client
             _context = context;
             _connectionString = connectionString;
 
-            _academyList = _context.AcademySecurity.ToList();
+            _academyList = _context.AcademySecurity.Where(i => i.Active == true).ToList();
         }
 
         public async Task<List<SyncResult>> SyncStudents()
@@ -112,6 +112,26 @@ namespace G4SApiSync.Client
                 {
                     bool result = await getSubjects.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getSubjects.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
+                }
+            }
+
+            //GET Groups
+            foreach (var academy in _academyList)
+            {
+                using (var getGroups = new GETGroups(_context, _connectionString))
+                {
+                    bool result = await getGroups.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGroups.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
+                }
+            }
+
+            //GET Group Students
+            foreach (var academy in _academyList)
+            {
+                using (var getGroupStudents = new GETGroupStudents(_context, _connectionString))
+                {
+                    bool result = await getGroupStudents.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGroupStudents.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
                 }
             }
 

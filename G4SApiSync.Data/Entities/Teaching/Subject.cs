@@ -42,5 +42,7 @@ namespace G4SApiSync.Data.Entities
         public virtual Department Department { get; set; }
 
         public virtual ICollection<Marksheet> Marksheets { get; set; }
+
+        public virtual ICollection<Group> Groups { get; set; }
     }
 }

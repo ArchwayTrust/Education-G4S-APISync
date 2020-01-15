@@ -36,6 +36,8 @@ namespace G4SApiSync.Data
         //Teaching
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<GroupStudent> GroupStudents { get; set; }
 
         //Attainment
         public virtual DbSet<PriorAttainment> PriorAttainment { get; set; }
@@ -71,8 +73,8 @@ namespace G4SApiSync.Data
                 .HasForeignKey(s => s.StudentAttributeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<AttributeValue>()
-                .HasKey(pc => new { pc.StudentId, pc.AttributeTypeId });
+            //modelBuilder.Entity<AttributeValue>()
+            //    .HasKey(pc => new { pc.StudentId, pc.AttributeTypeId });
 
             modelBuilder.Entity<AttributeValue>()
                 .HasOne<AttributeType>(b => b.AttributeType)
@@ -87,10 +89,31 @@ namespace G4SApiSync.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             //Teaching
+            modelBuilder.Entity<GroupStudent>()
+                .HasKey(pc => new { pc.StudentId, pc.GroupId });
+
             modelBuilder.Entity<Subject>()
                 .HasOne<Department>(b => b.Department)
                 .WithMany(c => c.Subjects)
                 .HasForeignKey(s => s.DepartmentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Group>()
+                .HasOne<Subject>(b => b.Subject)
+                .WithMany(c => c.Groups)
+                .HasForeignKey(s => s.SubjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<GroupStudent>()
+                .HasOne<Group>(b => b.Group)
+                .WithMany(c => c.GroupStudents)
+                .HasForeignKey(s => s.GroupId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<GroupStudent>()
+                .HasOne<Student>(b => b.Student)
+                .WithMany(c => c.StudentGroups)
+                .HasForeignKey(s => s.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             //Assessment
