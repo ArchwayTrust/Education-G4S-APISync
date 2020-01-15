@@ -42,6 +42,11 @@ namespace G4SApiSync.Data
         //Attainment
         public virtual DbSet<PriorAttainment> PriorAttainment { get; set; }
 
+        public virtual DbSet<GradeName> GradeNames { get; set; }
+
+        public virtual DbSet<GradeType> GradeTypes { get; set; }
+
+
 
         //Fluent API Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -169,6 +174,18 @@ namespace G4SApiSync.Data
                 .HasForeignKey(s => s.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<GradeType>()
+                .HasData(
+                    new { GradeTypeId = 1, Name = "External target" },
+                    new { GradeTypeId = 2, Name = "Teacher target" },
+                    new { GradeTypeId = 3, Name = "Combined target" },
+                    new { GradeTypeId = 4, Name = "Current" },
+                    new { GradeTypeId = 5, Name = "Project" },
+                    new { GradeTypeId = 6, Name = "Actual" },
+                    new { GradeTypeId = 7, Name = "Honest" },
+                    new { GradeTypeId = 8, Name = "Aspirational" },
+                    new { GradeTypeId = 9, Name = "Additional target" },
+                    new { GradeTypeId = 10, Name = "Baseline grade" });
 
 
 

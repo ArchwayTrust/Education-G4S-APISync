@@ -15,12 +15,8 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(100)]
         public string APIKey { get; set; }
         public bool Active { get; set; }
-
-        [MaxLength(20)]
-        public string LowestYear { get; set; }
-
-        [MaxLength(20)]
-        public string HighestYear { get; set; }
+        public int LowestYear { get; set; }
+        public int HighestYear { get; set; }
 
 
     }
