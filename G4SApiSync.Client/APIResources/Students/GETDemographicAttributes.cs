@@ -56,7 +56,7 @@ namespace G4SApiSync.Client.EndPoints
                 dtAttributeValues.Columns.Add("AttributeTypeId", typeof(String));
                 dtAttributeValues.Columns.Add("StudentId", typeof(String));
                 dtAttributeValues.Columns.Add("Value", typeof(String));
-                dtAttributeValues.Columns.Add("DataSet", typeof(String));
+                dtAttributeValues.Columns.Add("AcademicYear", typeof(String));
                 var colDate = new DataColumn
                 {
                     DataType = System.Type.GetType("System.DateTime"),
