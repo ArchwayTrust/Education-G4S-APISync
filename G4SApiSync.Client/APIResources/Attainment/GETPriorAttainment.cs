@@ -50,7 +50,7 @@ namespace G4SApiSync.Client.EndPoints
                 //Create datatable for prior attainment values.
                 var dtPAValues = new DataTable();
                 dtPAValues.Columns.Add("StudentId", typeof(String));
-                dtPAValues.Columns.Add("AcademicYear", typeof(String));
+                dtPAValues.Columns.Add("DataSet", typeof(String));
                 dtPAValues.Columns.Add("Academy", typeof(String));
                 dtPAValues.Columns.Add("Name", typeof(String));
                 dtPAValues.Columns.Add("Code", typeof(String));
@@ -76,7 +76,7 @@ namespace G4SApiSync.Client.EndPoints
                         var vRow = dtPAValues.NewRow();
 
                         vRow["StudentId"] = AcademyCode + AcYear + "-" + paVal.G4SStudentId.ToString();
-                        vRow["AcademicYear"] = AcYear;
+                        vRow["DataSet"] = AcYear;
                         vRow["Academy"] = AcademyCode;
                         vRow["Name"] = paTyp.Name;
                         vRow["Code"] = paTyp.Code;
@@ -97,7 +97,7 @@ namespace G4SApiSync.Client.EndPoints
                 }
 
                 //Remove exisitng prior attainment from SQL database
-                var currentPA = _context.PriorAttainment.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
+                var currentPA = _context.PriorAttainment.Where(i => i.DataSet == AcYear && i.Academy == AcademyCode);
                 _context.PriorAttainment.RemoveRange(currentPA);
                 await _context.SaveChangesAsync();
 
@@ -106,7 +106,7 @@ namespace G4SApiSync.Client.EndPoints
                 {
                     sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
                     sqlBulk.ColumnMappings.Add("Academy", "Academy");
-                    sqlBulk.ColumnMappings.Add("AcademicYear", "AcademicYear");
+                    sqlBulk.ColumnMappings.Add("DataSet", "DataSet");
                     sqlBulk.ColumnMappings.Add("Code", "Code");
                     sqlBulk.ColumnMappings.Add("Name", "Name");
                     sqlBulk.ColumnMappings.Add("Value", "Value");
@@ -117,13 +117,13 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.WriteToServer(dtPAValues);
                 }
 
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, AcademicYear = AcYear });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, DataSet = AcYear });
                 await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)
             {
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, AcademicYear = AcYear });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, DataSet = AcYear });
                 await _context.SaveChangesAsync();
                 return false;
             }

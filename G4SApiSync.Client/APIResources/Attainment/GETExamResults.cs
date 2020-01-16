@@ -59,7 +59,7 @@ namespace G4SApiSync.Client.EndPoints
                     //Create datatable for prior attainment values.
                     var dtExamResults = new DataTable();
                     dtExamResults.Columns.Add("StudentId", typeof(String));
-                    dtExamResults.Columns.Add("AcademicYear", typeof(String));
+                    dtExamResults.Columns.Add("DataSet", typeof(String));
                     dtExamResults.Columns.Add("Academy", typeof(String));
                     dtExamResults.Columns.Add("NCYear", typeof(int));
                     dtExamResults.Columns.Add("ExamAcademicYear", typeof(String));
@@ -91,7 +91,7 @@ namespace G4SApiSync.Client.EndPoints
                         var row = dtExamResults.NewRow();
 
                         row["StudentId"] = AcademyCode + AcYear + "-" + result.G4SStudentId;
-                        row["AcademicYear"] = AcYear;
+                        row["DataSet"] = AcYear;
                         row["Academy"] = AcademyCode;
                         row["NCYear"] = yearGroupInt;
                         row["ExamAcademicYear"] = result.ExamAcademicYear;
@@ -115,7 +115,7 @@ namespace G4SApiSync.Client.EndPoints
                     }
 
                     //Remove exisiting exam results from SQL database
-                    var currentExamResults = _context.ExamResults.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode && i.NCYear == yearGroupInt);
+                    var currentExamResults = _context.ExamResults.Where(i => i.DataSet == AcYear && i.Academy == AcademyCode && i.NCYear == yearGroupInt);
                     _context.ExamResults.RemoveRange(currentExamResults);
                     await _context.SaveChangesAsync();
 
@@ -123,7 +123,7 @@ namespace G4SApiSync.Client.EndPoints
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {
                     sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
-                    sqlBulk.ColumnMappings.Add("AcademicYear", "AcademicYear");
+                    sqlBulk.ColumnMappings.Add("DataSet", "DataSet");
                     sqlBulk.ColumnMappings.Add("Academy", "Academy");
                     sqlBulk.ColumnMappings.Add("NCYear", "NCYear");
                     sqlBulk.ColumnMappings.Add("ExamAcademicYear", "ExamAcademicYear");
@@ -137,12 +137,12 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.WriteToServer(dtExamResults);
                 }
 
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, AcademicYear = AcYear, YearGroup = yearGroupInt });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, DataSet = AcYear, YearGroup = yearGroupInt });
                     await _context.SaveChangesAsync();
             }
                 catch (Exception e)
             {
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, AcademicYear = AcYear, YearGroup = yearGroupInt });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, DataSet = AcYear, YearGroup = yearGroupInt });
                 await _context.SaveChangesAsync();
                 return false;
             }

@@ -51,7 +51,7 @@ namespace G4SApiSync.Client.EndPoints
                 //Create datatable for subjects.
                 var dtSubjects = new DataTable();
                 dtSubjects.Columns.Add("SubjectId", typeof(String));
-                dtSubjects.Columns.Add("AcademicYear", typeof(String));
+                dtSubjects.Columns.Add("DataSet", typeof(String));
                 dtSubjects.Columns.Add("Academy", typeof(String));
                 dtSubjects.Columns.Add("G4SSubjectId", typeof(int));
                 dtSubjects.Columns.Add("Name", typeof(String));
@@ -68,7 +68,7 @@ namespace G4SApiSync.Client.EndPoints
                 {
                     var row = dtSubjects.NewRow();
                     row["SubjectId"] = AcademyCode + AcYear + "-" + subjectDTO.G4SSubjectId.ToString();
-                    row["AcademicYear"] = AcYear;
+                    row["DataSet"] = AcYear;
                     row["Academy"] = AcademyCode;
                     row["G4SSubjectId"] = subjectDTO.G4SSubjectId;
                     row["Name"] = subjectDTO.Name;
@@ -84,7 +84,7 @@ namespace G4SApiSync.Client.EndPoints
                 }
 
                 //Remove exisitng departments from SQL database
-                var currentSubjects = _context.Subjects.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
+                var currentSubjects = _context.Subjects.Where(i => i.DataSet == AcYear && i.Academy == AcademyCode);
                 _context.Subjects.RemoveRange(currentSubjects);
                 await _context.SaveChangesAsync();
 
@@ -92,7 +92,7 @@ namespace G4SApiSync.Client.EndPoints
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {
                     sqlBulk.ColumnMappings.Add("SubjectId", "SubjectId");
-                    sqlBulk.ColumnMappings.Add("AcademicYear", "AcademicYear");
+                    sqlBulk.ColumnMappings.Add("DataSet", "DataSet");
                     sqlBulk.ColumnMappings.Add("Academy", "Academy");
                     sqlBulk.ColumnMappings.Add("G4SSubjectId", "G4SSubjectId");
                     sqlBulk.ColumnMappings.Add("Name", "Name");
@@ -108,13 +108,13 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.WriteToServer(dtSubjects);
                 }
 
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, AcademicYear = AcYear });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, DataSet = AcYear });
                 await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)
             {
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, AcademicYear = AcYear });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, DataSet = AcYear });
                 await _context.SaveChangesAsync();
                 return false;
             }

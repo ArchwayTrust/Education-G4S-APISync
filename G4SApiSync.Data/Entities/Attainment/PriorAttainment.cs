@@ -13,7 +13,7 @@ namespace G4SApiSync.Data.Entities
         public string StudentId { get; set; }
 
         [MaxLength(100)]
-        public string AcademicYear { get; set; }
+        public string DataSet { get; set; }
 
         [MaxLength(100)]
         public string Academy { get; set; }

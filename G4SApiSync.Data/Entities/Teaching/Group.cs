@@ -7,10 +7,10 @@ namespace G4SApiSync.Data.Entities
     {
         [MaxLength(100)]
         [Key]
-        public string GroupId { get; set; } //AcademyCode + AcademicYear + "-" + G4SGroupId
+        public string GroupId { get; set; } //AcademyCode + DataSet + "-" + G4SGroupId
 
         [MaxLength(4)]
-        public string AcademicYear { get; set; }
+        public string DataSet { get; set; }
 
         [MaxLength(10)]
         public string Academy { get; set; }

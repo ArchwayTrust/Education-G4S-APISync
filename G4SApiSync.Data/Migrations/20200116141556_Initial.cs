@@ -20,7 +20,7 @@ namespace G4SApiSync.Data.Migrations
                 {
                     AttributeTypeId = table.Column<string>(maxLength: 100, nullable: false),
                     G4SAttributeId = table.Column<int>(nullable: false),
-                    AcademicYear = table.Column<string>(maxLength: 4, nullable: true),
+                    DataSet = table.Column<string>(maxLength: 4, nullable: true),
                     Academy = table.Column<string>(maxLength: 10, nullable: true),
                     AttributeGroup = table.Column<string>(maxLength: 50, nullable: true),
                     Code = table.Column<string>(maxLength: 100, nullable: true),
@@ -38,7 +38,7 @@ namespace G4SApiSync.Data.Migrations
                 columns: table => new
                 {
                     DepartmentId = table.Column<string>(maxLength: 100, nullable: false),
-                    AcademicYear = table.Column<string>(maxLength: 4, nullable: true),
+                    DataSet = table.Column<string>(maxLength: 4, nullable: true),
                     Academy = table.Column<string>(maxLength: 10, nullable: true),
                     G4SDepartmentId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 200, nullable: true)
@@ -68,7 +68,7 @@ namespace G4SApiSync.Data.Migrations
                 {
                     StudentId = table.Column<string>(maxLength: 100, nullable: false),
                     G4SStuId = table.Column<int>(nullable: false),
-                    AcademicYear = table.Column<string>(maxLength: 4, nullable: true),
+                    DataSet = table.Column<string>(maxLength: 4, nullable: true),
                     Academy = table.Column<string>(maxLength: 10, nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "Date", nullable: false),
                     Sex = table.Column<string>(maxLength: 1, nullable: true),
@@ -93,7 +93,7 @@ namespace G4SApiSync.Data.Migrations
                     LoggedAt = table.Column<DateTime>(nullable: false),
                     AcademyCode = table.Column<string>(maxLength: 500, nullable: true),
                     EndPoint = table.Column<string>(nullable: true),
-                    AcademicYear = table.Column<string>(maxLength: 4, nullable: true),
+                    DataSet = table.Column<string>(maxLength: 4, nullable: true),
                     YearGroup = table.Column<int>(nullable: true),
                     Result = table.Column<bool>(nullable: false),
                     Exception = table.Column<string>(maxLength: 1000, nullable: true)
@@ -128,7 +128,7 @@ namespace G4SApiSync.Data.Migrations
                 {
                     SubjectId = table.Column<string>(maxLength: 100, nullable: false),
                     G4SSubjectId = table.Column<int>(nullable: false),
-                    AcademicYear = table.Column<string>(maxLength: 4, nullable: true),
+                    DataSet = table.Column<string>(maxLength: 4, nullable: true),
                     Academy = table.Column<string>(maxLength: 10, nullable: true),
                     Name = table.Column<string>(maxLength: 200, nullable: true),
                     Code = table.Column<string>(maxLength: 50, nullable: true),
@@ -158,7 +158,7 @@ namespace G4SApiSync.Data.Migrations
                 {
                     GradeNameId = table.Column<string>(maxLength: 100, nullable: false),
                     GradeTypeId = table.Column<int>(nullable: false),
-                    AcademicYear = table.Column<string>(maxLength: 100, nullable: true),
+                    DataSet = table.Column<string>(maxLength: 100, nullable: true),
                     Academy = table.Column<string>(maxLength: 100, nullable: true),
                     NCYear = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 100, nullable: true),
@@ -218,7 +218,7 @@ namespace G4SApiSync.Data.Migrations
                 {
                     StudentId = table.Column<string>(maxLength: 100, nullable: false),
                     G4SStuId = table.Column<int>(nullable: false),
-                    AcademicYear = table.Column<string>(maxLength: 4, nullable: true),
+                    DataSet = table.Column<string>(maxLength: 4, nullable: true),
                     Academy = table.Column<string>(maxLength: 10, nullable: true),
                     UPN = table.Column<string>(maxLength: 13, nullable: true),
                     FormerUPN = table.Column<string>(maxLength: 13, nullable: true),
@@ -247,7 +247,7 @@ namespace G4SApiSync.Data.Migrations
                 {
                     StudentId = table.Column<string>(maxLength: 100, nullable: false),
                     Code = table.Column<string>(maxLength: 100, nullable: false),
-                    AcademicYear = table.Column<string>(maxLength: 100, nullable: true),
+                    DataSet = table.Column<string>(maxLength: 100, nullable: true),
                     Academy = table.Column<string>(maxLength: 100, nullable: true),
                     Name = table.Column<string>(maxLength: 500, nullable: true),
                     Value = table.Column<string>(maxLength: 100, nullable: true),
@@ -267,12 +267,90 @@ namespace G4SApiSync.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ExamResults",
+                schema: "g4s",
+                columns: table => new
+                {
+                    ExamResultId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StudentId = table.Column<string>(maxLength: 100, nullable: true),
+                    DataSet = table.Column<string>(maxLength: 10, nullable: true),
+                    Academy = table.Column<string>(maxLength: 10, nullable: true),
+                    NCYear = table.Column<int>(nullable: false),
+                    ExamAcademicYear = table.Column<string>(maxLength: 10, nullable: true),
+                    QAN = table.Column<string>(maxLength: 13, nullable: true),
+                    QualificationTitle = table.Column<string>(maxLength: 200, nullable: true),
+                    ExamDate = table.Column<DateTime>(type: "Date", nullable: true),
+                    Grade = table.Column<string>(maxLength: 200, nullable: true),
+                    KS123Literal = table.Column<string>(maxLength: 100, nullable: true),
+                    SubjectId = table.Column<string>(maxLength: 100, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExamResults", x => x.ExamResultId);
+                    table.ForeignKey(
+                        name: "FK_ExamResults_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalSchema: "g4s",
+                        principalTable: "Students",
+                        principalColumn: "StudentId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ExamResults_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalSchema: "g4s",
+                        principalTable: "Subjects",
+                        principalColumn: "SubjectId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Grades",
+                schema: "g4s",
+                columns: table => new
+                {
+                    GradeTypeId = table.Column<int>(nullable: false),
+                    SubjectId = table.Column<string>(maxLength: 100, nullable: false),
+                    StudentId = table.Column<string>(maxLength: 100, nullable: false),
+                    DataSet = table.Column<string>(maxLength: 4, nullable: true),
+                    Academy = table.Column<string>(maxLength: 10, nullable: true),
+                    NCYear = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(maxLength: 50, nullable: true),
+                    Alias = table.Column<string>(maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grades", x => new { x.StudentId, x.GradeTypeId, x.SubjectId });
+                    table.ForeignKey(
+                        name: "FK_Grades_GradeTypes_GradeTypeId",
+                        column: x => x.GradeTypeId,
+                        principalSchema: "g4s",
+                        principalTable: "GradeTypes",
+                        principalColumn: "GradeTypeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Grades_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalSchema: "g4s",
+                        principalTable: "Students",
+                        principalColumn: "StudentId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Grades_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalSchema: "g4s",
+                        principalTable: "Subjects",
+                        principalColumn: "SubjectId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Groups",
                 schema: "g4s",
                 columns: table => new
                 {
                     GroupId = table.Column<string>(maxLength: 100, nullable: false),
-                    AcademicYear = table.Column<string>(maxLength: 4, nullable: true),
+                    DataSet = table.Column<string>(maxLength: 4, nullable: true),
                     Academy = table.Column<string>(maxLength: 10, nullable: true),
                     Name = table.Column<string>(maxLength: 1000, nullable: true),
                     Code = table.Column<string>(maxLength: 1000, nullable: true),
@@ -297,7 +375,7 @@ namespace G4SApiSync.Data.Migrations
                 {
                     MarksheetId = table.Column<string>(maxLength: 100, nullable: false),
                     SubjectId = table.Column<string>(maxLength: 100, nullable: true),
-                    AcademicYear = table.Column<string>(maxLength: 4, nullable: true),
+                    DataSet = table.Column<string>(maxLength: 4, nullable: true),
                     Academy = table.Column<string>(maxLength: 10, nullable: true),
                     Name = table.Column<string>(maxLength: 200, nullable: true)
                 },
@@ -498,10 +576,34 @@ namespace G4SApiSync.Data.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ExamResults_StudentId",
+                schema: "g4s",
+                table: "ExamResults",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExamResults_SubjectId",
+                schema: "g4s",
+                table: "ExamResults",
+                column: "SubjectId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GradeNames_GradeTypeId",
                 schema: "g4s",
                 table: "GradeNames",
                 column: "GradeTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Grades_GradeTypeId",
+                schema: "g4s",
+                table: "Grades",
+                column: "GradeTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Grades_SubjectId",
+                schema: "g4s",
+                table: "Grades",
+                column: "SubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Groups_SubjectId",
@@ -559,7 +661,15 @@ namespace G4SApiSync.Data.Migrations
                 schema: "g4s");
 
             migrationBuilder.DropTable(
+                name: "ExamResults",
+                schema: "g4s");
+
+            migrationBuilder.DropTable(
                 name: "GradeNames",
+                schema: "g4s");
+
+            migrationBuilder.DropTable(
+                name: "Grades",
                 schema: "g4s");
 
             migrationBuilder.DropTable(

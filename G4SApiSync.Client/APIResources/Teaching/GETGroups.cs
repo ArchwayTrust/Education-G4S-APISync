@@ -51,7 +51,7 @@ namespace G4SApiSync.Client.EndPoints
                 //Create datatable for subjects.
                 var dtGroups = new DataTable();
                 dtGroups.Columns.Add("GroupId", typeof(String));
-                dtGroups.Columns.Add("AcademicYear", typeof(String));
+                dtGroups.Columns.Add("DataSet", typeof(String));
                 dtGroups.Columns.Add("Academy", typeof(String));
                 dtGroups.Columns.Add("Name", typeof(String));
                 dtGroups.Columns.Add("Code", typeof(String));
@@ -63,7 +63,7 @@ namespace G4SApiSync.Client.EndPoints
                 {
                     var row = dtGroups.NewRow();
                     row["GroupId"] = AcademyCode + AcYear + "-" + groupDTO.G4SGroupId.ToString();
-                    row["AcademicYear"] = AcYear;
+                    row["DataSet"] = AcYear;
                     row["Academy"] = AcademyCode;
                     row["Name"] = groupDTO.Name;
                     row["Code"] = groupDTO.Code;
@@ -73,7 +73,7 @@ namespace G4SApiSync.Client.EndPoints
                 }
 
                 //Remove exisitng groups from SQL database
-                var currentGroups = _context.Groups.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
+                var currentGroups = _context.Groups.Where(i => i.DataSet == AcYear && i.Academy == AcademyCode);
                 _context.Groups.RemoveRange(currentGroups);
                 await _context.SaveChangesAsync();
 
@@ -81,7 +81,7 @@ namespace G4SApiSync.Client.EndPoints
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {
                     sqlBulk.ColumnMappings.Add("GroupId", "GroupId");
-                    sqlBulk.ColumnMappings.Add("AcademicYear", "AcademicYear");
+                    sqlBulk.ColumnMappings.Add("DataSet", "DataSet");
                     sqlBulk.ColumnMappings.Add("Academy", "Academy");
                     sqlBulk.ColumnMappings.Add("Name", "Name");
                     sqlBulk.ColumnMappings.Add("Code", "Code");
@@ -91,13 +91,13 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.WriteToServer(dtGroups);
                 }
 
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, AcademicYear = AcYear });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, DataSet = AcYear });
                 await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)
             {
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, AcademicYear = AcYear });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, DataSet = AcYear });
                 await _context.SaveChangesAsync();
                 return false;
             }

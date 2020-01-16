@@ -14,11 +14,11 @@ namespace G4SApiSync.Client
         private string pYearGroup;
         private string pReportId;
 
-        public APIRequest(string EndPointURL, string Bearer, string AcademicYear, string YearGroup=null, string ReportId=null)
+        public APIRequest(string EndPointURL, string Bearer, string DataSet, string YearGroup=null, string ReportId=null)
         {
             pResource = EndPointURL;
             pBearer = Bearer;
-            pAcYear = AcademicYear;
+            pAcYear = DataSet;
             pYearGroup = YearGroup;
             pReportId = ReportId;
         }

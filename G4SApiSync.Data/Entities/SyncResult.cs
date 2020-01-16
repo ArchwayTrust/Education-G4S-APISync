@@ -17,7 +17,7 @@ namespace G4SApiSync.Data.Entities
         public string EndPoint { get; set; }
 
         [MaxLength(4)]
-        public string AcademicYear { get; set; }
+        public string DataSet { get; set; }
 
         public int? YearGroup { get; set; }
 

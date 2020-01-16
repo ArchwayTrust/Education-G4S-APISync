@@ -50,7 +50,7 @@ namespace G4SApiSync.Client.EndPoints
                 var dtEdDetails = new DataTable();
                 dtEdDetails.Columns.Add("StudentId", typeof(string));
                 dtEdDetails.Columns.Add("Academy", typeof(string));
-                dtEdDetails.Columns.Add("AcademicYear", typeof(string));
+                dtEdDetails.Columns.Add("DataSet", typeof(string));
                 dtEdDetails.Columns.Add("G4SStuId", typeof(int));
                 dtEdDetails.Columns.Add("UPN", typeof(string));
                 dtEdDetails.Columns.Add("FormerUPN", typeof(string));
@@ -176,7 +176,7 @@ namespace G4SApiSync.Client.EndPoints
                     var row = dtEdDetails.NewRow();
                     row["StudentId"] = AcademyCode + AcYear + "-" + item.G4SStuId.ToString();
                     row["Academy"] = AcademyCode;
-                    row["AcademicYear"] = AcYear;
+                    row["DataSet"] = AcYear;
                     row["G4SStuId"] = item.G4SStuId;
                     row["UPN"] = item.UPN;
                     row["FormerUPN"] = item.FormerUPN;
@@ -207,7 +207,7 @@ namespace G4SApiSync.Client.EndPoints
 
 
                 var currentEducationDetails = _context.EducationDetails
-                                                .Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
+                                                .Where(i => i.DataSet == AcYear && i.Academy == AcademyCode);
 
                 _context.EducationDetails.RemoveRange(currentEducationDetails);
                 await _context.SaveChangesAsync();
@@ -217,7 +217,7 @@ namespace G4SApiSync.Client.EndPoints
                 {
                     sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
                     sqlBulk.ColumnMappings.Add("G4SStuId", "G4SStuId");
-                    sqlBulk.ColumnMappings.Add("AcademicYear", "AcademicYear");
+                    sqlBulk.ColumnMappings.Add("DataSet", "DataSet");
                     sqlBulk.ColumnMappings.Add("Academy", "Academy");
                     sqlBulk.ColumnMappings.Add("UPN", "UPN");
                     sqlBulk.ColumnMappings.Add("FormerUPN", "FormerUPN");

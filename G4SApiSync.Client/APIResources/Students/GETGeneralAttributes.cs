@@ -71,7 +71,7 @@ namespace G4SApiSync.Client.EndPoints
                 var dtAttributeTypes = new DataTable();
                 dtAttributeTypes.Columns.Add("AttributeTypeId", typeof(String));
                 dtAttributeTypes.Columns.Add("G4SAttributeId", typeof(int));
-                dtAttributeTypes.Columns.Add("AcademicYear", typeof(String));
+                dtAttributeTypes.Columns.Add("DataSet", typeof(String));
                 dtAttributeTypes.Columns.Add("AttributeGroup", typeof(String));
                 dtAttributeTypes.Columns.Add("Academy", typeof(String));
                 dtAttributeTypes.Columns.Add("Code", typeof(String));
@@ -124,7 +124,7 @@ namespace G4SApiSync.Client.EndPoints
 
                     rowAttribType["AttributeTypeId"] = AcademyCode + AcYear + "-General-" + attributeDTO.AttributeId.ToString();
                     rowAttribType["G4SAttributeId"] = attributeDTO.AttributeId;
-                    rowAttribType["AcademicYear"] = AcYear;
+                    rowAttribType["DataSet"] = AcYear;
                     rowAttribType["Academy"] = AcademyCode;
                     rowAttribType["AttributeGroup"] = "General";
                     rowAttribType["Code"] = attributeDTO.Code;
@@ -136,7 +136,7 @@ namespace G4SApiSync.Client.EndPoints
 
                 //Use EF to delete existing data.
                 var currentAttributes = _context.AttributeTypes
-                                                .Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode && i.AttributeGroup == "General");
+                                                .Where(i => i.DataSet == AcYear && i.Academy == AcademyCode && i.AttributeGroup == "General");
 
                 _context.AttributeTypes.RemoveRange(currentAttributes);
                 await _context.SaveChangesAsync();
@@ -146,7 +146,7 @@ namespace G4SApiSync.Client.EndPoints
                 {
                     sqlBulk.ColumnMappings.Add("AttributeTypeId", "AttributeTypeId");
                     sqlBulk.ColumnMappings.Add("G4SAttributeId", "G4SAttributeId");
-                    sqlBulk.ColumnMappings.Add("AcademicYear", "AcademicYear");
+                    sqlBulk.ColumnMappings.Add("DataSet", "DataSet");
                     sqlBulk.ColumnMappings.Add("Academy", "Academy");
                     sqlBulk.ColumnMappings.Add("AttributeGroup", "AttributeGroup");
                     sqlBulk.ColumnMappings.Add("Code", "Code");
@@ -170,13 +170,13 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.WriteToServer(dtAttributeValues);
                 }
 
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, AcademicYear = AcYear });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, DataSet = AcYear });
                 await _context.SaveChangesAsync();
                 return true;
             }
             catch(Exception e)
             {
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, AcademicYear = AcYear });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, DataSet = AcYear });
                 await _context.SaveChangesAsync();
                 return false;
             }

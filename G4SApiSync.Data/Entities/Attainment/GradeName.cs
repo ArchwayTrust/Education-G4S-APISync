@@ -8,11 +8,11 @@ namespace G4SApiSync.Data.Entities
     public class GradeName
     {
         [MaxLength(100)]
-        public string GradeNameId { get; set; } // Academy + AcademicYear + "-" + NCYear + "-" + GradeTypeId
+        public string GradeNameId { get; set; } // Academy + DataSet + "-" + NCYear + "-" + GradeTypeId
         public int GradeTypeId { get; set; }
 
         [MaxLength(100)]
-        public string AcademicYear { get; set; }
+        public string DataSet { get; set; }
 
         [MaxLength(100)]
         public string Academy { get; set; }

@@ -70,7 +70,7 @@ namespace G4SApiSync.Client.EndPoints
                 }
 
                 //Remove exisitng marksheet grades from SQL database, run GETMarkbooks first and this is not needed.
-                //var currentMarksheetGrades = _context.MarksheetGrades.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode);
+                //var currentMarksheetGrades = _context.MarksheetGrades.Where(i => i.DataSet == AcYear && i.Academy == AcademyCode);
                 //_context.Marksheets.RemoveRange(currentMarksheets);
                 //await _context.SaveChangesAsync();
 
@@ -86,13 +86,13 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.WriteToServer(dtMarksheetGrades);
                 }
 
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, AcademicYear = AcYear });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, DataSet = AcYear });
                 await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception e)
             {
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, AcademicYear = AcYear });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, DataSet = AcYear });
                 await _context.SaveChangesAsync();
                 return false;
             }
