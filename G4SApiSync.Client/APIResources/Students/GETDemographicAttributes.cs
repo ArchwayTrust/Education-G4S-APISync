@@ -164,7 +164,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("AttributeTypeId", "AttributeTypeId");
                     sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
                     sqlBulk.ColumnMappings.Add("Value", "Value");
-                    sqlBulk.ColumnMappings.Add("DataSet", "DataSet");
+                    sqlBulk.ColumnMappings.Add("AcademicYear", "AcademicYear");
                     sqlBulk.ColumnMappings.Add("Date", "Date");
 
                     sqlBulk.DestinationTableName = "g4s.AttributeValues";
