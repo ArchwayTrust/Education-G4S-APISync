@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,7 +21,7 @@ namespace G4SApiSync.Client.DTOs
             public string QualificationTitle { get; set; }
 
             [JsonProperty("exam_date")]
-            public string ExamDate { get; set; }
+            public DateTime? ExamDate { get; set; }
 
             [JsonProperty("grade")]
             public string Grade { get; set; }

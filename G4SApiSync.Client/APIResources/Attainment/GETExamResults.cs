@@ -86,7 +86,7 @@ namespace G4SApiSync.Client.EndPoints
                     //Write the DTOs into the datatable.
                     foreach (var result in examResultsDTO)
                     {
-                        DateTime dateValue;
+                        //DateTime dateValue;
 
                         var row = dtExamResults.NewRow();
 
@@ -99,17 +99,25 @@ namespace G4SApiSync.Client.EndPoints
                         row["QualificationTitle"] = result.QualificationTitle;
                         row["Grade"] = result.Grade;
                         row["KS123Literal"] = result.KS123Literal;
-                        row["SubjectId"] = AcademyCode + AcYear + "-" + result.G4SSubjectId;
 
-                        if (DateTime.TryParseExact(result.ExamDate, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
+                        if(result.G4SSubjectId != null)
                         {
-                            row["ExamDate"] = dateValue.Date;
+                            row["SubjectId"] = AcademyCode + AcYear + "-" + result.G4SSubjectId;
+                        }
+                        else
+                        {
+                            row["SubjectId"] = null;
+                        }
+
+
+                        if(result.ExamDate != null)
+                        {
+                            row["ExamDate"] = result.ExamDate;
                         }
                         else
                         {
                             row["ExamDate"] = DBNull.Value;
                         }
-
 
                         dtExamResults.Rows.Add(row);
                     }
@@ -127,6 +135,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("Academy", "Academy");
                     sqlBulk.ColumnMappings.Add("NCYear", "NCYear");
                     sqlBulk.ColumnMappings.Add("ExamAcademicYear", "ExamAcademicYear");
+                    sqlBulk.ColumnMappings.Add("ExamDate", "ExamDate");
                     sqlBulk.ColumnMappings.Add("QAN", "QAN");
                     sqlBulk.ColumnMappings.Add("QualificationTitle", "QualificationTitle");
                     sqlBulk.ColumnMappings.Add("Grade", "Grade");
