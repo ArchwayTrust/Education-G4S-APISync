@@ -45,5 +45,6 @@ namespace G4SApiSync.Data.Entities
 
         public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<Grade> Grades { get; set; }
+        public virtual ICollection<ExamResult> ExamResults { get; set; }
     }
 }

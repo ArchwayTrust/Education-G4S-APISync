@@ -177,7 +177,7 @@ namespace G4SApiSync.Client
             return syncResults;
         }
 
-//SyncAttainment
+//Sync Attainment
         public async Task<List<SyncResult>> SyncAttainment()
         {
             List<SyncResult> syncResults = new List<SyncResult>();
@@ -195,10 +195,30 @@ namespace G4SApiSync.Client
             //GET Grade Names
             foreach (var academy in _academyList)
             {
-                using (var getPA = new GETGradeNames(_context, _connectionString))
+                using (var getGradeName = new GETGradeNames(_context, _connectionString))
                 {
-                    bool result = await getPA.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getPA.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
+                    bool result = await getGradeName.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGradeName.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
+                }
+            }
+
+            //GET Grades
+            foreach (var academy in _academyList)
+            {
+                using (var getGrades = new GETGrades(_context, _connectionString))
+                {
+                    bool result = await getGrades.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGrades.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
+                }
+            }
+
+            //GET Exam Results
+            foreach (var academy in _academyList)
+            {
+                using (var getExamResults = new GETExamResults(_context, _connectionString))
+                {
+                    bool result = await getExamResults.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getExamResults.EndPoint, Result = result, LoggedAt = DateTime.Now, AcademicYear = academy.CurrentAcademicYear });
                 }
             }
 

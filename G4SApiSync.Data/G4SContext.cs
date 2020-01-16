@@ -48,6 +48,8 @@ namespace G4SApiSync.Data
 
         public virtual DbSet<Grade> Grades { get; set; }
 
+        public virtual DbSet<ExamResult> ExamResults { get; set; }
+
 
 
         //Fluent API Configuration
@@ -194,6 +196,18 @@ namespace G4SApiSync.Data
             modelBuilder.Entity<Grade>()
                 .HasOne<Subject>(b => b.Subject)
                 .WithMany(c => c.Grades)
+                .HasForeignKey(s => s.SubjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ExamResult>()
+                .HasOne<Student>(b => b.Student)
+                .WithMany(c => c.ExamResults)
+                .HasForeignKey(s => s.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ExamResult>()
+                .HasOne<Subject>(b => b.Subject)
+                .WithMany(c => c.ExamResults)
                 .HasForeignKey(s => s.SubjectId)
                 .OnDelete(DeleteBehavior.Cascade);
 

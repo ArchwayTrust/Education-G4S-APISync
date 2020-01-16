@@ -14,13 +14,13 @@ using Microsoft.Data.SqlClient;
 namespace G4SApiSync.Client.EndPoints
 {
     [JsonObject]
-    public class GETGradeNames : IEndPoint<GradeNameDTO>, IDisposable
+    public class GETGrades : IEndPoint<GradeDTO>, IDisposable
     {
-        const string _endPoint = "/customer/v1/academic-years/{academicYear}/attainment/grade-types/year-group/{yearGroup}";
+        const string _endPoint = "/customer/v1/academic-years/{academicYear}/attainment/grades/year-group/{yearGroup}";
         private string _connectionString;
         private G4SContext _context;
 
-        public GETGradeNames(G4SContext context, string connectionString)
+        public GETGrades(G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
@@ -30,8 +30,8 @@ namespace G4SApiSync.Client.EndPoints
             get { return _endPoint; }
         }
 
-        [JsonProperty("GradesTypes")]
-        public IEnumerable<GradeNameDTO> DTOs { get; set; }
+        [JsonProperty("grades")]
+        public IEnumerable<GradeDTO> DTOs { get; set; }
 
         [JsonProperty("has_more")]
         public bool HasMore { get; set; }
@@ -57,63 +57,57 @@ namespace G4SApiSync.Client.EndPoints
                 try
                 {
                     //Create datatable for prior attainment values.
-                    var dtGradeNames = new DataTable();
-                    dtGradeNames.Columns.Add("GradeNameId", typeof(String));
-                    dtGradeNames.Columns.Add("GradeTypeId", typeof(int));
-                    dtGradeNames.Columns.Add("AcademicYear", typeof(String));
-                    dtGradeNames.Columns.Add("Academy", typeof(String));
-                    dtGradeNames.Columns.Add("NCYear", typeof(int));
-                    dtGradeNames.Columns.Add("Name", typeof(String));
-                    dtGradeNames.Columns.Add("ShortName", typeof(String));
-                    dtGradeNames.Columns.Add("Description", typeof(String));
-                    dtGradeNames.Columns.Add("PreferredProgressGrade", typeof(bool));
-                    dtGradeNames.Columns.Add("PreferredTargetGrade", typeof(bool));
+                    var dtGrades = new DataTable();
+                    dtGrades.Columns.Add("GradeTypeId", typeof(int));
+                    dtGrades.Columns.Add("SubjectId", typeof(String));
+                    dtGrades.Columns.Add("StudentId", typeof(String));
+                    dtGrades.Columns.Add("AcademicYear", typeof(String));
+                    dtGrades.Columns.Add("Academy", typeof(String));
+                    dtGrades.Columns.Add("NCYear", typeof(int));
+                    dtGrades.Columns.Add("Name", typeof(String));
+                    dtGrades.Columns.Add("Alias", typeof(String));
 
                     //Get data from G4S API
-                    APIRequest<GETGradeNames, GradeNameDTO> getGradeNames = new APIRequest<GETGradeNames, GradeNameDTO>(_endPoint, APIKey, AcYear, yearGroup);
-                    var gradeNamesDTO = getGradeNames.ToList();
+                    APIRequest<GETGrades, GradeDTO> getGrades = new APIRequest<GETGrades, GradeDTO>(_endPoint, APIKey, AcYear, yearGroup);
+                    var gradesDTO = getGrades.ToList();
 
 
                     //Write the DTOs into the datatable.
-                    foreach (var gradeName in gradeNamesDTO)
+                    foreach (var grade in gradesDTO)
                     {
-                        var row = dtGradeNames.NewRow();
+                        var row = dtGrades.NewRow();
 
-                        row["GradeNameId"] = AcademyCode + AcYear + "-" + yearGroup + "-" + gradeName.GradeTypeId.ToString();
-                        row["GradeTypeId"] = gradeName.GradeTypeId;
+                        row["GradeTypeId"] = grade.GradeTypeId;
+                        row["SubjectId"] = AcademyCode + AcYear + "-" + grade.G4SSubjectId.ToString();
+                        row["StudentId"] = AcademyCode + AcYear + "-" + grade.G4SStudentId.ToString();
                         row["AcademicYear"] = AcYear;
                         row["Academy"] = AcademyCode;
                         row["NCYear"] = yearGroupInt;
-                        row["Name"] = gradeName.Name;
-                        row["ShortName"] = gradeName.ShortName;
-                        row["Description"] = gradeName.Description;
-                        row["PreferredProgressGrade"] = gradeName.PreferredProgressGrade;
-                        row["PreferredTargetGrade"] = gradeName.PreferredTargetGrade;
+                        row["Name"] = grade.Name;
+                        row["Alias"] = grade.Alias;
 
-                        dtGradeNames.Rows.Add(row);
+                        dtGrades.Rows.Add(row);
                     }
 
                     //Remove exisitng grade names from SQL database
-                    var currentGradeNames = _context.GradeNames.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode && i.NCYear == yearGroupInt);
-                    _context.GradeNames.RemoveRange(currentGradeNames);
+                    var currentGrades = _context.Grades.Where(i => i.AcademicYear == AcYear && i.Academy == AcademyCode && i.NCYear == yearGroupInt);
+                    _context.Grades.RemoveRange(currentGrades);
                     await _context.SaveChangesAsync();
 
                 //Write prior attainment data table to sql
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {
-                    sqlBulk.ColumnMappings.Add("GradeNameId", "GradeNameId");
                     sqlBulk.ColumnMappings.Add("GradeTypeId", "GradeTypeId");
+                    sqlBulk.ColumnMappings.Add("SubjectId", "SubjectId");
+                    sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
                     sqlBulk.ColumnMappings.Add("AcademicYear", "AcademicYear");
                     sqlBulk.ColumnMappings.Add("Academy", "Academy");
                     sqlBulk.ColumnMappings.Add("NCYear", "NCYear");
                     sqlBulk.ColumnMappings.Add("Name", "Name");
-                    sqlBulk.ColumnMappings.Add("ShortName", "ShortName");
-                    sqlBulk.ColumnMappings.Add("Description", "Description");
-                    sqlBulk.ColumnMappings.Add("PreferredProgressGrade", "PreferredProgressGrade");
-                    sqlBulk.ColumnMappings.Add("PreferredTargetGrade", "PreferredTargetGrade");
+                    sqlBulk.ColumnMappings.Add("Alias", "Alias");
 
-                    sqlBulk.DestinationTableName = "g4s.GradeNames";
-                    sqlBulk.WriteToServer(dtGradeNames);
+                    sqlBulk.DestinationTableName = "g4s.Grades";
+                    sqlBulk.WriteToServer(dtGrades);
                 }
 
                 _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, AcademicYear = AcYear, YearGroup = yearGroupInt });
