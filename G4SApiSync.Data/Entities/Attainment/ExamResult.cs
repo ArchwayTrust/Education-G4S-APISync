@@ -22,19 +22,19 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(10)]
         public string ExamAcademicYear { get; set; }
 
-        [MaxLength(13)]
+        [MaxLength(100)]
         public string QAN { get; set; }
 
-        [MaxLength(200)]
+        [MaxLength(500)]
         public string QualificationTitle { get; set; }
 
         [Column(TypeName = "Date")]
         public DateTime? ExamDate { get; set; }
 
-        [MaxLength(200)]
+        [MaxLength(100)]
         public string Grade { get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(500)]
         public string KS123Literal { get; set; }
 
         [MaxLength(100)]
