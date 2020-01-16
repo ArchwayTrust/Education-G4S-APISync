@@ -51,5 +51,6 @@ namespace G4SApiSync.Data.Entities
         public virtual ICollection<PriorAttainment> PriorAttainment { get; set; }
 
         public virtual ICollection<GroupStudent> StudentGroups { get; set; }
+        public virtual ICollection<Grade> Grades { get; set; }
     }
 }

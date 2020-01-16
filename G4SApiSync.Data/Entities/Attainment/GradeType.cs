@@ -12,6 +12,7 @@ namespace G4SApiSync.Data.Entities
         public int GradeTypeId { get; set; }
         public string Name { get; set; }
         public virtual ICollection<GradeName> GradeNames { get; set; }
+        public virtual ICollection<Grade> Grades { get; set; }
     }
 
 }

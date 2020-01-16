@@ -46,6 +46,8 @@ namespace G4SApiSync.Data
 
         public virtual DbSet<GradeType> GradeTypes { get; set; }
 
+        public virtual DbSet<Grade> Grades { get; set; }
+
 
 
         //Fluent API Configuration
@@ -168,10 +170,31 @@ namespace G4SApiSync.Data
             modelBuilder.Entity<PriorAttainment>()
                 .HasKey(pc => new { pc.StudentId, pc.Code });
 
+            modelBuilder.Entity<Grade>()
+                .HasKey(pc => new { pc.StudentId, pc.GradeTypeId, pc.SubjectId });
+
             modelBuilder.Entity<PriorAttainment>()
                 .HasOne<Student>(b => b.Student)
                 .WithMany(c => c.PriorAttainment)
                 .HasForeignKey(s => s.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Grade>()
+                .HasOne<Student>(b => b.Student)
+                .WithMany(c => c.Grades)
+                .HasForeignKey(s => s.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Grade>()
+                .HasOne<GradeType>(b => b.GradeType)
+                .WithMany(c => c.Grades)
+                .HasForeignKey(s => s.GradeTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Grade>()
+                .HasOne<Subject>(b => b.Subject)
+                .WithMany(c => c.Grades)
+                .HasForeignKey(s => s.SubjectId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<GradeType>()
