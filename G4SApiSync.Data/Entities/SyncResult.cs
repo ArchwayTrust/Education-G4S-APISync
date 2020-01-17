@@ -11,9 +11,11 @@ namespace G4SApiSync.Data.Entities
 
         public DateTime LoggedAt { get; set; }
 
-        [MaxLength(500)]
+        [MaxLength(10)]
 
         public string AcademyCode { get; set; }
+
+        [MaxLength(500)]
         public string EndPoint { get; set; }
 
         [MaxLength(4)]

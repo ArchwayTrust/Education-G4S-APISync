@@ -80,6 +80,7 @@ namespace G4SApiSync
 
             var serviceProvider = services.BuildServiceProvider();
             _context = serviceProvider.GetService<G4SContext>();
+            _context.Database.SetCommandTimeout((int)TimeSpan.FromMinutes(2).TotalSeconds);
 
             _context.Database.Migrate();
         }
