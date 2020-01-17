@@ -23,7 +23,10 @@ namespace G4SApiSync.Data.Entities
 
         public bool Result { get; set; }
 
-        [MaxLength(1000)]
+        [MaxLength(5000)]
         public string Exception { get; set; }
+
+        [MaxLength(5000)]
+        public string InnerException { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace G4SApiSync.Client
         private string pYearGroup;
         private string pReportId;
 
-        public APIRequest(string EndPointURL, string Bearer, string DataSet, string YearGroup=null, string ReportId=null)
+        public APIRequest(string EndPointURL, string Bearer, string DataSet, string YearGroup = null, string ReportId = null)
         {
             pResource = EndPointURL;
             pBearer = Bearer;
@@ -43,12 +43,12 @@ namespace G4SApiSync.Client
             request.AddHeader("Authorization", "Bearer " + pBearer);
             request.AddParameter("academicYear", pAcYear);
 
-            if(pYearGroup != null)
+            if (pYearGroup != null)
             {
                 request.AddParameter("yearGroup", pYearGroup);
             }
 
-            if(pReportId != null)
+            if (pReportId != null)
             {
                 request.AddParameter("reportId", pReportId);
             }
@@ -57,9 +57,9 @@ namespace G4SApiSync.Client
 
             //Check if api call suceeded and throw an exception if not.
             if ((int)response.StatusCode != 200)
-                {
-                    throw (new APICallException((int)response.StatusCode + " - " + response.StatusDescription));
-                }
+            {
+                throw (new APICallException((int)response.StatusCode + " - " + response.StatusDescription));
+            }
 
             string content = response.Content; // Returned JSON as string.
             return content;
@@ -67,19 +67,25 @@ namespace G4SApiSync.Client
 
         public List<DTO> ToList()
         {
+            //Set a delay in milliseconds to avoid API rate limit.
+            //int AvoidLimit = 500;
+
+
             List<DTO> listToReturn = new List<DTO>();
 
             try
             {
                 EndPoint obj = JsonConvert.DeserializeObject<EndPoint>(ReturnedJSON(null));
                 listToReturn.AddRange(obj.DTOs);
+                //System.Threading.Thread.Sleep(AvoidLimit);
 
-                    while (obj.HasMore)
-                    {
-                        int? cursor = obj.Cursor;
-                        obj = JsonConvert.DeserializeObject<EndPoint>(ReturnedJSON(cursor));
-                        listToReturn.AddRange(obj.DTOs);
-                    }
+                while (obj.HasMore)
+                {
+                    int? cursor = obj.Cursor;
+                    obj = JsonConvert.DeserializeObject<EndPoint>(ReturnedJSON(cursor));
+                    listToReturn.AddRange(obj.DTOs);
+                    //System.Threading.Thread.Sleep(AvoidLimit);
+                }
 
             }
 
@@ -89,11 +95,13 @@ namespace G4SApiSync.Client
                 {
                     List<DTO> obj = JsonConvert.DeserializeObject<List<DTO>>(ReturnedJSON(null));
                     listToReturn = obj;
+                    //System.Threading.Thread.Sleep(AvoidLimit);
                 }
                 catch
                 {
                     DTO obj = JsonConvert.DeserializeObject<DTO>(ReturnedJSON(null));
                     listToReturn.Add(obj);
+                    //System.Threading.Thread.Sleep(AvoidLimit);
                 }
 
             }

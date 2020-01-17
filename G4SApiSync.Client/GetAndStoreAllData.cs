@@ -15,6 +15,8 @@ namespace G4SApiSync.Client
         private readonly G4SContext _context;
         private readonly string _connectionString;
 
+        private readonly int _avoidLimit = 1000;
+
         public GetAndStoreAllData(G4SContext context, string connectionString)
         {
             _context = context;
@@ -35,6 +37,8 @@ namespace G4SApiSync.Client
                     bool result = await getStudentDetails.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentDetails.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear});
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             //GET Education Details
@@ -45,6 +49,8 @@ namespace G4SApiSync.Client
                     bool result = await getEducationDetails.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getEducationDetails.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear});
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             //GET General Attributes
@@ -55,6 +61,8 @@ namespace G4SApiSync.Client
                     bool result = await getGeneralAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGeneralAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             //GET Demographic Attributes
@@ -65,6 +73,8 @@ namespace G4SApiSync.Client
                     bool result = await getDemographicAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getDemographicAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             //GET Send Attributes
@@ -75,6 +85,8 @@ namespace G4SApiSync.Client
                     bool result = await getSendAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getSendAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             //GET Sensitive Attributes
@@ -85,6 +97,8 @@ namespace G4SApiSync.Client
                     bool result = await getSensitiveAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getSensitiveAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
 
@@ -104,6 +118,8 @@ namespace G4SApiSync.Client
                     bool result = await getDepartments.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getDepartments.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             //GET Subjects
@@ -114,6 +130,8 @@ namespace G4SApiSync.Client
                     bool result = await getSubjects.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getSubjects.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             //GET Groups
@@ -124,6 +142,8 @@ namespace G4SApiSync.Client
                     bool result = await getGroups.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGroups.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             //GET Group Students
@@ -134,6 +154,8 @@ namespace G4SApiSync.Client
                     bool result = await getGroupStudents.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGroupStudents.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             return syncResults;
@@ -152,6 +174,8 @@ namespace G4SApiSync.Client
                     bool result = await getMarkbooks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getMarkbooks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             //GET Marksheet Grades
@@ -162,6 +186,8 @@ namespace G4SApiSync.Client
                     bool result = await getMarksheetGrades.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getMarksheetGrades.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             //GET Markslot Marks
@@ -172,6 +198,8 @@ namespace G4SApiSync.Client
                     bool result = await getMarkslotMarks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getMarkslotMarks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             return syncResults;
@@ -190,6 +218,8 @@ namespace G4SApiSync.Client
                     bool result = await getPA.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getPA.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             //GET Grade Names
@@ -200,6 +230,8 @@ namespace G4SApiSync.Client
                     bool result = await getGradeName.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGradeName.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             //GET Grades
@@ -210,9 +242,11 @@ namespace G4SApiSync.Client
                     bool result = await getGrades.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGrades.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
-            //GET Exam Results
+
+                //GET Exam Results
             foreach (var academy in _academyList)
             {
                 using (var getExamResults = new GETExamResults(_context, _connectionString))
@@ -220,6 +254,8 @@ namespace G4SApiSync.Client
                     bool result = await getExamResults.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getExamResults.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
+
+                System.Threading.Thread.Sleep(_avoidLimit);
             }
 
             return syncResults;

@@ -85,6 +85,10 @@ namespace G4SApiSync.Client.EndPoints
 
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {
+                    // Set the timeout.
+                    sqlBulk.BulkCopyTimeout = 60;
+
+                    //Add Mappings
                     sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
                     sqlBulk.ColumnMappings.Add("G4SStuId", "G4SStuId");
                     sqlBulk.ColumnMappings.Add("DataSet", "DataSet");
@@ -105,7 +109,7 @@ namespace G4SApiSync.Client.EndPoints
             }
             catch(Exception e)
             {
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false, DataSet = AcYear});
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, InnerException = e.InnerException.Message, LoggedAt = DateTime.Now, Result = false, DataSet = AcYear});
                 await _context.SaveChangesAsync();
                 return false;
             }

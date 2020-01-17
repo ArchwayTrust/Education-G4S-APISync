@@ -215,6 +215,9 @@ namespace G4SApiSync.Client.EndPoints
 
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {
+                    // Set the timeout.
+                    sqlBulk.BulkCopyTimeout = 60;
+
                     sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
                     sqlBulk.ColumnMappings.Add("G4SStuId", "G4SStuId");
                     sqlBulk.ColumnMappings.Add("DataSet", "DataSet");
@@ -233,6 +236,9 @@ namespace G4SApiSync.Client.EndPoints
 
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {
+                    // Set the timeout.
+                    sqlBulk.BulkCopyTimeout = 60;
+
                     sqlBulk.ColumnMappings.Add("StudentAttributeId", "StudentAttributeId");
                     sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
                     sqlBulk.ColumnMappings.Add("G4SStuId", "G4SStuId");
@@ -247,6 +253,9 @@ namespace G4SApiSync.Client.EndPoints
 
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {
+                    // Set the timeout.
+                    sqlBulk.BulkCopyTimeout = 60;
+
                     sqlBulk.ColumnMappings.Add("StudentAttributeId", "StudentAttributeId");
                     sqlBulk.ColumnMappings.Add("Value", "Value");
                     sqlBulk.ColumnMappings.Add("AcademicYear", "AcademicYear");
