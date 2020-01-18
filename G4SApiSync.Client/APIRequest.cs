@@ -67,24 +67,18 @@ namespace G4SApiSync.Client
 
         public List<DTO> ToList()
         {
-            //Set a delay in milliseconds to avoid API rate limit.
-            //int AvoidLimit = 500;
-
-
             List<DTO> listToReturn = new List<DTO>();
 
             try
             {
                 EndPoint obj = JsonConvert.DeserializeObject<EndPoint>(ReturnedJSON(null));
                 listToReturn.AddRange(obj.DTOs);
-                //System.Threading.Thread.Sleep(AvoidLimit);
 
                 while (obj.HasMore)
                 {
                     int? cursor = obj.Cursor;
                     obj = JsonConvert.DeserializeObject<EndPoint>(ReturnedJSON(cursor));
                     listToReturn.AddRange(obj.DTOs);
-                    //System.Threading.Thread.Sleep(AvoidLimit);
                 }
 
             }
@@ -95,13 +89,11 @@ namespace G4SApiSync.Client
                 {
                     List<DTO> obj = JsonConvert.DeserializeObject<List<DTO>>(ReturnedJSON(null));
                     listToReturn = obj;
-                    //System.Threading.Thread.Sleep(AvoidLimit);
                 }
                 catch
                 {
                     DTO obj = JsonConvert.DeserializeObject<DTO>(ReturnedJSON(null));
                     listToReturn.Add(obj);
-                    //System.Threading.Thread.Sleep(AvoidLimit);
                 }
 
             }
