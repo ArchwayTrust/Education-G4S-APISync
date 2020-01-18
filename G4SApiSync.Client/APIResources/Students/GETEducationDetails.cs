@@ -264,13 +264,13 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.DestinationTableName = "g4s.StudentAttributeValues";
                     sqlBulk.WriteToServer(dtStuAttribValues);
                 }
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, DataSet = AcYear, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true });
                 return true;
             }
 
             catch(Exception e)
             {
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false });
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, DataSet = AcYear, EndPoint = _endPoint, Exception = e.Message, InnerException = e.InnerException.Message, LoggedAt = DateTime.Now, Result = false });
                 await _context.SaveChangesAsync();
                 return false;
             }
