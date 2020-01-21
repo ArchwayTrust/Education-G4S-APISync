@@ -68,16 +68,20 @@ namespace G4SApiSync.Client
         public List<DTO> ToList()
         {
             List<DTO> listToReturn = new List<DTO>();
+            string JSONContent;
+
+            JSONContent = ReturnedJSON(null);
 
             try
             {
-                EndPoint obj = JsonConvert.DeserializeObject<EndPoint>(ReturnedJSON(null));
+                EndPoint obj = JsonConvert.DeserializeObject<EndPoint>(JSONContent);
                 listToReturn.AddRange(obj.DTOs);
 
                 while (obj.HasMore)
                 {
                     int? cursor = obj.Cursor;
-                    obj = JsonConvert.DeserializeObject<EndPoint>(ReturnedJSON(cursor));
+                    JSONContent = ReturnedJSON(cursor);
+                    obj = JsonConvert.DeserializeObject<EndPoint>(JSONContent);
                     listToReturn.AddRange(obj.DTOs);
                 }
 
@@ -87,12 +91,12 @@ namespace G4SApiSync.Client
             {
                 try
                 {
-                    List<DTO> obj = JsonConvert.DeserializeObject<List<DTO>>(ReturnedJSON(null));
+                    List<DTO> obj = JsonConvert.DeserializeObject<List<DTO>>(JSONContent);
                     listToReturn = obj;
                 }
                 catch
                 {
-                    DTO obj = JsonConvert.DeserializeObject<DTO>(ReturnedJSON(null));
+                    DTO obj = JsonConvert.DeserializeObject<DTO>(JSONContent);
                     listToReturn.Add(obj);
                 }
 
