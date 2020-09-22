@@ -1,4 +1,5 @@
-﻿using System;
+﻿using G4SApiSync.Data.Entities.Students;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -54,5 +55,7 @@ namespace G4SApiSync.Data.Entities
         public virtual ICollection<Grade> Grades { get; set; }
 
         public virtual ICollection<ExamResult> ExamResults { get; set; }
+
+        public virtual StudentSessionSummary StudentSessionSummary { get; set; }
     }
 }
