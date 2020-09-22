@@ -15,7 +15,7 @@ namespace G4SApiSync.Client.DTOs
             [JsonProperty("present")]
             public int Present { get; set; }
 
-            [JsonProperty("approved_education_activity")]
+            [JsonProperty("approved_educational_activity")]
             public int ApprovedEducationalActivity { get; set; }
 
             [JsonProperty("authorised_absence")]
