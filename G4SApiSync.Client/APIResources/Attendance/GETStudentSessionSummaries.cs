@@ -92,13 +92,13 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("Academy", "Academy");
                     sqlBulk.ColumnMappings.Add("PossibleSessions", "PossibleSessions");
                     sqlBulk.ColumnMappings.Add("Present", "Present");
-                    sqlBulk.ColumnMappings.Add("ApprovedEducationalActivity", "ApprovedEducationActivity");
+                    sqlBulk.ColumnMappings.Add("ApprovedEducationalActivity", "ApprovedEducationalActivity");
                     sqlBulk.ColumnMappings.Add("AuthorisedAbsence", "AuthorisedAbsence");
                     sqlBulk.ColumnMappings.Add("AttendanceNotRequired", "AttendanceNotRequired");
                     sqlBulk.ColumnMappings.Add("MissingMark", "MissingMark");
                     sqlBulk.ColumnMappings.Add("Late", "Late");
 
-                    sqlBulk.DestinationTableName = "g4s.StudentAttendanceSummaries";
+                    sqlBulk.DestinationTableName = "g4s.StudentSessionSummaries";
                     sqlBulk.WriteToServer(dtSessionSummaries);
                 }
 
@@ -108,7 +108,8 @@ namespace G4SApiSync.Client.EndPoints
             }
             catch(Exception e)
             {
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, InnerException = e.InnerException.Message, LoggedAt = DateTime.Now, Result = false, DataSet = AcYear});
+                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, Exception = e.Message, InnerException = e.InnerException?.Message, LoggedAt = DateTime.Now, Result = false, DataSet = AcYear });
+
                 await _context.SaveChangesAsync();
                 return false;
             }
