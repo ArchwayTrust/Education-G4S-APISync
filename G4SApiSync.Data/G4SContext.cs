@@ -1,4 +1,5 @@
 using G4SApiSync.Data.Entities;
+using G4SApiSync.Data.Entities.Students;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -50,6 +51,8 @@ namespace G4SApiSync.Data
 
         public virtual DbSet<ExamResult> ExamResults { get; set; }
 
+        //Attendance
+        public virtual DbSet<StudentSessionSummary> StudentSessionSummaries { get; set; }
 
 
         //Fluent API Configuration
@@ -224,7 +227,11 @@ namespace G4SApiSync.Data
                     new { GradeTypeId = 9, Name = "Additional target" },
                     new { GradeTypeId = 10, Name = "Baseline grade" });
 
-
+            //Attendance
+            modelBuilder.Entity<StudentSessionSummary>()
+                .HasOne(b => b.Student)
+                .WithOne(c => c.StudentSessionSummary)
+                .HasForeignKey<StudentSessionSummary>(s => s.StudentId);
 
             //API Keys
             modelBuilder.Entity<AcademySecurity>()

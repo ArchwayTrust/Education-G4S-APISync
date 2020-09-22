@@ -222,13 +222,30 @@ namespace G4SApiSync.Client
             }
 
 
-                //GET Exam Results
+            //GET Exam Results
             foreach (var academy in _academyList)
             {
                 using (var getExamResults = new GETExamResults(_context, _connectionString))
                 {
                     bool result = await getExamResults.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getExamResults.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                }
+            }
+
+            return syncResults;
+        }
+        //Sync Attendance
+        public async Task<List<SyncResult>> SyncAttendance()
+        {
+            List<SyncResult> syncResults = new List<SyncResult>();
+
+            //GET Student Session Summary
+            foreach (var academy in _academyList)
+            {
+                using (var getStudentSessionSummaries = new GETStudentSessionSummaries(_context, _connectionString))
+                {
+                    bool result = await getStudentSessionSummaries.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentSessionSummaries.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
             }
 
