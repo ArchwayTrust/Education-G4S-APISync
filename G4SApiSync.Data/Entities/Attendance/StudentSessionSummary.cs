@@ -7,6 +7,7 @@ namespace G4SApiSync.Data.Entities.Students
 {
     public class StudentSessionSummary
     {
+        [Key]
         [MaxLength(100)]
         public string StudentId { get; set; }
         public int G4SStuId { get; set; }
