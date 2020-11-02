@@ -22,6 +22,8 @@ namespace G4SApiSync.Data.Entities.Students
         public int Present { get; set; }
         public int ApprovedEducationalActivity { get; set; }
         public int AuthorisedAbsence { get; set; }
+
+        public int UnauthorisedAbsence { get; set; }
         public int AttendanceNotRequired { get; set; }
         public int MissingMark { get; set; }
         public int Late { get; set; }

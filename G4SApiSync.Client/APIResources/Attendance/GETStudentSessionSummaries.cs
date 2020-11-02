@@ -55,6 +55,7 @@ namespace G4SApiSync.Client.EndPoints
                 dtSessionSummaries.Columns.Add("Present", typeof(int));
                 dtSessionSummaries.Columns.Add("ApprovedEducationalActivity", typeof(int));
                 dtSessionSummaries.Columns.Add("AuthorisedAbsence", typeof(int));
+                dtSessionSummaries.Columns.Add("UnauthorisedAbsence", typeof(int));
                 dtSessionSummaries.Columns.Add("AttendanceNotRequired", typeof(int));
                 dtSessionSummaries.Columns.Add("MissingMark", typeof(int));
                 dtSessionSummaries.Columns.Add("Late", typeof(int));
@@ -71,6 +72,7 @@ namespace G4SApiSync.Client.EndPoints
                     row["Present"] = sessionSummaryDTO.Present;
                     row["ApprovedEducationalActivity"] = sessionSummaryDTO.ApprovedEducationalActivity;
                     row["AuthorisedAbsence"] = sessionSummaryDTO.AuthorisedAbsence;
+                    row["UnauthorisedAbsence"] = sessionSummaryDTO.UnauthorisedAbsence;
                     row["AttendanceNotRequired"] = sessionSummaryDTO.AttendanceNotRequired;
                     row["MissingMark"] = sessionSummaryDTO.MissingMark;
                     row["Late"] = sessionSummaryDTO.Late;
@@ -94,6 +96,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("Present", "Present");
                     sqlBulk.ColumnMappings.Add("ApprovedEducationalActivity", "ApprovedEducationalActivity");
                     sqlBulk.ColumnMappings.Add("AuthorisedAbsence", "AuthorisedAbsence");
+                    sqlBulk.ColumnMappings.Add("UnauthorisedAbsence", "UnauthorisedAbsence");
                     sqlBulk.ColumnMappings.Add("AttendanceNotRequired", "AttendanceNotRequired");
                     sqlBulk.ColumnMappings.Add("MissingMark", "MissingMark");
                     sqlBulk.ColumnMappings.Add("Late", "Late");
