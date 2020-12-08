@@ -1,5 +1,11 @@
-# g4s-api-sync
+# G4S API Sync
 Tool that syncs the G4S API to a a local SQL database.
+
+- Written by Ben Dobbs from Archway Learning Trust
+- bdobbs@archwaytrust.co.uk
+- Released under GNU General Public License v3.0
+
+Feel free to use and ammend under the terms of the GNU license but we are unable to offer support or modifications.
 
 ## Initial Setup
 You will need a Microsoft SQL Server and initially an AD user account with privaledges for database creation.
