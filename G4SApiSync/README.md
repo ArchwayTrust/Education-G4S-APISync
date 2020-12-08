@@ -19,6 +19,6 @@ Run G4SApiSync.exe with an account that has read/right privaledges on the databa
 We let G4SApiSync run on a schedule using Task Scheduler on the server hosting the database.
 
 ## Historic Data
-You can change the current accademic year field in sec.AcademySecurity to get data from previous years. It is all tagged in the database so doesn't overright.
+You can change the current accademic year field in sec.AcademySecurity to get data from previous years. It is all tagged in the database so doesn't over write.
 
 
