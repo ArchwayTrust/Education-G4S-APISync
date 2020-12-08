@@ -20,6 +20,9 @@ namespace G4SApiSync
             var services = new ServiceCollection();
             ConfigureServices(services);
 
+            //Automatically migrate the database to latest version
+            _context.Database.Migrate();
+            
             //Run main sync code
             RunApiSync().Wait();
         }
