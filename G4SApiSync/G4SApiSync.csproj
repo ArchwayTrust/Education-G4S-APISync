@@ -3,6 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <Authors>Benjamin Dobbs</Authors>
+    <Company>Archway Learning Trust</Company>
+    <Copyright>Archway Learning Trust</Copyright>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/ArchwayTrust/Education-G4S-APISync/</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +27,10 @@
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
     </None>
   </ItemGroup>
 
