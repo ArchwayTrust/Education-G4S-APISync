@@ -21,7 +21,8 @@ namespace G4SApiSync
             ConfigureServices(services);
 
             //Automatically migrate the database to latest version
-            _context.Database.Migrate();
+            //This is already handled in ConfigureServices
+            //_context.Database.Migrate();
             
             //Run main sync code
             RunApiSync().Wait();
