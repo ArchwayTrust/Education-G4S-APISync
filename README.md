@@ -11,8 +11,9 @@ Feel free to use and ammend under the terms of the GNU license but we are unable
 You will need a Microsoft SQL Server and initially an AD user account with privaledges for database creation.
 
 1. Ammend the connection string in appsettings.json to point to your server.
-2. Using an account with sufficient privaledges run G4SApiSync.exe
-3. This first run either creates the database or updates it to the latest version.
+2. Install https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.10-windows-x64-installer
+3. Using an account with sufficient privaledges run G4SApiSync.exe
+4. This first run either creates the database or updates it to the latest version.
 
 ## Adding API keys into SQL
 1. Connect to your SQL database using SSMS, right click on the table called sec.AcademySecurity and then "Edit Top 100".
