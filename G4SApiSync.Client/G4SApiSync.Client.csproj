@@ -5,6 +5,7 @@
     <Authors>Benjamin Dobbs</Authors>
     <Company>Archway Learning Trust</Company>
     <Product>G4SApiSync</Product>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
