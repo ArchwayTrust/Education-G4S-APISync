@@ -5,12 +5,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace G4SApiSync.Data.Entities
 {
-    public class StudentSessionSummary
+    public class StudentLessonMark
     {
         [Key]
         [MaxLength(100)]
         public string StudentId { get; set; }
         public int G4SStuId { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public int ClassId { get; set; }
+
+        public int LessonMarkId { get; set; }
+
+        public int LessonAliasId { get; set; }
+
+        public int LessonMinutesLate { get; set; }
+
+        [MaxLength(200)]
+        public string LessonNotes { get; set; }
 
         [MaxLength(4)]
         public string DataSet { get; set; }
@@ -18,17 +31,8 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(10)]
         public string Academy { get; set; }
 
-        public int PossibleSessions { get; set; }
-        public int Present { get; set; }
-        public int ApprovedEducationalActivity { get; set; }
-        public int AuthorisedAbsence { get; set; }
-
-        public int UnauthorisedAbsence { get; set; }
-        public int AttendanceNotRequired { get; set; }
-        public int MissingMark { get; set; }
-        public int Late { get; set; }
-
         public virtual Student Student { get; set; }
+
 
     }
 }
