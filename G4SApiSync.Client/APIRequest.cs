@@ -2,6 +2,7 @@
 using RestSharp;
 using Newtonsoft.Json;
 using System.Web;
+using System.Threading;
 
 namespace G4SApiSync.Client
 {
@@ -102,6 +103,7 @@ namespace G4SApiSync.Client
 
             }
 
+            Thread.Sleep(200);
             return listToReturn;
 
         }
