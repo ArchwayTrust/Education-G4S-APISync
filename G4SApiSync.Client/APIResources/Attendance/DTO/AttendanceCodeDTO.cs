@@ -22,10 +22,10 @@ namespace G4SApiSync.Client.DTOs
             public bool ProtectAO { get; set; }
 
             [JsonProperty("protect_if_entered_by_school_manager")]
-            public int ProtectSM { get; set; }
+            public bool ProtectSM { get; set; }
 
             [JsonProperty("protect_if_entered_by_behaviour_manager")]
-            public int ProtectBM { get; set; }
+            public bool ProtectBM { get; set; }
 
             [JsonProperty("aliases")]
             public IEnumerable<AttendanceAliasCodeDTO> AttendanceAliases { get; set; }

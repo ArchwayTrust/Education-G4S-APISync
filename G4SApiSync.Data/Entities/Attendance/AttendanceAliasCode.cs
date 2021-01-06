@@ -16,7 +16,7 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(10)]
         public string AliasCode { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(250)]
         public string Label{ get; set; }
 
         public virtual AttendanceCode AttendanceCode { get; set; }

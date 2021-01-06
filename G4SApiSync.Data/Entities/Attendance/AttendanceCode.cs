@@ -20,7 +20,7 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(10)]
         public string Code { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(250)]
         public string AttendanceLabel { get; set; }
 
         public bool AttendanceOfficerOnly { get; set; }

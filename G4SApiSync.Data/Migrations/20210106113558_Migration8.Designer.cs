@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace G4SApiSync.Data.Migrations
 {
     [DbContext(typeof(G4SContext))]
-    [Migration("20210106083029_Migration8")]
+    [Migration("20210106113558_Migration8")]
     partial class Migration8
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,8 +67,8 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Label")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("AttendanceAliasCodeId");
 
@@ -88,8 +88,8 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("AttendanceLabel")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<bool>("AttendanceOfficerOnly")
                         .HasColumnType("bit");
@@ -909,7 +909,8 @@ namespace G4SApiSync.Data.Migrations
                 {
                     b.HasOne("G4SApiSync.Data.Entities.AttendanceCode", "AttendanceCode")
                         .WithMany("AttendanceAliasCodes")
-                        .HasForeignKey("AttendanceCodeId");
+                        .HasForeignKey("AttendanceCodeId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("AttendanceCode");
                 });

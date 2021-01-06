@@ -236,7 +236,8 @@ namespace G4SApiSync.Data
             modelBuilder.Entity<AttendanceAliasCode>()
                 .HasOne(b => b.AttendanceCode)
                 .WithMany(c => c.AttendanceAliasCodes)
-                .HasForeignKey(s => s.AttendanceCodeId);
+                .HasForeignKey(s => s.AttendanceCodeId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //API Keys
             modelBuilder.Entity<AcademySecurity>()

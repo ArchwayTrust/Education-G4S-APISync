@@ -15,7 +15,7 @@ namespace G4SApiSync.Data.Migrations
                     DataSet = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
                     Academy = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     Code = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    AttendanceLabel = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    AttendanceLabel = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     AttendanceOfficerOnly = table.Column<bool>(type: "bit", nullable: false),
                     ProtectAO = table.Column<bool>(type: "bit", nullable: false),
                     ProtectSM = table.Column<bool>(type: "bit", nullable: false),
@@ -34,7 +34,7 @@ namespace G4SApiSync.Data.Migrations
                     AttendanceAliasCodeId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     AttendanceCodeId = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     AliasCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Label = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
+                    Label = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,7 +45,7 @@ namespace G4SApiSync.Data.Migrations
                         principalSchema: "g4s",
                         principalTable: "AttendanceCodes",
                         principalColumn: "AttendanceCodeId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

@@ -30,7 +30,7 @@ namespace G4SApiSync.Client.EndPoints
             get { return _endPoint; }
         }
 
-        [JsonProperty("attendance_codes")]
+        [JsonProperty("AttendanceCodes")]
         public IEnumerable<AttendanceCodeDTO> DTOs { get; set; }
 
         [JsonProperty("has_more")]
@@ -133,7 +133,7 @@ namespace G4SApiSync.Client.EndPoints
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 if (e.InnerException != null)
                 {
