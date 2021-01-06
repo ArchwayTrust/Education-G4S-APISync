@@ -20,17 +20,16 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(10)]
         public string Code { get; set; }
 
-        [MaxLength(10)]
-        public string AttendanceOfficerOnly { get; set; }
+        [MaxLength(50)]
+        public string AttendanceLabel { get; set; }
 
-        [MaxLength(10)]
-        public string ProtectAO { get; set; }
+        public bool AttendanceOfficerOnly { get; set; }
 
-        [MaxLength(10)]
-        public string ProtectSM { get; set; }
+        public bool ProtectAO { get; set; }
 
-        [MaxLength(10)]
-        public string ProtectBM { get; set; }
+        public bool ProtectSM { get; set; }
+
+        public bool ProtectBM { get; set; }
 
         public virtual ICollection<AttendanceAliasCode> AttendanceAliasCodes { get; set; }
 
