@@ -249,6 +249,16 @@ namespace G4SApiSync.Client
                 }
             }
 
+            //GET Attendance Codes
+            foreach (var academy in _academyList)
+            {
+                using (var getAttendanceCodes = new GETAttendanceCodes(_context, _connectionString))
+                {
+                    bool result = await getAttendanceCodes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getAttendanceCodes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                }
+            }
+
             return syncResults;
         }
     }
