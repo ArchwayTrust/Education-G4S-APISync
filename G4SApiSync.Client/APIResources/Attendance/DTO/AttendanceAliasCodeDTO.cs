@@ -7,7 +7,7 @@ namespace G4SApiSync.Client.DTOs
         public class AttendanceAliasCodeDTO
         {
             [JsonProperty("id")]
-            public int G4SAttendanceAliasCode { get; set; }
+            public int G4SAttendanceAliasCodeId { get; set; }
 
             [JsonProperty("alias_code")]
             public int AliasCode { get; set; }

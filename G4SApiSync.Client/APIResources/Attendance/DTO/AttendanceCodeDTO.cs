@@ -13,7 +13,7 @@ namespace G4SApiSync.Client.DTOs
             public string Code { get; set; }
             
             [JsonProperty("label")]
-            public string label { get; set; }
+            public string AttendanceLabel { get; set; }
 
             [JsonProperty("attendance_officer_only")]
             public bool AttendanceOfficerOnly { get; set; }
