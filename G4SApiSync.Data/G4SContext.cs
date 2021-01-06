@@ -55,6 +55,8 @@ namespace G4SApiSync.Data
         public virtual DbSet<AttendanceCode> AttendanceCodes { get; set; }
         public virtual DbSet<AttendanceAliasCode> AttendanceAliasCodes { get; set; }
 
+        public virtual DbSet<StudentLessonMark> StudentLessonMarks { get; set; }
+
         //Fluent API Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -238,6 +240,9 @@ namespace G4SApiSync.Data
                 .WithMany(c => c.AttendanceAliasCodes)
                 .HasForeignKey(s => s.AttendanceCodeId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<StudentLessonMark>()
+                .HasKey(pc => new { pc.StudentId, pc.Date, pc.ClassId });
 
             //API Keys
             modelBuilder.Entity<AcademySecurity>()
