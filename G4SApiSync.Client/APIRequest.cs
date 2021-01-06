@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RestSharp;
 using Newtonsoft.Json;
 using System.Web;
@@ -14,14 +15,22 @@ namespace G4SApiSync.Client
         private string pAcYear;
         private string pYearGroup;
         private string pReportId;
+        private string pDate;
 
-        public APIRequest(string EndPointURL, string Bearer, string DataSet, string YearGroup = null, string ReportId = null)
+        public APIRequest(string EndPointURL, string Bearer, string DataSet, string YearGroup = null, string ReportId = null, DateTime? Date = null)
         {
             pResource = EndPointURL;
             pBearer = Bearer;
             pAcYear = DataSet;
             pYearGroup = YearGroup;
             pReportId = ReportId;
+            if (Date != null)
+            {
+                pDate = Date.Value.ToString("yyyy-MM-dd");
+            }
+            {
+                pDate = null;
+            }
         }
 
         public string ReturnedJSON(int? cursor)
@@ -52,6 +61,11 @@ namespace G4SApiSync.Client
             if (pReportId != null)
             {
                 request.AddParameter("reportId", pReportId);
+            }
+
+            if (pDate != null)
+            {
+                request.AddParameter("date", pDate);
             }
 
             var response = client.Execute(request);
