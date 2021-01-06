@@ -14,7 +14,6 @@ namespace G4SApiSync.Client
         private readonly List<AcademySecurity> _academyList;
         private readonly G4SContext _context;
         private readonly string _connectionString;
-        private readonly DateTime _date;
 
         public GetAndStoreAllData(G4SContext context, string connectionString)
         {
@@ -22,9 +21,6 @@ namespace G4SApiSync.Client
             _connectionString = connectionString;
 
             _academyList = _context.AcademySecurity.Where(i => i.Active == true).ToList();
-
-            //Place holder for future loop.
-            _date = new DateTime(2021, 01, 06);
         }
 
         public async Task<List<SyncResult>> SyncStudents()
@@ -263,14 +259,38 @@ namespace G4SApiSync.Client
                 }
             }
 
-            //GET Attendance Codes
+            //GET Lesson Attendance
             foreach (var academy in _academyList)
             {
-                using (var getStudentLessonMarks= new GETStudentLessonMarks(_context, _connectionString))
+                bool getAttendance = academy.GetAttendance;
+                DateTime fromDate = academy.AttendanceFrom.Value;
+
+                DateTime toDate;
+
+                if (academy.AttendanceTo != null)
                 {
-                    bool result = await getStudentLessonMarks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, null, null, null, _date);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentLessonMarks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                    toDate = academy.AttendanceTo.Value;
                 }
+                {
+                    toDate = DateTime.Now.Date.AddDays(-1);
+                }
+                
+
+                if (getAttendance)
+                {
+                    var dates = Enumerable.Range(0, (toDate - fromDate).Days + 1)
+                                    .Select(day => fromDate.AddDays(day));
+
+                    foreach (var dt in dates)
+                    {
+                        using (var getStudentLessonMarks = new GETStudentLessonMarks(_context, _connectionString))
+                        {
+                            bool result = await getStudentLessonMarks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, null, null, null, dt);
+                            syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentLessonMarks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                        }
+                    }
+                }
+
             }
 
             return syncResults;
