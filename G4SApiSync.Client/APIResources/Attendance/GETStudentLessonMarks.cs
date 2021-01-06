@@ -14,9 +14,9 @@ using Microsoft.Data.SqlClient;
 namespace G4SApiSync.Client.EndPoints
 {
     [JsonObject]
-    public class GETStudentLessonMarks : IEndPoint<StudentSessionSummaryDTO>, IDisposable
+    public class GETStudentLessonMarks : IEndPoint<StudentLessonMarkDTO>, IDisposable
     {
-        const string _endPoint = "/customer/v1/academic-years/{academicYear}/attendance/student-session-marks/date/{date}";
+        const string _endPoint = "/customer/v1/academic-years/{academicYear}/attendance/student-lesson-marks/date/{date}";
         private string _connectionString;
         private G4SContext _context;
 
@@ -31,7 +31,7 @@ namespace G4SApiSync.Client.EndPoints
         }
 
         [JsonProperty("StudentLessonMarks")]
-        public IEnumerable<StudentSessionSummaryDTO> DTOs { get; set; }
+        public IEnumerable<StudentLessonMarkDTO> DTOs { get; set; }
 
         [JsonProperty("has_more")]
         public bool HasMore { get; set; }
@@ -43,72 +43,87 @@ namespace G4SApiSync.Client.EndPoints
         {
             try
             {
-                APIRequest<GETStudentSessionSummaries, StudentSessionSummaryDTO> getSessionSummaries = new APIRequest<GETStudentSessionSummaries, StudentSessionSummaryDTO>(_endPoint, APIKey, AcYear);
-                var sessionSummariesDTO = getSessionSummaries.ToList();
+                APIRequest<GETStudentLessonMarks, StudentLessonMarkDTO> getStudentLessonMarks = new APIRequest<GETStudentLessonMarks, StudentLessonMarkDTO>(_endPoint, APIKey, AcYear, null, null, Date);
+                var studentLessonMarksDTO = getStudentLessonMarks.ToList();
 
-                var dtSessionSummaries = new DataTable();
-                dtSessionSummaries.Columns.Add("StudentId", typeof(String));
-                dtSessionSummaries.Columns.Add("G4SStuId", typeof(int));
-                dtSessionSummaries.Columns.Add("DataSet", typeof(String));
-                dtSessionSummaries.Columns.Add("Academy", typeof(String));
-                dtSessionSummaries.Columns.Add("PossibleSessions", typeof(int));
-                dtSessionSummaries.Columns.Add("Present", typeof(int));
-                dtSessionSummaries.Columns.Add("ApprovedEducationalActivity", typeof(int));
-                dtSessionSummaries.Columns.Add("AuthorisedAbsence", typeof(int));
-                dtSessionSummaries.Columns.Add("UnauthorisedAbsence", typeof(int));
-                dtSessionSummaries.Columns.Add("AttendanceNotRequired", typeof(int));
-                dtSessionSummaries.Columns.Add("MissingMark", typeof(int));
-                dtSessionSummaries.Columns.Add("Late", typeof(int));
+                var dtStudentLessonMarks = new DataTable();
+                dtStudentLessonMarks.Columns.Add("DataSet", typeof(String));
+                dtStudentLessonMarks.Columns.Add("Academy", typeof(String));
+                dtStudentLessonMarks.Columns.Add("StudentId", typeof(String));
+                dtStudentLessonMarks.Columns.Add("ClassId", typeof(String));
+                dtStudentLessonMarks.Columns.Add("LessonMarkId", typeof(String));
+                dtStudentLessonMarks.Columns.Add("LessonAliasId", typeof(String));
+                dtStudentLessonMarks.Columns.Add("LessonMinutesLate", typeof(int));
+                dtStudentLessonMarks.Columns.Add("LessonNotes", typeof(String));
 
-                foreach (var sessionSummaryDTO in sessionSummariesDTO)
+                var colDate = new DataColumn
                 {
-                    var row = dtSessionSummaries.NewRow();
+                    DataType = System.Type.GetType("System.DateTime"),
+                    ColumnName = "Date"
+                };
 
-                    row["StudentId"] = AcademyCode + AcYear + "-" + sessionSummaryDTO.G4SStuId.ToString();
-                    row["G4SStuId"] = sessionSummaryDTO.G4SStuId.ToString();
+                dtStudentLessonMarks.Columns.Add(colDate);
+
+
+                foreach (var studentLessonMarkDTO in studentLessonMarksDTO)
+                {
+                    var row = dtStudentLessonMarks.NewRow();
+
                     row["DataSet"] = AcYear;
                     row["Academy"] = AcademyCode;
-                    row["PossibleSessions"] = sessionSummaryDTO.PossibleSessions;
-                    row["Present"] = sessionSummaryDTO.Present;
-                    row["ApprovedEducationalActivity"] = sessionSummaryDTO.ApprovedEducationalActivity;
-                    row["AuthorisedAbsence"] = sessionSummaryDTO.AuthorisedAbsence;
-                    row["UnauthorisedAbsence"] = sessionSummaryDTO.UnauthorisedAbsence;
-                    row["AttendanceNotRequired"] = sessionSummaryDTO.AttendanceNotRequired;
-                    row["MissingMark"] = sessionSummaryDTO.MissingMark;
-                    row["Late"] = sessionSummaryDTO.Late;
+                    row["StudentId"] = AcademyCode + AcYear + "-" + studentLessonMarkDTO.G4SStudentId.ToString();
+                    row["Date"] = studentLessonMarkDTO.Date;
+                    row["ClassId"] = AcademyCode + AcYear + "-" + studentLessonMarkDTO.G4SClassId.ToString();
+                    row["LessonMarkId"] = AcademyCode + AcYear + "-" + studentLessonMarkDTO.G4SMarkId.ToString();
+                    if (studentLessonMarkDTO.G4SAliasId != null)
+                    {
+                        row["LessonAliasId"] = AcademyCode + AcYear + "-" + studentLessonMarkDTO.G4SAliasId.ToString();
+                    }
+                    else
+                    {
+                        row["LessonAliasId"] = DBNull.Value
+;                    }
 
-                    dtSessionSummaries.Rows.Add(row);
+                    if (studentLessonMarkDTO.LessonMinutesLate != null)
+                    {
+                        row["LessonMinutesLate"] = studentLessonMarkDTO.LessonMinutesLate;
+                    }
+                    else
+                    {
+                        row["LessonMinutesLate"] = DBNull.Value;
+                    }
+                    
+                    row["LessonNotes"] = studentLessonMarkDTO.LessonNotes;
+
+                    dtStudentLessonMarks.Rows.Add(row);
                 }
 
-                var currentSessionSummaries = _context.StudentSessionSummaries.Where(i => i.DataSet == AcYear && i.Academy == AcademyCode);
-                _context.StudentSessionSummaries.RemoveRange(currentSessionSummaries);
+                var currentStudentLessonMarks = _context.StudentLessonMarks.Where(i => i.DataSet == AcYear && i.Academy == AcademyCode && i.Date == Date);
+                _context.StudentLessonMarks.RemoveRange(currentStudentLessonMarks);
                 await _context.SaveChangesAsync();
 
 
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {
                     //Add Mappings
-                    sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
-                    sqlBulk.ColumnMappings.Add("G4SStuId", "G4SStuId");
                     sqlBulk.ColumnMappings.Add("DataSet", "DataSet");
                     sqlBulk.ColumnMappings.Add("Academy", "Academy");
-                    sqlBulk.ColumnMappings.Add("PossibleSessions", "PossibleSessions");
-                    sqlBulk.ColumnMappings.Add("Present", "Present");
-                    sqlBulk.ColumnMappings.Add("ApprovedEducationalActivity", "ApprovedEducationalActivity");
-                    sqlBulk.ColumnMappings.Add("AuthorisedAbsence", "AuthorisedAbsence");
-                    sqlBulk.ColumnMappings.Add("UnauthorisedAbsence", "UnauthorisedAbsence");
-                    sqlBulk.ColumnMappings.Add("AttendanceNotRequired", "AttendanceNotRequired");
-                    sqlBulk.ColumnMappings.Add("MissingMark", "MissingMark");
-                    sqlBulk.ColumnMappings.Add("Late", "Late");
+                    sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
+                    sqlBulk.ColumnMappings.Add("Date", "Date");
+                    sqlBulk.ColumnMappings.Add("ClassId", "ClassId");
+                    sqlBulk.ColumnMappings.Add("LessonMarkId", "LessonMarkId");
+                    sqlBulk.ColumnMappings.Add("LessonAliasId", "LessonAliasId");
+                    sqlBulk.ColumnMappings.Add("LessonMinutesLate", "LessonMinutesLate");
+                    sqlBulk.ColumnMappings.Add("LessonNotes", "LessonNotes");
 
-                    sqlBulk.DestinationTableName = "g4s.StudentSessionSummaries";
-                    sqlBulk.WriteToServer(dtSessionSummaries);
+                    sqlBulk.DestinationTableName = "g4s.StudentLessonMarks";
+                    sqlBulk.WriteToServer(dtStudentLessonMarks);
                 }
 
                 _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, DataSet = AcYear });
                 await _context.SaveChangesAsync();
                 return true;
-            }
+        }
             catch(Exception e)
             {
                 if (e.InnerException != null)
@@ -116,14 +131,14 @@ namespace G4SApiSync.Client.EndPoints
                     _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, DataSet = AcYear, EndPoint = _endPoint, Exception = e.Message, InnerException = e.InnerException.Message, LoggedAt = DateTime.Now, Result = false });
                 }
                 else
-                {
-                    _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, DataSet = AcYear, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false });
-                }
-
-                await _context.SaveChangesAsync();
-                return false;
-            }
+        {
+            _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, DataSet = AcYear, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false });
         }
+
+        await _context.SaveChangesAsync();
+        return false;
+    }
+}
 
 
 //Implements IDisposable

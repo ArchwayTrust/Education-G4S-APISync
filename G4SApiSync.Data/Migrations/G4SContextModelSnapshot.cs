@@ -779,9 +779,9 @@ namespace G4SApiSync.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("Date");
 
-                    b.Property<int>("ClassId")
+                    b.Property<string>("ClassId")
                         .HasMaxLength(100)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Academy")
                         .HasMaxLength(10)

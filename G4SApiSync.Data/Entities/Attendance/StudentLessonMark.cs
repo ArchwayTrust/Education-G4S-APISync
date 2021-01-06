@@ -20,7 +20,7 @@ namespace G4SApiSync.Data.Entities
         public DateTime Date { get; set; }
 
         [MaxLength(100)]
-        public int ClassId { get; set; }
+        public string ClassId { get; set; }
 
         [MaxLength(100)]
         public string LessonMarkId { get; set; }

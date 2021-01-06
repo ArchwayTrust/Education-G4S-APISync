@@ -28,6 +28,7 @@ namespace G4SApiSync.Client
             {
                 pDate = Date.Value.ToString("yyyy-MM-dd");
             }
+            else 
             {
                 pDate = null;
             }

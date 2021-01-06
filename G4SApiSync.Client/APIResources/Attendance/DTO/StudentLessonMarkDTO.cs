@@ -17,10 +17,10 @@ namespace G4SApiSync.Client.DTOs
             public int G4SClassId { get; set; }
 
             [JsonProperty("lesson_mark_id")]
-            public int G4SMarkId { get; set; }
+            public int? G4SMarkId { get; set; }
 
             [JsonProperty("lesson_alias_id")]
-            public int G4SAliasId { get; set; }
+            public int? G4SAliasId { get; set; }
 
             [JsonProperty("lesson_minutes_late")]
             public int? LessonMinutesLate { get; set; }

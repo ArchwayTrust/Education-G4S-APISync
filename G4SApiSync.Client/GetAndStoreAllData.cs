@@ -14,6 +14,7 @@ namespace G4SApiSync.Client
         private readonly List<AcademySecurity> _academyList;
         private readonly G4SContext _context;
         private readonly string _connectionString;
+        private readonly DateTime _date;
 
         public GetAndStoreAllData(G4SContext context, string connectionString)
         {
@@ -21,6 +22,9 @@ namespace G4SApiSync.Client
             _connectionString = connectionString;
 
             _academyList = _context.AcademySecurity.Where(i => i.Active == true).ToList();
+
+            //Place holder for future loop.
+            _date = new DateTime(2021, 01, 06);
         }
 
         public async Task<List<SyncResult>> SyncStudents()
@@ -256,6 +260,16 @@ namespace G4SApiSync.Client
                 {
                     bool result = await getAttendanceCodes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
                     syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getAttendanceCodes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                }
+            }
+
+            //GET Attendance Codes
+            foreach (var academy in _academyList)
+            {
+                using (var getStudentLessonMarks= new GETStudentLessonMarks(_context, _connectionString))
+                {
+                    bool result = await getStudentLessonMarks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, null, null, null, _date);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentLessonMarks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
             }
 

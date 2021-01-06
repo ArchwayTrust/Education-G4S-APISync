@@ -14,7 +14,7 @@ namespace G4SApiSync.Data.Migrations
                 {
                     StudentId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Date = table.Column<DateTime>(type: "Date", nullable: false),
-                    ClassId = table.Column<int>(type: "int", maxLength: 100, nullable: false),
+                    ClassId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     DataSet = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
                     Academy = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     LessonMarkId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
