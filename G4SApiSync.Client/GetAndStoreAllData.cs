@@ -310,6 +310,17 @@ namespace G4SApiSync.Client
         {
             List<SyncResult> syncResults = new List<SyncResult>();
 
+            //GET Periods
+            foreach (var academy in _academyList)
+            {
+                using (var getPeriods = new GETPeriods(_context, _connectionString))
+                {
+                    bool result = await getPeriods.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getPeriods.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                }
+
+            }
+
             //GET TT Classes
             foreach (var academy in _academyList)
             {
