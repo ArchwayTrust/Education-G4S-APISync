@@ -57,6 +57,9 @@ namespace G4SApiSync.Data
 
         public virtual DbSet<StudentLessonMark> StudentLessonMarks { get; set; }
 
+        //Timetables
+        public virtual DbSet<TTClass> TTClasses { get; set; }
+
         //Fluent API Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

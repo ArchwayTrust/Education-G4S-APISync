@@ -28,12 +28,12 @@ namespace G4SApiSync.Client
             List<SyncResult> syncResults = new List<SyncResult>();
 
             //GET Student Details
-            foreach(var academy in _academyList)
+            foreach (var academy in _academyList)
             {
                 using (var getStudentDetails = new GETStudentDetails(_context, _connectionString))
                 {
                     bool result = await getStudentDetails.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentDetails.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear});
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentDetails.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
             }
 
@@ -43,7 +43,7 @@ namespace G4SApiSync.Client
                 using (var getEducationDetails = new GETEducationDetails(_context, _connectionString))
                 {
                     bool result = await getEducationDetails.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getEducationDetails.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear});
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getEducationDetails.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
 
             }
@@ -95,7 +95,7 @@ namespace G4SApiSync.Client
             return syncResults;
         }
 
-//Sync Teaching
+        //Sync Teaching
         public async Task<List<SyncResult>> SyncTeaching()
         {
             List<SyncResult> syncResults = new List<SyncResult>();
@@ -144,7 +144,7 @@ namespace G4SApiSync.Client
             return syncResults;
         }
 
-//Sync Assessments
+        //Sync Assessments
         public async Task<List<SyncResult>> SyncAssessment()
         {
             List<SyncResult> syncResults = new List<SyncResult>();
@@ -184,7 +184,7 @@ namespace G4SApiSync.Client
             return syncResults;
         }
 
-//Sync Attainment
+        //Sync Attainment
         public async Task<List<SyncResult>> SyncAttainment()
         {
             List<SyncResult> syncResults = new List<SyncResult>();
@@ -283,7 +283,7 @@ namespace G4SApiSync.Client
                 {
                     toDate = DateTime.Now.Date.AddDays(-1);
                 }
-                
+
 
                 if (getAttendance)
                 {
@@ -298,6 +298,25 @@ namespace G4SApiSync.Client
                             syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentLessonMarks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                         }
                     }
+                }
+
+            }
+
+            return syncResults;
+        }
+
+        //Sync Timetable
+        public async Task<List<SyncResult>> SyncTimetable()
+        {
+            List<SyncResult> syncResults = new List<SyncResult>();
+
+            //GET TT Classes
+            foreach (var academy in _academyList)
+            {
+                using (var getTTClasses = new GETTTClasses(_context, _connectionString))
+                {
+                    bool result = await getTTClasses.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getTTClasses.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                 }
 
             }
