@@ -263,14 +263,23 @@ namespace G4SApiSync.Client
             foreach (var academy in _academyList)
             {
                 bool getAttendance = academy.GetAttendance;
-                DateTime fromDate = academy.AttendanceFrom.Value;
-
+                DateTime fromDate;
                 DateTime toDate;
+
+                if (academy.AttendanceFrom != null)
+                {
+                    fromDate = academy.AttendanceFrom.Value;
+                }
+                else
+                {
+                    fromDate = DateTime.Now.Date.AddDays(-1);
+                }
 
                 if (academy.AttendanceTo != null)
                 {
                     toDate = academy.AttendanceTo.Value;
                 }
+                else
                 {
                     toDate = DateTime.Now.Date.AddDays(-1);
                 }
