@@ -58,6 +58,7 @@ namespace G4SApiSync.Data
         public virtual DbSet<StudentLessonMark> StudentLessonMarks { get; set; }
 
         //Timetables
+        public virtual DbSet<Period> Periods { get; set; }
         public virtual DbSet<TTClass> TTClasses { get; set; }
 
         //Fluent API Configuration
