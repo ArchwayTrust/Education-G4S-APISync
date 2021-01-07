@@ -6,7 +6,7 @@
     <Company>Archway Learning Trust</Company>
     <Product>G4SApiSync</Product>
     <Description>Database layer for G4SApiSync</Description>
-    <Version>1.2.0</Version>
+    <Version>2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

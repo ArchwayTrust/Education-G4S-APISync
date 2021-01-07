@@ -33,40 +33,40 @@ namespace G4SApiSync
             Console.WriteLine("Running API Sync. This will take some time." + Environment.NewLine);
             var GetData = new GetAndStoreAllData(_context, _connectionString);
 
-            ////Sync Student end points.
-            //var results = await GetData.SyncStudents();
+            //Sync Student end points.
+            var results = await GetData.SyncStudents();
 
-            //foreach (var result in results)
-            //{
-            //    Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
-            //}
+            foreach (var result in results)
+            {
+                Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
+            }
 
-            ////Sync Teaching end points.
-            //results = await GetData.SyncTeaching();
+            //Sync Teaching end points.
+            results = await GetData.SyncTeaching();
 
-            //foreach (var result in results)
-            //{
-            //    Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
-            //}
+            foreach (var result in results)
+            {
+                Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
+            }
 
-            ////Sync Assessment end points.
-            //results = await GetData.SyncAssessment();
+            //Sync Assessment end points.
+            results = await GetData.SyncAssessment();
 
-            //foreach (var result in results)
-            //{
-            //    Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
-            //}
+            foreach (var result in results)
+            {
+                Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
+            }
 
-            ////Sync Attainment end points.
-            //results = await GetData.SyncAttainment();
+            //Sync Attainment end points.
+            results = await GetData.SyncAttainment();
 
-            //foreach (var result in results)
-            //{
-            //    Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
-            //}
+            foreach (var result in results)
+            {
+                Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
+            }
 
             //Sync Attendance end points.
-            var results = await GetData.SyncAttendance();
+            results = await GetData.SyncAttendance();
 
             foreach (var result in results)
             {
