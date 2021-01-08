@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿
+using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using G4SApiSync.Client.DTOs;
@@ -25,7 +27,7 @@ namespace G4SApiSync.Client.EndPoints
         [JsonProperty("cursor")]
         public int? Cursor { get; set; }
 
-        public Task<bool> UpdateDatabase(string APIKey, string AcYear, string AcademyCode, int? LowestYear = null, int? HighestYear = null, int? ReportId = null)
+        public Task<bool> UpdateDatabase(string APIKey, string AcYear, string AcademyCode, int? LowestYear = null, int? HighestYear = null, int? ReportId = null, DateTime? Date = null)
         {
             throw new System.NotImplementedException();
         }

@@ -4,14 +4,16 @@ using G4SApiSync.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace G4SApiSync.Data.Migrations
 {
     [DbContext(typeof(G4SContext))]
-    partial class G4SContextModelSnapshot : ModelSnapshot
+    [Migration("20210106114059_Migration9")]
+    partial class Migration9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -627,50 +629,6 @@ namespace G4SApiSync.Data.Migrations
                     b.ToTable("MarkslotMarks");
                 });
 
-            modelBuilder.Entity("G4SApiSync.Data.Entities.Period", b =>
-                {
-                    b.Property<string>("PeriodId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Academy")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("DataSet")
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
-
-                    b.Property<string>("DayOfWeek")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("DisplayName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("End")
-                        .HasColumnType("Date");
-
-                    b.Property<string>("PeriodName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("Date");
-
-                    b.Property<string>("TimetableId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("WeekNumber")
-                        .HasColumnType("int");
-
-                    b.HasKey("PeriodId");
-
-                    b.ToTable("Periods");
-                });
-
             modelBuilder.Entity("G4SApiSync.Data.Entities.PriorAttainment", b =>
                 {
                     b.Property<string>("StudentId")
@@ -814,47 +772,6 @@ namespace G4SApiSync.Data.Migrations
                     b.ToTable("StudentAttributeValues");
                 });
 
-            modelBuilder.Entity("G4SApiSync.Data.Entities.StudentLessonMark", b =>
-                {
-                    b.Property<string>("StudentId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("Date");
-
-                    b.Property<string>("ClassId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Academy")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("DataSet")
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
-
-                    b.Property<string>("LessonAliasId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("LessonMarkId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("LessonMinutesLate")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LessonNotes")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.HasKey("StudentId", "Date", "ClassId");
-
-                    b.ToTable("StudentLessonMarks");
-                });
-
             modelBuilder.Entity("G4SApiSync.Data.Entities.StudentSessionSummary", b =>
                 {
                     b.Property<string>("StudentId")
@@ -995,41 +912,6 @@ namespace G4SApiSync.Data.Migrations
                     b.HasKey("SyncResultId");
 
                     b.ToTable("SyncResults");
-                });
-
-            modelBuilder.Entity("G4SApiSync.Data.Entities.TTClass", b =>
-                {
-                    b.Property<string>("ClassId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Academy")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("DataSet")
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
-
-                    b.Property<string>("GroupCode")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PeriodId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("SubjectCode")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("YearGroup")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("ClassId");
-
-                    b.ToTable("TTClasses");
                 });
 
             modelBuilder.Entity("G4SApiSync.Data.Entities.AttendanceAliasCode", b =>

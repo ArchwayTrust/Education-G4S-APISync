@@ -40,7 +40,7 @@ namespace G4SApiSync.Client.EndPoints
         [JsonProperty("cursor")]
         public int? Cursor { get; set; }
 
-        public async Task<bool> UpdateDatabase(string APIKey, string AcYear, string AcademyCode, int? LowestYear = null, int? HighestYear = null, int? ReportId = null)
+        public async Task<bool> UpdateDatabase(string APIKey, string AcYear, string AcademyCode, int? LowestYear = null, int? HighestYear = null, int? ReportId = null, DateTime? Date = null)
         {
             try
             {
