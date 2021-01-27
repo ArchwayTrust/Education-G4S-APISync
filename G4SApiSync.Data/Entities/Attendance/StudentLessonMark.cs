@@ -30,7 +30,7 @@ namespace G4SApiSync.Data.Entities
 
         public int? LessonMinutesLate { get; set; }
 
-        [MaxLength(250)]
+        [MaxLength(2000)]
         public string LessonNotes { get; set; }
 
         
