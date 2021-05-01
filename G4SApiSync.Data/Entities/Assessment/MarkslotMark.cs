@@ -21,6 +21,6 @@ namespace G4SApiSync.Data.Entities
 
         public virtual Markslot Markslot { get; set; }
 
-        public virtual Student Student { get; set; }
+        public virtual Event Student { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace G4SApiSync.Data.Entities
 
         public virtual AttributeType AttributeType { get; set; }
 
-        public virtual Student Student { get; set; }
+        public virtual Event Student { get; set; }
 
 
 

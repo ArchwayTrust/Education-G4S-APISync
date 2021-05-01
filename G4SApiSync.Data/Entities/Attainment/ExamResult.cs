@@ -41,7 +41,7 @@ namespace G4SApiSync.Data.Entities
         public string SubjectId { get; set; }
 
         public virtual Subject Subject { get; set; }
-        public virtual Student Student { get; set; }
+        public virtual Event Student { get; set; }
 
     }
 

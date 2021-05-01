@@ -11,6 +11,6 @@ namespace G4SApiSync.Data.Entities
         public string Grade { get; set; }
         public string Alias { get; set; }
         public virtual Marksheet Marksheet { get; set; }
-        public virtual Student Student { get; set; }
+        public virtual Event Student { get; set; }
     }
 }

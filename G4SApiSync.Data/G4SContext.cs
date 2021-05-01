@@ -21,7 +21,7 @@ namespace G4SApiSync.Data
         public virtual DbSet<SyncResult> SyncResults { get; set; }
 
         //Students
-        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Event> Students { get; set; }
         public virtual DbSet<EducationDetail> EducationDetails { get; set; }
         public virtual DbSet<StudentAttribute> StudentAttributes { get; set; }
         public virtual DbSet<StudentAttributeValue> StudentAttributeValues { get; set; }
@@ -95,7 +95,7 @@ namespace G4SApiSync.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AttributeValue>()
-                .HasOne<Student>(b => b.Student)
+                .HasOne<Event>(b => b.Student)
                 .WithMany(c => c.AttributeValues)
                 .HasForeignKey(s => s.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
@@ -123,7 +123,7 @@ namespace G4SApiSync.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<GroupStudent>()
-                .HasOne<Student>(b => b.Student)
+                .HasOne<Event>(b => b.Student)
                 .WithMany(c => c.StudentGroups)
                 .HasForeignKey(s => s.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
@@ -154,13 +154,13 @@ namespace G4SApiSync.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<MarksheetGrade>()
-                .HasOne<Student>(b => b.Student)
+                .HasOne<Event>(b => b.Student)
                 .WithMany(c => c.MarksheetGrades)
                 .HasForeignKey(s => s.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<MarkslotMark>()
-                .HasOne<Student>(b => b.Student)
+                .HasOne<Event>(b => b.Student)
                 .WithMany(c => c.MarkslotMarks)
                 .HasForeignKey(s => s.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
@@ -179,13 +179,13 @@ namespace G4SApiSync.Data
                 .HasKey(pc => new { pc.StudentId, pc.GradeTypeId, pc.SubjectId });
 
             modelBuilder.Entity<PriorAttainment>()
-                .HasOne<Student>(b => b.Student)
+                .HasOne<Event>(b => b.Student)
                 .WithMany(c => c.PriorAttainment)
                 .HasForeignKey(s => s.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Grade>()
-                .HasOne<Student>(b => b.Student)
+                .HasOne<Event>(b => b.Student)
                 .WithMany(c => c.Grades)
                 .HasForeignKey(s => s.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
@@ -203,7 +203,7 @@ namespace G4SApiSync.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ExamResult>()
-                .HasOne<Student>(b => b.Student)
+                .HasOne<Event>(b => b.Student)
                 .WithMany(c => c.ExamResults)
                 .HasForeignKey(s => s.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);

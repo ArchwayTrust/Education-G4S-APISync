@@ -11,7 +11,7 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(100)]
         public string StudentId { get; set; } //AcademyCode + DataSet + "-" + G4SStudentId
 
-        public virtual Student Student { get; set; }
+        public virtual Event Student { get; set; }
 
         public virtual Group Group { get; set; }
     }

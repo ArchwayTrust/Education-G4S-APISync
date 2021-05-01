@@ -28,7 +28,7 @@ namespace G4SApiSync.Data.Entities.Students
         public int MissingMark { get; set; }
         public int Late { get; set; }
 
-        public virtual Student Student { get; set; }
+        public virtual Event Student { get; set; }
 
     }
 }
