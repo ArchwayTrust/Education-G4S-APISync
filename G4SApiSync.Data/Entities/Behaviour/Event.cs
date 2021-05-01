@@ -50,7 +50,5 @@ namespace G4SApiSync.Data.Entities
         public DateTime ModifiedTimeStamp { get; set; }
 
         public int ModifiedByStaffId { get; set; }
-
-        public virtual ICollection<EventStduent> EventStduents { get; set; }
     }
 }
