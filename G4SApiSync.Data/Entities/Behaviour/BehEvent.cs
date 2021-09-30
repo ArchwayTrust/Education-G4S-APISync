@@ -19,7 +19,7 @@ namespace G4SApiSync.Data.Entities
 
         public int BehEventTypeId { get; set; }
 
-        [Column(TypeName = "Date")]
+        //[Column(TypeName = "Date")]
         public DateTime EventDate { get; set; }
         
         public bool Closed { get; set; }
