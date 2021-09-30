@@ -63,6 +63,12 @@ namespace G4SApiSync.Data
         public virtual DbSet<Period> Periods { get; set; }
         public virtual DbSet<TTClass> TTClasses { get; set; }
 
+        //Behaviour
+        public virtual DbSet<BehClassification> BehClassifications { get; set; }
+        public virtual DbSet<BehEventType> BehEventTypes { get; set; }
+        public virtual DbSet<BehEvent> BehEvents { get; set; }
+        public virtual DbSet<BehEventStudent> BehEventStudents { get; set; }
+
         //Fluent API Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -249,6 +255,27 @@ namespace G4SApiSync.Data
 
             modelBuilder.Entity<StudentLessonMark>()
                 .HasKey(pc => new { pc.StudentId, pc.Date, pc.ClassId });
+
+
+            //Behaviour
+
+            modelBuilder.Entity<BehEvent>()
+                 .HasOne<BehEventType>(b => b.BehEventType)
+                 .WithMany(c => c.BehEvents)
+                 .HasForeignKey(s => s.BehEventId)
+                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<BehEventType>()
+                 .HasOne<BehClassification>(b => b.BehClassification)
+                 .WithMany(c => c.BehEventTypes)
+                 .HasForeignKey(s => s.BehClassificationId)
+                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<BehEventStudent>()
+                 .HasOne<BehEvent>(b => b.BehEvent)
+                 .WithMany(c => c.EventStudents)
+                 .HasForeignKey(s => s.BehEventId)
+                 .OnDelete(DeleteBehavior.Cascade);
 
             //API Keys
             modelBuilder.Entity<AcademySecurity>()
