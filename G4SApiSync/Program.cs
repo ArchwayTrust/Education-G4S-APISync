@@ -21,7 +21,8 @@ namespace G4SApiSync
             ConfigureServices(services);
 
             //Automatically migrate the database to latest version
-            _context.Database.Migrate();
+            //This is already handled in ConfigureServices
+            //_context.Database.Migrate();
             
             //Run main sync code
             RunApiSync().Wait();
@@ -66,6 +67,14 @@ namespace G4SApiSync
 
             //Sync Attendance end points.
             results = await GetData.SyncAttendance();
+
+            foreach (var result in results)
+            {
+                Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
+            }
+
+            //Sync Timetable end points.
+            results = await GetData.SyncTimetable();
 
             foreach (var result in results)
             {

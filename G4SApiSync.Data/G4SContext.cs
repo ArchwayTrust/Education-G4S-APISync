@@ -1,5 +1,4 @@
 using G4SApiSync.Data.Entities;
-using G4SApiSync.Data.Entities.Students;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -53,7 +52,14 @@ namespace G4SApiSync.Data
 
         //Attendance
         public virtual DbSet<StudentSessionSummary> StudentSessionSummaries { get; set; }
+        public virtual DbSet<AttendanceCode> AttendanceCodes { get; set; }
+        public virtual DbSet<AttendanceAliasCode> AttendanceAliasCodes { get; set; }
 
+        public virtual DbSet<StudentLessonMark> StudentLessonMarks { get; set; }
+
+        //Timetables
+        public virtual DbSet<Period> Periods { get; set; }
+        public virtual DbSet<TTClass> TTClasses { get; set; }
 
         //Fluent API Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -232,6 +238,15 @@ namespace G4SApiSync.Data
                 .HasOne(b => b.Student)
                 .WithOne(c => c.StudentSessionSummary)
                 .HasForeignKey<StudentSessionSummary>(s => s.StudentId);
+
+            modelBuilder.Entity<AttendanceAliasCode>()
+                .HasOne(b => b.AttendanceCode)
+                .WithMany(c => c.AttendanceAliasCodes)
+                .HasForeignKey(s => s.AttendanceCodeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<StudentLessonMark>()
+                .HasKey(pc => new { pc.StudentId, pc.Date, pc.ClassId });
 
             //API Keys
             modelBuilder.Entity<AcademySecurity>()

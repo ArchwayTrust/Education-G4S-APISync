@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace G4SApiSync.Data.Entities
 {
@@ -17,6 +19,15 @@ namespace G4SApiSync.Data.Entities
         public bool Active { get; set; }
         public int LowestYear { get; set; }
         public int HighestYear { get; set; }
+
+        public bool GetAttendance { get; set; }
+
+        [Column(TypeName = "Date")]
+        public DateTime? AttendanceFrom { get; set; }
+
+        [Column(TypeName = "Date")]
+        public DateTime? AttendanceTo { get; set; }
+
 
 
     }

@@ -40,7 +40,7 @@ namespace G4SApiSync.Client.EndPoints
         [JsonProperty("cursor")]
         public int? Cursor { get; set; }
 
-        public async Task<bool> UpdateDatabase(string APIKey, string AcYear, string AcademyCode, int? LowestYear = null, int? HighestYear = null, int? ReportId = null)
+        public async Task<bool> UpdateDatabase(string APIKey, string AcYear, string AcademyCode, int? LowestYear = null, int? HighestYear = null, int? ReportId = null, DateTime? Date = null)
         {
             try
             {
@@ -99,52 +99,57 @@ namespace G4SApiSync.Client.EndPoints
 
                 foreach (var item in educationDetailsDTOs)
                 {
-                    foreach (var stuAttrib in item.StuEdAttributes)
+                    if (item.StuEdAttributes != null)
                     {
-
-                        foreach (var attribValue in stuAttrib.AttributeValues)
+                        foreach (var stuAttrib in item.StuEdAttributes)
                         {
-                            //Populate Attribute Values Datatable
-                            DateTime dateAttrib;
-                            DateTime? dateAttribNullable;
 
-                            if (DateTime.TryParseExact(attribValue.Date, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateAttrib))
+                            foreach (var attribValue in stuAttrib.AttributeValues)
                             {
-                                dateAttribNullable = dateAttrib.Date;
-                            }
-                            else
-                            {
-                                dateAttribNullable = null;
-                            }
+                                //Populate Attribute Values Datatable
+                                DateTime dateAttrib;
+                                DateTime? dateAttribNullable;
 
-                            var rowStuAttribVal = dtStuAttribValues.NewRow();
-                            rowStuAttribVal["StudentAttributeId"] = AcademyCode + AcYear + "-" + item.G4SStuId.ToString() + "-" + stuAttrib.AttributeId.ToString();
-                            rowStuAttribVal["Value"] = attribValue.Value;
-                            rowStuAttribVal["AcademicYear"] = attribValue.AcademicYear;
+                                if (DateTime.TryParseExact(attribValue.Date, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateAttrib))
+                                {
+                                    dateAttribNullable = dateAttrib.Date;
+                                }
+                                else
+                                {
+                                    dateAttribNullable = null;
+                                }
 
-                            if (dateAttribNullable == null)
-                            {
-                                rowStuAttribVal["Date"] = DBNull.Value;
-                            }
-                            else
-                            {
-                                rowStuAttribVal["Date"] = dateAttribNullable.Value;
-                            }
+                                var rowStuAttribVal = dtStuAttribValues.NewRow();
+                                rowStuAttribVal["StudentAttributeId"] = AcademyCode + AcYear + "-" + item.G4SStuId.ToString() + "-" + stuAttrib.AttributeId.ToString();
+                                rowStuAttribVal["Value"] = attribValue.Value;
+                                rowStuAttribVal["AcademicYear"] = attribValue.AcademicYear;
 
-                            dtStuAttribValues.Rows.Add(rowStuAttribVal);
+                                if (dateAttribNullable == null)
+                                {
+                                    rowStuAttribVal["Date"] = DBNull.Value;
+                                }
+                                else
+                                {
+                                    rowStuAttribVal["Date"] = dateAttribNullable.Value;
+                                }
+
+                                dtStuAttribValues.Rows.Add(rowStuAttribVal);
+                            }
+                            //Populate Student Arribute DataTable
+                            var rowStuAttrib = dtStuAttributes.NewRow();
+                            rowStuAttrib["StudentAttributeId"] = AcademyCode + AcYear + "-" + item.G4SStuId.ToString() + "-" + stuAttrib.AttributeId.ToString();
+                            rowStuAttrib["StudentId"] = AcademyCode + AcYear + "-" + item.G4SStuId.ToString();
+                            rowStuAttrib["G4SStuId"] = item.G4SStuId;
+                            rowStuAttrib["AttributeId"] = stuAttrib.AttributeId;
+                            rowStuAttrib["Code"] = stuAttrib.Code;
+                            rowStuAttrib["Name"] = stuAttrib.Name;
+                            rowStuAttrib["IsSystem"] = stuAttrib.IsSystem;
+
+                            dtStuAttributes.Rows.Add(rowStuAttrib);
                         }
-                        //Populate Student Arribute DataTable
-                        var rowStuAttrib = dtStuAttributes.NewRow();
-                        rowStuAttrib["StudentAttributeId"] = AcademyCode + AcYear + "-" + item.G4SStuId.ToString() + "-" + stuAttrib.AttributeId.ToString();
-                        rowStuAttrib["StudentId"] = AcademyCode + AcYear + "-" + item.G4SStuId.ToString();
-                        rowStuAttrib["G4SStuId"] = item.G4SStuId;
-                        rowStuAttrib["AttributeId"] = stuAttrib.AttributeId;
-                        rowStuAttrib["Code"] = stuAttrib.Code;
-                        rowStuAttrib["Name"] = stuAttrib.Name;
-                        rowStuAttrib["IsSystem"] = stuAttrib.IsSystem;
-
-                        dtStuAttributes.Rows.Add(rowStuAttrib);
                     }
+                    
+
 
                     //Populate Education Details DataTable
 
@@ -270,7 +275,15 @@ namespace G4SApiSync.Client.EndPoints
 
             catch(Exception e)
             {
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, DataSet = AcYear, EndPoint = _endPoint, Exception = e.Message, InnerException = e.InnerException.Message, LoggedAt = DateTime.Now, Result = false });
+                if (e.InnerException != null)
+                {
+                    _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, DataSet = AcYear, EndPoint = _endPoint, Exception = e.Message, InnerException = e.InnerException.Message, LoggedAt = DateTime.Now, Result = false });
+                }
+                else
+                {
+                    _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, DataSet = AcYear, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false });
+                }
+                
                 await _context.SaveChangesAsync();
                 return false;
             }
