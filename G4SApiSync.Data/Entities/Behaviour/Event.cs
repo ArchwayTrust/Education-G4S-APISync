@@ -40,7 +40,6 @@ namespace G4SApiSync.Data.Entities
         //Note default to NVARCHAR(MAX)
         public string HomeNotes { get; set; }
 
-        [MaxLength(50)]
         public string SchoolNotes { get; set; }
 
         public DateTime CreatedTimeStamp { get; set; }
