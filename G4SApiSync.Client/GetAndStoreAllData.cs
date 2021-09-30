@@ -141,6 +141,16 @@ namespace G4SApiSync.Client
                 }
             }
 
+            //GET Teachers
+            foreach (var academy in _academyList)
+            {
+                using (var getTeachers = new GETTeachers(_context, _connectionString))
+                {
+                    bool result = await getTeachers.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getTeachers.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                }
+            }
+
             return syncResults;
         }
 
