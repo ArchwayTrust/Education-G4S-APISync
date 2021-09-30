@@ -19,7 +19,7 @@ namespace G4SApiSync.Data.Entities
 
         public int BehEventTypeId { get; set; }
 
-        //[Column(TypeName = "Date")]
+        //[Column(TypeName = "Datetime")]
         public DateTime EventDate { get; set; }
         
         public bool Closed { get; set; }
@@ -43,10 +43,12 @@ namespace G4SApiSync.Data.Entities
 
         public string SchoolNotes { get; set; }
 
+        //[Column(TypeName = "Datetime")]
         public DateTime CreatedTimeStamp { get; set; }
 
         public int CreatedByStaffId { get; set; }
 
+        //[Column(TypeName = "Datetime")]
         public DateTime ModifiedTimeStamp { get; set; }
 
         [MaxLength(100)]

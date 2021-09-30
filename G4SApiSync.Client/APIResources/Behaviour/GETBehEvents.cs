@@ -101,7 +101,7 @@ namespace G4SApiSync.Client.EndPoints
                     row["DataSet"] = AcYear;
                     row["Academy"] = AcademyCode;
                     row["BehEventTypeId"] = behEventDTO.BehEventTypeId;
-                    row["EventDate"] = behEventDTO.EventDate.Date;
+                    row["EventDate"] = behEventDTO.EventDate;
                     row["Closed"] = behEventDTO.Closed;
                     row["Cancelled"] = behEventDTO.Cancelled;
                     row["RoomName"] = behEventDTO.RoomName;
@@ -110,9 +110,9 @@ namespace G4SApiSync.Client.EndPoints
                     row["YearGroup"] = behEventDTO.YearGroup;
                     row["HomeNotes"] = behEventDTO.HomeNotes;
                     row["SchoolNotes"] = behEventDTO.SchoolNotes;
-                    row["CreatedTimeStamp"] = behEventDTO.CreatedTimestamp.Date;
+                    row["CreatedTimeStamp"] = behEventDTO.CreatedTimestamp;
                     row["CreatedByStaffId"] = behEventDTO.CreatedByStaffId;
-                    row["ModifiedTimeStamp"] = behEventDTO.ModifiedTimestamp.Date;
+                    row["ModifiedTimeStamp"] = behEventDTO.ModifiedTimestamp;
                     row["ModifiedByStaffId"] = behEventDTO.ModifiedByStaffId;
 
                     if (behEventDTO.BehEventStudents != null) //Should be able to remove later.
@@ -177,20 +177,20 @@ namespace G4SApiSync.Client.EndPoints
                 await _context.SaveChangesAsync();
                 return true;
         }
-            catch(Exception e)
+            catch (Exception e)
             {
                 if (e.InnerException != null)
                 {
                     _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, DataSet = AcYear, EndPoint = _endPoint, Exception = e.Message, InnerException = e.InnerException.Message, LoggedAt = DateTime.Now, Result = false });
                 }
                 else
-        {
-            _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, DataSet = AcYear, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false });
-        }
+                {
+                    _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, DataSet = AcYear, EndPoint = _endPoint, Exception = e.Message, LoggedAt = DateTime.Now, Result = false });
+                }
 
-        await _context.SaveChangesAsync();
-        return false;
-    }
+                await _context.SaveChangesAsync();
+                return false;
+            }
 }
 
 
