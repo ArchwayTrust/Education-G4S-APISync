@@ -5,11 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace G4SApiSync.Data.Entities
 {
-    public class Event
+    public class BehEvent
     {
-        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
-        //[Key]
-        public int EventId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
+        public int BehEventId { get; set; }
 
         [MaxLength(4)]
         public string DataSet { get; set; }
@@ -17,7 +17,7 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(10)]
         public string Academy { get; set; }
 
-        public int EventTypeId { get; set; }
+        public int BehEventTypeId { get; set; }
 
         [Column(TypeName = "Date")]
         public DateTime EventDate { get; set; }
@@ -35,6 +35,7 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(50)]
         public string SubjectCode { get; set; }
 
+        [MaxLength(10)]
         public string YearGroup { get; set; }
 
         //Note default to NVARCHAR(MAX)
@@ -44,12 +45,17 @@ namespace G4SApiSync.Data.Entities
 
         public DateTime CreatedTimeStamp { get; set; }
 
-        public int CreatedByStaffId { get; set; }
+        [MaxLength(100)]
+        public String CreatedByStaffId { get; set; }
 
         public DateTime ModifiedTimeStamp { get; set; }
 
-        public int ModifiedByStaffId { get; set; }
+        [MaxLength(100)]
+        public String ModifiedByStaffId { get; set; }
 
-        public virtual ICollection<EventStduent> EventStduents { get; set; }
+        public virtual ICollection<BehEventStudent> EventStudents { get; set; }
+
+        public virtual BehEventType BehEventType { get; set; }
+
     }
 }

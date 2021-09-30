@@ -5,11 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace G4SApiSync.Data.Entities
 {
-    public class EventStduent
+    public class BehEventStudent
     {
-        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
-        //[Key]
-        public int EventId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
+        public int BehEventId { get; set; }
 
         public int G4SStuId { get; set; }
 
@@ -21,7 +21,7 @@ namespace G4SApiSync.Data.Entities
 
         [MaxLength(10)]
         public string Academy { get; set; }
-
-        public virtual Event Event { get; set; }
+        public virtual BehEvent BehEvent { get; set; }
+    
     }
 }
