@@ -64,7 +64,7 @@ namespace G4SApiSync.Client.EndPoints
                     var row = dtStaff.NewRow();
                     row["StaffId"] = stfDTO.StaffId;
                     row["Academy"] = AcademyCode;
-                    row["EmailAddress"] = AcademyCode;
+                    row["EmailAddress"] = stfDTO.EmailAddress;
                     row["FirstName"] = stfDTO.FirstName;
                     row["LastName"] = stfDTO.LastName;
                     row["DisplayName"] = stfDTO.DisplayName;
@@ -74,8 +74,14 @@ namespace G4SApiSync.Client.EndPoints
                     dtStaff.Rows.Add(row);
                 }
 
-                //Remove exisiting departments from SQL database
-                var currentStaff = _context.Staff.Where(i => i.Academy == AcademyCode);
+                //Remove exisiting staff from SQL database
+
+                //This works different from rest of end points because API only gives current staff list.
+                //Creates a list of staffids from API and only deletes them for the refresh.
+                var listIds = staffDTO.Select(c => c.StaffId).ToList();
+
+                var currentStaff = _context.Staff.Where(i => listIds.Contains(i.StaffId));
+                
                 _context.Staff.RemoveRange(currentStaff);
                 await _context.SaveChangesAsync();
 
