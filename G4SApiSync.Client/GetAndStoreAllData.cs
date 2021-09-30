@@ -23,6 +23,7 @@ namespace G4SApiSync.Client
             _academyList = _context.AcademySecurity.Where(i => i.Active == true).ToList();
         }
 
+        // Sync Students
         public async Task<List<SyncResult>> SyncStudents()
         {
             List<SyncResult> syncResults = new List<SyncResult>();
@@ -343,6 +344,26 @@ namespace G4SApiSync.Client
             }
 
             return syncResults;
+        }
+
+        //Sync Behaviour
+        public async Task<List<SyncResult>> SyncBehaviour()
+        {
+            List<SyncResult> syncResults = new List<SyncResult>();
+
+            // GET Behaviour Classifications
+            foreach (var academy in _academyList)
+            {
+                using (var getBehClassifications = new GETBehClassifications(_context, _connectionString))
+                {
+                    bool result = await getBehClassifications.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehClassifications.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                }
+
+            }
+
+            return syncResults;
+
         }
     }
 }

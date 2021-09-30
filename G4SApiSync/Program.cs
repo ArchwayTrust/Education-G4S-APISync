@@ -81,6 +81,14 @@ namespace G4SApiSync
                 Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
             }
 
+            //Sync Behaviour end points.
+            results = await GetData.SyncBehaviour();
+
+            foreach (var result in results)
+            {
+                Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
+            }
+
         }
 
         private static void ConfigureServices(IServiceCollection services)
