@@ -38,6 +38,8 @@ namespace G4SApiSync.Data
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<GroupStudent> GroupStudents { get; set; }
+        public virtual DbSet<Teacher> Teachers { get; set; }
+
 
         //Attainment
         public virtual DbSet<PriorAttainment> PriorAttainment { get; set; }
