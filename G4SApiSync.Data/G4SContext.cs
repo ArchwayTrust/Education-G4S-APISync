@@ -262,7 +262,7 @@ namespace G4SApiSync.Data
             modelBuilder.Entity<BehEvent>()
                  .HasOne<BehEventType>(b => b.BehEventType)
                  .WithMany(c => c.BehEvents)
-                 .HasForeignKey(s => s.BehEventId)
+                 .HasForeignKey(s => s.BehEventTypeId)
                  .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<BehEventType>()
