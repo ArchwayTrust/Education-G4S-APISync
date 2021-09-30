@@ -351,27 +351,27 @@ namespace G4SApiSync.Client
         {
             List<SyncResult> syncResults = new List<SyncResult>();
 
-            //// GET Behaviour Classifications
-            //foreach (var academy in _academyList)
-            //{
-            //    using (var getBehClassifications = new GETBehClassifications(_context, _connectionString))
-            //    {
-            //        bool result = await getBehClassifications.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-            //        syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehClassifications.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-            //    }
+            // GET Behaviour Classifications
+            foreach (var academy in _academyList)
+            {
+                using (var getBehClassifications = new GETBehClassifications(_context, _connectionString))
+                {
+                    bool result = await getBehClassifications.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehClassifications.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                }
 
-            //}
+            }
 
-            //// GET Behaviour Event Types
-            //foreach (var academy in _academyList)
-            //{
-            //    using (var getBehEventTypes = new GETBehEventTypes(_context, _connectionString))
-            //    {
-            //        bool result = await getBehEventTypes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-            //        syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehEventTypes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-            //    }
+            // GET Behaviour Event Types
+            foreach (var academy in _academyList)
+            {
+                using (var getBehEventTypes = new GETBehEventTypes(_context, _connectionString))
+                {
+                    bool result = await getBehEventTypes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehEventTypes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                }
 
-            //}
+            }
 
             //GET Behaviour Events
             foreach (var academy in _academyList)
@@ -418,6 +418,25 @@ namespace G4SApiSync.Client
 
             return syncResults;
 
+        }
+
+
+        //Sync Behaviour
+        public async Task<List<SyncResult>> SyncUsers()
+        {
+            List<SyncResult> syncResults = new List<SyncResult>();
+
+            // GET Staff
+            foreach (var academy in _academyList)
+            {
+                using (var getStaff = new GETStaff(_context, _connectionString))
+                {
+                    bool result = await getStaff.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStaff.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = "N/A" });
+                }
+
+            }
+            return syncResults;
         }
     }
 }
