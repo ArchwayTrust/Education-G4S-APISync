@@ -15,13 +15,13 @@ using Microsoft.Data.SqlClient;
 namespace G4SApiSync.Client.EndPoints
 {
     [JsonObject]
-    public class GETBehClassifications : IEndPoint<BehClassificationDTO>, IDisposable
+    public class GETBehEventTypes : IEndPoint<BehEventTypeDTO>, IDisposable
     {
-        const string _endPoint = "/customer/v1/academic-years/{academicYear}/behaviour/classification";
+        const string _endPoint = "/customer/v1/academic-years/{academicYear}/behaviour/event-types";
         private string _connectionString;
         private G4SContext _context;
 
-        public GETBehClassifications(G4SContext context, string connectionString)
+        public GETBehEventTypes(G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
@@ -31,8 +31,8 @@ namespace G4SApiSync.Client.EndPoints
             get { return _endPoint; }
         }
 
-        [JsonProperty("classification")]
-        public IEnumerable<BehClassificationDTO> DTOs { get; set; }
+        [JsonProperty("eventtypes")]
+        public IEnumerable<BehEventTypeDTO> DTOs { get; set; }
 
         [JsonProperty("has_more")]
         public bool HasMore { get; set; }
@@ -45,46 +45,58 @@ namespace G4SApiSync.Client.EndPoints
             try
             {
                 //Get data from G4S API
-                APIRequest<GETBehClassifications, BehClassificationDTO> getClassifications = new APIRequest<GETBehClassifications, BehClassificationDTO>(_endPoint, APIKey, AcYear);
-                var behClassificationsDTO = getClassifications.ToList();
+                APIRequest<GETBehEventTypes, BehEventTypeDTO> getEventTypes = new APIRequest<GETBehEventTypes, BehEventTypeDTO>(_endPoint, APIKey, AcYear);
+                var behEventTypesDTO = getEventTypes.ToList();
 
                 //Create datatable for subjects.
-                var dtClassification = new DataTable();
-                dtClassification.Columns.Add("BehClassificationId", typeof(int));
-                dtClassification.Columns.Add("DataSet", typeof(String));
-                dtClassification.Columns.Add("Academy", typeof(String));
-                dtClassification.Columns.Add("Name", typeof(String));
-                dtClassification.Columns.Add("Score", typeof(int));
+                var dtEventTypes = new DataTable();
+                dtEventTypes.Columns.Add("BehEventTypeId", typeof(int));
+                dtEventTypes.Columns.Add("DataSet", typeof(String));
+                dtEventTypes.Columns.Add("Academy", typeof(String));
+                dtEventTypes.Columns.Add("BehClassificationId", typeof(int));
+                dtEventTypes.Columns.Add("Code", typeof(String));
+                dtEventTypes.Columns.Add("Name", typeof(String));
+                dtEventTypes.Columns.Add("Alias", typeof(String));
+                dtEventTypes.Columns.Add("Significance", typeof(String));
+                dtEventTypes.Columns.Add("Prioritise", typeof(bool));
 
                 //Write the DTOs into the datatable.
-                foreach (var classificationDTO in behClassificationsDTO)
+                foreach (var behEventTypeDTO in behEventTypesDTO)
                 {
-                    var row = dtClassification.NewRow();
-                    row["BehClassificationId"] = classificationDTO.BehClassificationId;
+                    var row = dtEventTypes.NewRow();
+                    row["BehEventTypeId"] = behEventTypeDTO.BehEventTypeId;
                     row["DataSet"] = AcYear;
                     row["Academy"] = AcademyCode;
-                    row["Name"] = classificationDTO.Name;
-                    row["Score"] = classificationDTO.Score;
+                    row["BehClassificationId"] = behEventTypeDTO.BehClassificationId;
+                    row["Code"] = behEventTypeDTO.Code;
+                    row["Name"] = behEventTypeDTO.Name;
+                    row["Alias"] = behEventTypeDTO.Alias;
+                    row["Significance"] = behEventTypeDTO.Significance;
+                    row["Prioritise"] = behEventTypeDTO.Prioritise;
 
-                    dtClassification.Rows.Add(row);
-                }
+                    dtEventTypes.Rows.Add(row);
+                };
 
-                //Remove exisitng Behaviour Classifications from SQL database
-                var currentClassifications = _context.BehClassifications.Where(i => i.DataSet == AcYear && i.Academy == AcademyCode);
-                _context.BehClassifications.RemoveRange(currentClassifications);
+                //Remove exisitng Behaviour Event Types from SQL database
+                var currentEventTypes = _context.BehEventTypes.Where(i => i.DataSet == AcYear && i.Academy == AcademyCode);
+                _context.BehEventTypes.RemoveRange(currentEventTypes);
                 await _context.SaveChangesAsync();
 
                 //Write datatable to sql
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {
-                    sqlBulk.ColumnMappings.Add("BehClassificationId", "BehClassificationId");
+                    sqlBulk.ColumnMappings.Add("BehEventTypeId", "BehEventTypeId");
                     sqlBulk.ColumnMappings.Add("DataSet", "DataSet");
                     sqlBulk.ColumnMappings.Add("Academy", "Academy");
+                    sqlBulk.ColumnMappings.Add("BehClassificationId", "BehClassificationId");
+                    sqlBulk.ColumnMappings.Add("Code", "Code");
                     sqlBulk.ColumnMappings.Add("Name", "Name");
-                    sqlBulk.ColumnMappings.Add("Score", "Score");
+                    sqlBulk.ColumnMappings.Add("Alias", "Alias");
+                    sqlBulk.ColumnMappings.Add("Significance", "Significance");
+                    sqlBulk.ColumnMappings.Add("Prioritise", "Prioritise");
 
-                    sqlBulk.DestinationTableName = "g4s.BehClassifications";
-                    sqlBulk.WriteToServer(dtClassification);
+                    sqlBulk.DestinationTableName = "g4s.BehEventTypes";
+                    sqlBulk.WriteToServer(dtEventTypes);
                 }
 
                 _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, DataSet = AcYear });

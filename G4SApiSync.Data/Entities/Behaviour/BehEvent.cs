@@ -45,13 +45,12 @@ namespace G4SApiSync.Data.Entities
 
         public DateTime CreatedTimeStamp { get; set; }
 
-        [MaxLength(100)]
-        public String CreatedByStaffId { get; set; }
+        public int CreatedByStaffId { get; set; }
 
         public DateTime ModifiedTimeStamp { get; set; }
 
         [MaxLength(100)]
-        public String ModifiedByStaffId { get; set; }
+        public int ModifiedByStaffId { get; set; }
 
         public virtual ICollection<BehEventStudent> EventStudents { get; set; }
 
