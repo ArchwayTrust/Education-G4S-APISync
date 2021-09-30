@@ -85,8 +85,8 @@ namespace G4SApiSync.Client.EndPoints
                 }
 
                 //Remove exisitng departments from SQL database
-                var currentSubjects = _context.Subjects.Where(i => i.DataSet == AcYear && i.Academy == AcademyCode);
-                _context.Subjects.RemoveRange(currentSubjects);
+                var currentTeachers = _context.Teachers.Where(i => i.DataSet == AcYear && i.Academy == AcademyCode);
+                _context.Teachers.RemoveRange(currentTeachers);
                 await _context.SaveChangesAsync();
 
                 //Write datatable to sql
