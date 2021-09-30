@@ -69,6 +69,9 @@ namespace G4SApiSync.Data
         public virtual DbSet<BehEvent> BehEvents { get; set; }
         public virtual DbSet<BehEventStudent> BehEventStudents { get; set; }
 
+        //Users
+        public virtual DbSet<Staff> Staff { get; set; }
+
         //Fluent API Configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
