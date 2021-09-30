@@ -4,14 +4,16 @@ using G4SApiSync.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace G4SApiSync.Data.Migrations
 {
     [DbContext(typeof(G4SContext))]
-    partial class G4SContextModelSnapshot : ModelSnapshot
+    [Migration("20210930150154_Migration18")]
+    partial class Migration18
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,20 +40,11 @@ namespace G4SApiSync.Data.Migrations
                     b.Property<DateTime?>("AttendanceTo")
                         .HasColumnType("Date");
 
-                    b.Property<DateTime?>("BehaviourFrom")
-                        .HasColumnType("Date");
-
-                    b.Property<DateTime?>("BehaviourTo")
-                        .HasColumnType("Date");
-
                     b.Property<string>("CurrentAcademicYear")
                         .HasMaxLength(4)
                         .HasColumnType("nvarchar(4)");
 
                     b.Property<bool>("GetAttendance")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("GetBehaviour")
                         .HasColumnType("bit");
 
                     b.Property<int>("HighestYear")
@@ -1274,7 +1267,7 @@ namespace G4SApiSync.Data.Migrations
                     b.HasOne("G4SApiSync.Data.Entities.BehEventType", "BehEventType")
                         .WithMany("BehEvents")
                         .HasForeignKey("BehEventTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientNoAction)
                         .IsRequired();
 
                     b.Navigation("BehEventType");
@@ -1296,7 +1289,7 @@ namespace G4SApiSync.Data.Migrations
                     b.HasOne("G4SApiSync.Data.Entities.BehClassification", "BehClassification")
                         .WithMany("BehEventTypes")
                         .HasForeignKey("BehClassificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientNoAction)
                         .IsRequired();
 
                     b.Navigation("BehClassification");

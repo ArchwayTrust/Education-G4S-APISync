@@ -259,17 +259,17 @@ namespace G4SApiSync.Data
 
             //Behaviour
 
-            modelBuilder.Entity<BehEvent>()
-                 .HasOne<BehEventType>(b => b.BehEventType)
-                 .WithMany(c => c.BehEvents)
-                 .HasForeignKey(s => s.BehEventTypeId)
-                 .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<BehEvent>()
+            //     .HasOne<BehEventType>(b => b.BehEventType)
+            //     .WithMany(c => c.BehEvents)
+            //     .HasForeignKey(s => s.BehEventTypeId)
+            //     .OnDelete(DeleteBehavior.);
 
-            modelBuilder.Entity<BehEventType>()
-                 .HasOne<BehClassification>(b => b.BehClassification)
-                 .WithMany(c => c.BehEventTypes)
-                 .HasForeignKey(s => s.BehClassificationId)
-                 .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<BehEventType>()
+            //     .HasOne<BehClassification>(b => b.BehClassification)
+            //     .WithMany(c => c.BehEventTypes)
+            //     .HasForeignKey(s => s.BehClassificationId)
+            //     .OnDelete(DeleteBehavior.ClientNoAction);
 
             modelBuilder.Entity<BehEventStudent>()
                  .HasOne<BehEvent>(b => b.BehEvent)

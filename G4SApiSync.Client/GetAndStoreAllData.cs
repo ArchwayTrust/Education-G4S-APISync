@@ -373,6 +373,49 @@ namespace G4SApiSync.Client
 
             }
 
+            //GET Behaviour Events
+            foreach (var academy in _academyList)
+            {
+                bool getBehaviour = academy.GetBehaviour;
+                DateTime fromDate;
+                DateTime toDate;
+
+                if (academy.BehaviourFrom != null)
+                {
+                    fromDate = academy.BehaviourFrom.Value;
+                }
+                else
+                {
+                    fromDate = DateTime.Now.Date.AddDays(-7);
+                }
+
+                if (academy.BehaviourTo != null)
+                {
+                    toDate = academy.AttendanceTo.Value;
+                }
+                else
+                {
+                    toDate = DateTime.Now.Date;
+                }
+
+
+                if (getBehaviour)
+                {
+                    var dates = Enumerable.Range(0, (toDate - fromDate).Days + 1)
+                                    .Select(day => fromDate.AddDays(day));
+
+                    foreach (var dt in dates)
+                    {
+                        using (var getBehEvents = new GETBehEvents(_context, _connectionString))
+                        {
+                            bool result = await getBehEvents.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, null, null, null, dt);
+                            syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehEvents.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                        }
+                    }
+                }
+
+            }
+
             return syncResults;
 
         }

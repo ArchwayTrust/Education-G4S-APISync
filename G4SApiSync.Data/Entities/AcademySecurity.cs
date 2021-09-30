@@ -28,6 +28,14 @@ namespace G4SApiSync.Data.Entities
         [Column(TypeName = "Date")]
         public DateTime? AttendanceTo { get; set; }
 
+        public bool GetBehaviour { get; set; }
+
+        [Column(TypeName = "Date")]
+        public DateTime? BehaviourFrom { get; set; }
+
+        [Column(TypeName = "Date")]
+        public DateTime? BehaviourTo { get; set; }
+
 
 
     }
