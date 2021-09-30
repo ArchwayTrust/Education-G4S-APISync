@@ -46,7 +46,7 @@ namespace G4SApiSync.Client.DTOs
         [JsonProperty("created_by")]
         public int CreatedByStaffId { get; set; }
 
-        [JsonProperty("modified_timestamp")]
+        [JsonProperty("modified_time_stamp")]
         public DateTime ModifiedTimestamp { get; set; }
 
         [JsonProperty("modified_by")]
