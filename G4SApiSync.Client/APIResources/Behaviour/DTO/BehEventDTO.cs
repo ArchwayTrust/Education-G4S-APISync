@@ -53,7 +53,7 @@ namespace G4SApiSync.Client.DTOs
         public int ModifiedByStaffId{ get; set; }
 
         [JsonProperty("student_ids")]
-        public IEnumerable<BehEventStudentDTO> BehEventStudents { get; set; }
+        public IEnumerable<int> BehEventStudents { get; set; }
 
     }
 }

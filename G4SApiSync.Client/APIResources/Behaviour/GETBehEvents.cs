@@ -73,13 +73,13 @@ namespace G4SApiSync.Client.EndPoints
                 var colCreatedDate = new DataColumn
                 {
                     DataType = System.Type.GetType("System.DateTime"),
-                    ColumnName = "CreatedDate"
+                    ColumnName = "CreatedTimeStamp"
                 };
 
                 var colModifiedDate = new DataColumn
                 {
                     DataType = System.Type.GetType("System.DateTime"),
-                    ColumnName = "ModifiedDate"
+                    ColumnName = "ModifiedTimeStamp"
                 };
 
                 dtBehEvents.Columns.Add(colEventDate);
@@ -97,7 +97,7 @@ namespace G4SApiSync.Client.EndPoints
                 {
                     var row = dtBehEvents.NewRow();
                     
-                    row["BehEventId"] = AcYear;
+                    row["BehEventId"] = behEventDTO.BehEventId;
                     row["DataSet"] = AcYear;
                     row["Academy"] = AcademyCode;
                     row["BehEventTypeId"] = behEventDTO.BehEventTypeId;
@@ -115,17 +115,21 @@ namespace G4SApiSync.Client.EndPoints
                     row["ModifiedTimeStamp"] = behEventDTO.ModifiedTimestamp.Date;
                     row["ModifiedByStaffId"] = behEventDTO.ModifiedByStaffId;
 
-                    foreach (var behEventStuDTO in behEventDTO.BehEventStudents)
+                    if (behEventDTO.BehEventStudents != null) //Should be able to remove later.
                     {
-                        var stuRow = dtEventStus.NewRow();
-                        stuRow["BehEventId"] = behEventDTO.BehEventId;
-                        stuRow["StudentId"] = AcademyCode + AcYear + "-" + behEventStuDTO.G4SStudentId.ToString();
-                        stuRow["G4SStuId"] = behEventStuDTO.G4SStudentId;
+                        foreach (int g4sStuId in behEventDTO.BehEventStudents)
+                        {
+                            var stuRow = dtEventStus.NewRow();
+                            stuRow["BehEventId"] = behEventDTO.BehEventId;
+                            stuRow["StudentId"] = AcademyCode + AcYear + "-" + g4sStuId.ToString();
+                            stuRow["G4SStuId"] = g4sStuId;
 
-                        dtEventStus.Rows.Add(stuRow);
+                            dtEventStus.Rows.Add(stuRow);
+                        }
+
+                        dtBehEvents.Rows.Add(row);
                     }
 
-                    dtBehEvents.Rows.Add(row);
                 }
 
                 var currentBehEvents = _context.BehEvents.Where(i => i.DataSet == AcYear && i.Academy == AcademyCode && i.EventDate == Date);
