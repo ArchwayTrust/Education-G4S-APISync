@@ -277,6 +277,9 @@ namespace G4SApiSync.Data
                  .HasForeignKey(s => s.BehEventId)
                  .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<BehEventStudent>()
+                   .HasKey(pc => new { pc.BehEventId, pc.StudentId });
+
             //API Keys
             modelBuilder.Entity<AcademySecurity>()
                 .ToTable("AcademySecurity", "sec");

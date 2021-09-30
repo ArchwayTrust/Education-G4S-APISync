@@ -362,6 +362,17 @@ namespace G4SApiSync.Client
 
             }
 
+            // GET Behaviour Event Types
+            foreach (var academy in _academyList)
+            {
+                using (var getBehEventTypes = new GETBehEventTypes(_context, _connectionString))
+                {
+                    bool result = await getBehEventTypes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehEventTypes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                }
+
+            }
+
             return syncResults;
 
         }
