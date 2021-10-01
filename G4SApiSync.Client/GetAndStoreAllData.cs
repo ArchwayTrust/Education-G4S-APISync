@@ -313,6 +313,49 @@ namespace G4SApiSync.Client
 
             }
 
+            //GET Session Attendance
+            foreach (var academy in _academyList)
+            {
+                bool getAttendance = academy.GetAttendance;
+                DateTime fromDate;
+                DateTime toDate;
+
+                if (academy.AttendanceFrom != null)
+                {
+                    fromDate = academy.AttendanceFrom.Value;
+                }
+                else
+                {
+                    fromDate = DateTime.Now.Date.AddDays(-1);
+                }
+
+                if (academy.AttendanceTo != null)
+                {
+                    toDate = academy.AttendanceTo.Value;
+                }
+                else
+                {
+                    toDate = DateTime.Now.Date.AddDays(-1);
+                }
+
+
+                if (getAttendance)
+                {
+                    var dates = Enumerable.Range(0, (toDate - fromDate).Days + 1)
+                                    .Select(day => fromDate.AddDays(day));
+
+                    foreach (var dt in dates)
+                    {
+                        using (var getStudentSessionMarks = new GETStudentSessionMarks(_context, _connectionString))
+                        {
+                            bool result = await getStudentSessionMarks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, null, null, null, dt);
+                            syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentSessionMarks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                        }
+                    }
+                }
+
+            }
+
             return syncResults;
         }
 

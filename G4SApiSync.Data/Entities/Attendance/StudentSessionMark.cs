@@ -9,6 +9,8 @@ namespace G4SApiSync.Data.Entities
     [Index(nameof(Date), nameof(Session))]
     [Index(nameof(StudentId))]
     [Index(nameof(Academy), nameof(DataSet))]
+    [Index(nameof(SessionMarkId))]
+    [Index(nameof(SessionAliasId))]
     public class StudentSessionMark
     {
         [MaxLength(4)]
@@ -32,7 +34,7 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(100)]
         public string SessionAliasId { get; set; }
 
-        public int SessionMinutesLates { get; set; }
+        public int? SessionMinutesLate { get; set; }
 
         public string SessionNotes { get; set; }
 
