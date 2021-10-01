@@ -27,3 +27,9 @@ We let G4SApiSync run on a schedule using Task Scheduler on the server hosting t
 
 ## Historic Data
 You can change the current accademic year field in sec.AcademySecurity to get data from previous years. It is all tagged in the database so doesn't over write.
+
+## Behaviour Data
+To enable behaviour data you need to use SSMS to edit sec.AcademySecurity.
+  1. Change GetBehaviour to True.
+  2. If BehaviourFrom and BehaviorTo are left NULL then it will sync the last 7 days.
+  3. If you enter a date range within the currently selected dataset it will get behaviour for those dates.
