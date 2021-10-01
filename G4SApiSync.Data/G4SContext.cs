@@ -56,8 +56,8 @@ namespace G4SApiSync.Data
         public virtual DbSet<StudentSessionSummary> StudentSessionSummaries { get; set; }
         public virtual DbSet<AttendanceCode> AttendanceCodes { get; set; }
         public virtual DbSet<AttendanceAliasCode> AttendanceAliasCodes { get; set; }
-
         public virtual DbSet<StudentLessonMark> StudentLessonMarks { get; set; }
+        public virtual DbSet<StudentSessionMark> StudentSessionMarks { get; set; }
 
         //Timetables
         public virtual DbSet<Period> Periods { get; set; }
@@ -258,6 +258,9 @@ namespace G4SApiSync.Data
 
             modelBuilder.Entity<StudentLessonMark>()
                 .HasKey(pc => new { pc.StudentId, pc.Date, pc.ClassId });
+
+            modelBuilder.Entity<StudentSessionMark>()
+                .HasKey(pc => new { pc.StudentId, pc.Date, pc.Session });
 
 
             //Behaviour
