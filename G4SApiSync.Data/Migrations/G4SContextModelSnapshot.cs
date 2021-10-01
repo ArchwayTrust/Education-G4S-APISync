@@ -251,14 +251,14 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedTimeStamp")
-                        .HasColumnType("Datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DataSet")
                         .HasMaxLength(4)
                         .HasColumnType("nvarchar(4)");
 
                     b.Property<DateTime>("EventDate")
-                        .HasColumnType("Datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("GroupName")
                         .HasMaxLength(200)
@@ -272,7 +272,7 @@ namespace G4SApiSync.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ModifiedTimeStamp")
-                        .HasColumnType("Datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("RoomName")
                         .HasMaxLength(200)

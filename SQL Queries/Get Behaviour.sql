@@ -13,8 +13,6 @@ SELECT
 	e.GroupName,
 	et.Significance,
 	e.EventDate AS [Event Date],
-	e.CreatedTimeStamp,
-	e.ModifiedTimeStamp,
 	s.FirstName AS [Created by First Name],
 	s.LastName AS [Created by Last Name],
 	s.EmailAddress AS [Created By Email],
@@ -29,5 +27,3 @@ LEFT JOIN g4s.Staff AS s ON s.StaffId = e.CreatedByStaffId
 LEFT JOIN g4s.BehEventStudents AS bs ON bs.BehEventId = e.BehEventId
 LEFT JOIN g4s.Students AS st ON bs.StudentId = st.StudentId
 LEFT JOIN g4s.EducationDetails AS ed ON ed.StudentId = st.StudentId
-
-WHERE e.EventDate  >= '2021-09-27'
