@@ -32,10 +32,10 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(100)]
         public string PreferredLastName { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(100)]
         public string Initials { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(100)]
         public string Code { get; set; }
 
     }

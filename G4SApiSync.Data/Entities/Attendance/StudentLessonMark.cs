@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace G4SApiSync.Data.Entities
 {
+    [Index(nameof(Date))]
+    [Index(nameof(StudentId))]
     public class StudentLessonMark
     {
         [MaxLength(4)]

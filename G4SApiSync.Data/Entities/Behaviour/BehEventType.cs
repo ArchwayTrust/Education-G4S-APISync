@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace G4SApiSync.Data.Entities
 {
+    [Index(nameof(BehClassificationId))]
     public class BehEventType
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -22,7 +25,7 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(50)]
         public string Code { get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(250)]
         public string Name { get; set; }
 
         [MaxLength(100)]

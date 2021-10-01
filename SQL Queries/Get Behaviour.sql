@@ -1,3 +1,7 @@
+CREATE OR ALTER VIEW g4s.v_Behaviour
+
+AS
+
 SELECT 
 	e.Academy,
 	e.DataSet,
@@ -26,4 +30,4 @@ LEFT JOIN g4s.BehClassifications AS bc ON bc.BehClassificationId = et.BehClassif
 LEFT JOIN g4s.Staff AS s ON s.StaffId = e.CreatedByStaffId
 LEFT JOIN g4s.BehEventStudents AS bs ON bs.BehEventId = e.BehEventId
 LEFT JOIN g4s.Students AS st ON bs.StudentId = st.StudentId
-LEFT JOIN g4s.EducationDetails AS ed ON ed.StudentId = st.StudentId
+LEFT JOIN g4s.EducationDetails AS ed ON ed.StudentId = st.StudentId;

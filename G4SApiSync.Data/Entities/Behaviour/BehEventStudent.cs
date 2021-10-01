@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace G4SApiSync.Data.Entities
 {
+    [Index(nameof(StudentId))]
     public class BehEventStudent
     {
         public int BehEventId { get; set; }
