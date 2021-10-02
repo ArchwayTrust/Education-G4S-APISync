@@ -20,7 +20,9 @@ namespace G4SApiSync.Data.Entities
         public int LowestYear { get; set; }
         public int HighestYear { get; set; }
 
-        public bool GetAttendance { get; set; }
+        public bool GetLessonAttendance { get; set; }
+
+        public bool GetSessionAttendance { get; set; }
 
         [Column(TypeName = "Date")]
         public DateTime? AttendanceFrom { get; set; }

@@ -273,7 +273,7 @@ namespace G4SApiSync.Client
             //GET Lesson Attendance
             foreach (var academy in _academyList)
             {
-                bool getAttendance = academy.GetAttendance;
+                bool getAttendance = academy.GetLessonAttendance;
                 DateTime fromDate;
                 DateTime toDate;
 
@@ -316,7 +316,7 @@ namespace G4SApiSync.Client
             //GET Session Attendance
             foreach (var academy in _academyList)
             {
-                bool getAttendance = academy.GetAttendance;
+                bool getAttendance = academy.GetSessionAttendance;
                 DateTime fromDate;
                 DateTime toDate;
 
@@ -326,7 +326,7 @@ namespace G4SApiSync.Client
                 }
                 else
                 {
-                    fromDate = DateTime.Now.Date.AddDays(-1);
+                    fromDate = DateTime.Now.Date.AddDays(-7);
                 }
 
                 if (academy.AttendanceTo != null)
@@ -335,7 +335,7 @@ namespace G4SApiSync.Client
                 }
                 else
                 {
-                    toDate = DateTime.Now.Date.AddDays(-1);
+                    toDate = DateTime.Now;
                 }
 
 
