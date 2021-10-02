@@ -50,6 +50,9 @@
     <None Update="SQL Scripts\CreateSessionAttendanceView.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="SQL Scripts\CreateStudentView.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="SQL Scripts\SetSimpleRecovery.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
