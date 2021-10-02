@@ -18,6 +18,7 @@ You will need a Microsoft SQL Server and initially an AD user account with priva
 ## Adding API keys into SQL
 1. Connect to your SQL database using SSMS, right click on the table called sec.AcademySecurity and then "Edit Top 100".
 2. Add a row for each academy. "CurrentAcademicYear" for 2020/2021 would be 2021.
+3. AcademyCode in this table should be a unique aconym for the academy.
 
 ## First data sync
 Run G4SApiSync.exe with an account that has read/right privaledges on the database.
@@ -33,3 +34,15 @@ To enable behaviour data you need to use SSMS to edit sec.AcademySecurity.
   1. Change GetBehaviour to True.
   2. If BehaviourFrom and BehaviorTo are left NULL then it will sync the last 7 days.
   3. If you enter a date range within the currently selected dataset it will get behaviour for those dates.
+
+## Session Attendance Data
+To enable session attendance data you need to use SSMS to edit sec.AcademySecurity.
+  1. Change GetSessionAttendance to True.
+  2. If AttendanceFrom and AttendanceTo are left NULL then it will sync the last 7 days.
+  3. If you enter a date range within the currently selected dataset it will get data for those dates.
+
+  ## Lesson Attendance Data
+To enable session attendance data you need to use SSMS to edit sec.AcademySecurity.
+  1. Change GetLessonAttendance to True.
+  2. If AttendanceFrom and AttendanceTo are left NULL then it will sync yesterdays lesson attendance data.
+  3. If you enter a date range within the currently selected dataset it will get data for those dates.
