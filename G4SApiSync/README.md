@@ -46,3 +46,8 @@ To enable session attendance data you need to use SSMS to edit sec.AcademySecuri
   1. Change GetLessonAttendance to True.
   2. If AttendanceFrom and AttendanceTo are left NULL then it will sync yesterdays lesson attendance data.
   3. If you enter a date range within the currently selected dataset it will get data for those dates.
+
+## SQL Scripts
+After initial setup you should run scripts in the SQL Scripts folder. They will:
+  1. Create views to help query database.
+  2. Set recovery mode simple which will stop the log file getting too large.
