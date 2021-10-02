@@ -1,10 +1,13 @@
-CREATE OR ALTER VIEW g4s.v_SessionAttendance
+USE G4S;
+GO
 
+CREATE OR ALTER VIEW g4s.v_SessionAttendance
 AS
 
 SELECT
 	ed.DataSet,
 	ed.Academy,
+	s.StudentId,
 	ed.UPN,
 	sm.[Date],
 	sm.[Session],

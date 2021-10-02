@@ -1,10 +1,13 @@
-CREATE OR ALTER VIEW g4s.v_Behaviour
+USE G4S;
+GO
 
+CREATE OR ALTER VIEW g4s.v_Behaviour
 AS
 
 SELECT 
 	e.Academy,
 	e.DataSet,
+	st.StudentId,
 	ed.UPN,
 	st.PreferredFirstName AS [Student First Name],
 	st.PreferredLastName AS [Student Last Name],

@@ -47,10 +47,10 @@
     <None Update="SQL Scripts\CreateBehaviourView.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="SQL Scripts\CreateSessionAttendanceView.sql">
+    <None Update="SQL Scripts\CreateScalarUDFsForAttributes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="SQL Scripts\CreateStudentView.sql">
+    <None Update="SQL Scripts\CreateSessionAttendanceView.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="SQL Scripts\SetSimpleRecovery.sql">
