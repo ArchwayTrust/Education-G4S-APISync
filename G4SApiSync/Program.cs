@@ -20,17 +20,23 @@ namespace G4SApiSync
             var services = new ServiceCollection();
             ConfigureServices(services);
 
-            //Automatically migrate the database to latest version
-            //This is already handled in ConfigureServices
-            //_context.Database.Migrate();
+            //Check for command line arguments. If not ATT then run full sync.
+            if (args.Length > 1)
+            {
+                if (args[1] == "ATT")
+                {
+                    RunApiAttendanceSync().Wait();
+                }
+            }
+            {
+                RunApiSync().Wait();
+            }
             
-            //Run main sync code
-            RunApiSync().Wait();
         }
 
         static private async Task RunApiSync()
         {
-            Console.WriteLine("Running API Sync. This will take some time." + Environment.NewLine);
+            Console.WriteLine("Running API Full Sync. This will take some time." + Environment.NewLine);
             var GetData = new GetAndStoreAllData(_context, _connectionString);
 
             //Sync Student end points.
@@ -91,6 +97,21 @@ namespace G4SApiSync
 
             //Sync User end points.
             results = await GetData.SyncUsers();
+
+            foreach (var result in results)
+            {
+                Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
+            }
+
+        }
+
+        static private async Task RunApiAttendanceSync()
+        {
+            Console.WriteLine("Running API Attendance Sync. This will take some time." + Environment.NewLine);
+            var GetData = new GetAndStoreAllData(_context, _connectionString);
+
+            //Sync Attendance end points.
+            var results = await GetData.SyncAttendance();
 
             foreach (var result in results)
             {
