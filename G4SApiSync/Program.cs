@@ -21,15 +21,16 @@ namespace G4SApiSync
             ConfigureServices(services);
 
             //Check for command line arguments. If not ATT then run full sync.
-            if (args.Length > 1)
+            if (args.Length > 0)
             {
-                if (args[1] == "ATT")
+                if (args[0] == "ATT")
                 {
                     RunApiAttendanceSync().Wait();
                 }
             }
+            else
             {
-                RunApiSync().Wait();
+                    RunApiSync().Wait();
             }
             
         }
