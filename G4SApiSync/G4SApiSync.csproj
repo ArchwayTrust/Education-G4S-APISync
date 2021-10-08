@@ -8,7 +8,7 @@
     <Copyright>Archway Learning Trust</Copyright>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/ArchwayTrust/Education-G4S-APISync/</PackageProjectUrl>
-    <Version>3.1.0</Version>
+    <Version>3.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
