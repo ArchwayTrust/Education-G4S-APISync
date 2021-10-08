@@ -59,7 +59,6 @@ namespace G4SApiSync.Data.Entities
 
         public virtual ICollection<BehEventStudent> EventStudents { get; set; }
 
-        public virtual BehEventType BehEventType { get; set; }
 
     }
 }

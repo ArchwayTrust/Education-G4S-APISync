@@ -34,7 +34,6 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(100)]
         public string Significance { get; set; }
         public bool Prioritise { get; set; }
-        public virtual ICollection<BehEvent> BehEvents { get; set; }
 
         public virtual BehClassification BehClassification { get; set; }
 
