@@ -464,7 +464,7 @@ namespace G4SApiSync.Client
         }
 
 
-        //Sync Behaviour
+        //Sync Users
         public async Task<List<SyncResult>> SyncUsers()
         {
             List<SyncResult> syncResults = new List<SyncResult>();

@@ -5,6 +5,7 @@ CREATE OR ALTER VIEW g4s.v_Behaviour
 AS
 
 SELECT 
+	e.BehEventId,
 	e.Academy,
 	e.DataSet,
 	st.StudentId,
@@ -16,6 +17,7 @@ SELECT
 	et.Code AS [Event Code],
 	et.Name AS [Event Type],
 	e.SubjectCode,
+	sb.[Name] AS [Subject],
 	e.YearGroup,
 	e.GroupName,
 	et.Significance,
@@ -23,6 +25,7 @@ SELECT
 	s.FirstName AS [Created by First Name],
 	s.LastName AS [Created by Last Name],
 	s.EmailAddress AS [Created By Email],
+	e.SchoolNotes,
 	e.Cancelled,
 	e.Closed
 
@@ -33,4 +36,5 @@ LEFT JOIN g4s.BehClassifications AS bc ON bc.BehClassificationId = et.BehClassif
 LEFT JOIN g4s.Staff AS s ON s.StaffId = e.CreatedByStaffId
 LEFT JOIN g4s.BehEventStudents AS bs ON bs.BehEventId = e.BehEventId
 LEFT JOIN g4s.Students AS st ON bs.StudentId = st.StudentId
-LEFT JOIN g4s.EducationDetails AS ed ON ed.StudentId = st.StudentId;
+LEFT JOIN g4s.EducationDetails AS ed ON ed.StudentId = st.StudentId
+LEFT JOIN g4s.Subjects AS sb ON sb.Academy = e.Academy AND sb.Code = e.SubjectCode AND sb.YearGroup = e.YearGroup AND sb.DataSet = e.DataSet;
