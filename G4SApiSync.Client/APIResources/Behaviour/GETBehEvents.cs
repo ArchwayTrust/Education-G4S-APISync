@@ -136,6 +136,12 @@ namespace G4SApiSync.Client.EndPoints
                 _context.BehEvents.RemoveRange(currentBehEvents);
                 await _context.SaveChangesAsync();
 
+                //New code to prevent Id collisions.
+                List<int> BehEventIds = behEventsDTO.Select(o => o.BehEventId).ToList();
+                var remainingEventIds = from a in _context.BehEvents where BehEventIds.Contains(a.BehEventId) select a;
+                _context.BehEvents.RemoveRange(remainingEventIds);
+                await _context.SaveChangesAsync();
+
 
                 using (var sqlBulk = new SqlBulkCopy(_connectionString))
                 {

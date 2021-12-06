@@ -429,7 +429,7 @@ namespace G4SApiSync.Client
                 }
                 else
                 {
-                    fromDate = DateTime.Now.Date.AddDays(-7);
+                    fromDate = DateTime.Now.Date.AddDays(-14);
                 }
 
                 if (academy.BehaviourTo != null)
