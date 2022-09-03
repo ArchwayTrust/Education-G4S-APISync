@@ -62,6 +62,7 @@ namespace G4SApiSync.Data
         //Timetables
         public virtual DbSet<Period> Periods { get; set; }
         public virtual DbSet<TTClass> TTClasses { get; set; }
+        public virtual DbSet<Calendar> Calendar { get; set; }
 
         //Behaviour
         public virtual DbSet<BehClassification> BehClassifications { get; set; }
@@ -285,6 +286,10 @@ namespace G4SApiSync.Data
 
             modelBuilder.Entity<BehEventStudent>()
                    .HasKey(pc => new { pc.BehEventId, pc.StudentId });
+
+            //Timetables
+            modelBuilder.Entity<Calendar>()
+                .HasKey(pc => new { pc.Academy, pc.DataSet, pc.Date });
 
             //API Keys
             modelBuilder.Entity<AcademySecurity>()

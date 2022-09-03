@@ -386,6 +386,17 @@ namespace G4SApiSync.Client
 
             }
 
+            //GET Calendar
+            foreach (var academy in _academyList)
+            {
+                using (var getCalendar = new GETCalendar(_context, _connectionString))
+                {
+                    bool result = await getCalendar.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getCalendar.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                }
+
+            }
+
             return syncResults;
         }
 
