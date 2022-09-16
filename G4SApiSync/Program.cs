@@ -27,6 +27,11 @@ namespace G4SApiSync
                 {
                     RunApiAttendanceSync().Wait();
                 }
+
+                else if (args[0] == "BEH")
+                {
+                    RunApiBehaviourSync().Wait();
+                }
             }
             else
             {
@@ -113,6 +118,29 @@ namespace G4SApiSync
 
             //Sync Attendance end points.
             var results = await GetData.SyncAttendance();
+
+            foreach (var result in results)
+            {
+                Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
+            }
+
+        }
+
+        static private async Task RunApiBehaviourSync()
+        {
+            Console.WriteLine("Running API Behaviour Sync. This will take some time." + Environment.NewLine);
+            var GetData = new GetAndStoreAllData(_context, _connectionString);
+
+            //Sync Attendance end points.
+            var results = await GetData.SyncAttendance();
+
+            foreach (var result in results)
+            {
+                Console.WriteLine(result.LoggedAt + " " + result.AcademyCode + " - " + result.EndPoint + " - " + result.Result);
+            }
+
+            //Sync Behaviour end points.
+            results = await GetData.SyncBehaviour();
 
             foreach (var result in results)
             {
