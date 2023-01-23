@@ -32,7 +32,7 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(200)]
         public string RoomName { get; set; }
 
-        [MaxLength(200)]
+        [MaxLength(1000)]
         public string GroupName { get; set; }
         
         [MaxLength(50)]
