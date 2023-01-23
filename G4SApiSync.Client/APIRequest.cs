@@ -50,7 +50,7 @@ namespace G4SApiSync.Client
                 fullResource = pResource + "?cursor=" + HttpUtility.UrlEncode(cursor.ToString());
             }
 
-            var request = new RestRequest(fullResource, Method.GET);
+            var request = new RestRequest(fullResource, Method.Get);
             request.AddHeader("Authorization", "Bearer " + pBearer);
             request.AddParameter("academicYear", pAcYear);
 
