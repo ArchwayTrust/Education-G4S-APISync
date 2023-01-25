@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 namespace G4SApiSync.Client.EndPoints
 {
@@ -17,13 +18,15 @@ namespace G4SApiSync.Client.EndPoints
     public class GETPriorAttainment : IEndPoint<PriorAttainmentDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/attainment/prior-attainment";
-        private string _connectionString;
-        private G4SContext _context;
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
 
-        public GETPriorAttainment(G4SContext context, string connectionString)
+        public GETPriorAttainment(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
         }
         public string EndPoint
         {
@@ -44,7 +47,7 @@ namespace G4SApiSync.Client.EndPoints
             try
             {
                 //Get data from G4S API
-                APIRequest<GETPriorAttainment, PriorAttainmentDTO> getPriorAttainment = new APIRequest<GETPriorAttainment, PriorAttainmentDTO>(_endPoint, APIKey, AcYear);
+                APIRequest<GETPriorAttainment, PriorAttainmentDTO> getPriorAttainment = new(_client, _endPoint, APIKey, AcYear);
                 var priorAttainmentDTO = getPriorAttainment.ToList();
 
                 //Create datatable for prior attainment values.
@@ -71,8 +74,6 @@ namespace G4SApiSync.Client.EndPoints
                 {
                     foreach (var paVal in paTyp.PriorAttainmentValues)
                     {
-                        DateTime dateValue;
-
                         var vRow = dtPAValues.NewRow();
 
                         vRow["StudentId"] = AcademyCode + AcYear + "-" + paVal.G4SStudentId.ToString();
@@ -83,7 +84,7 @@ namespace G4SApiSync.Client.EndPoints
                         vRow["Value"] = paVal.Value;
                         vRow["ValueAcademicYear"] = paVal.AcademicYear;
 
-                        if (DateTime.TryParseExact(paVal.Date, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
+                        if (DateTime.TryParseExact(paVal.Date, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateValue))
                         {
                             vRow["ValueDate"] = dateValue.Date;
                         }

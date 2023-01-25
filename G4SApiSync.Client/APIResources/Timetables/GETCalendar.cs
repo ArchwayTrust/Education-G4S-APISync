@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 
 namespace G4SApiSync.Client.EndPoints
@@ -18,13 +19,14 @@ namespace G4SApiSync.Client.EndPoints
     public class GETCalendar : IEndPoint<CalendarDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/timetables/calendar";
-        private string _connectionString;
-        private G4SContext _context;
-
-        public GETCalendar(G4SContext context, string connectionString)
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
+        public GETCalendar(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
         }
         public string EndPoint
         {
@@ -45,7 +47,7 @@ namespace G4SApiSync.Client.EndPoints
             try
             {
                 //Get data from G4S API
-                APIRequest<GETCalendar, CalendarDTO> getCalendar = new APIRequest<GETCalendar, CalendarDTO>(_endPoint, APIKey, AcYear);
+                APIRequest<GETCalendar, CalendarDTO> getCalendar = new(_client, _endPoint, APIKey, AcYear);
                 var calendarDTO = getCalendar.ToList();
 
                 //Create datatable for calendar.

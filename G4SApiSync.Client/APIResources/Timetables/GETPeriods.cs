@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 namespace G4SApiSync.Client.EndPoints
 {
@@ -17,13 +18,14 @@ namespace G4SApiSync.Client.EndPoints
     public class GETPeriods : IEndPoint<TimetableDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/timetables";
-        private string _connectionString;
-        private G4SContext _context;
-
-        public GETPeriods(G4SContext context, string connectionString)
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
+        public GETPeriods(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
         }
         public string EndPoint
         {
@@ -43,7 +45,7 @@ namespace G4SApiSync.Client.EndPoints
         {
             try
             {
-                APIRequest<GETPeriods, TimetableDTO> getPeriods = new APIRequest<GETPeriods, TimetableDTO>(_endPoint, APIKey, AcYear);
+                APIRequest<GETPeriods, TimetableDTO> getPeriods = new(_client, _endPoint, APIKey, AcYear);
                 var timetablesDTO = getPeriods.ToList();
 
                 //Build local data table for periods

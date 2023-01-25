@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 namespace G4SApiSync.Client.EndPoints
 {
@@ -17,13 +18,14 @@ namespace G4SApiSync.Client.EndPoints
     public class GETMarkslotMarks : IEndPoint<MarkslotMarkDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/assessment/marks";
-        private string _connectionString;
-        private G4SContext _context;
-
-        public GETMarkslotMarks(G4SContext context, string connectionString)
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
+        public GETMarkslotMarks(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
         }
         public string EndPoint
         {
@@ -44,7 +46,7 @@ namespace G4SApiSync.Client.EndPoints
             try
             {
                 //Get marksheets and grades data from API.
-                APIRequest<GETMarkslotMarks, MarkslotMarkDTO> getMarkslotMarks = new APIRequest<GETMarkslotMarks, MarkslotMarkDTO>(_endPoint, APIKey, AcYear);
+                APIRequest<GETMarkslotMarks, MarkslotMarkDTO> getMarkslotMarks = new(_client, _endPoint, APIKey, AcYear);
                 var markslotDTO = getMarkslotMarks.ToList();
 
 

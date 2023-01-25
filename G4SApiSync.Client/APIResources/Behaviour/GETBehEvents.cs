@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 namespace G4SApiSync.Client.EndPoints
 {
@@ -17,13 +18,16 @@ namespace G4SApiSync.Client.EndPoints
     public class GETBehEvents: IEndPoint<BehEventDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/behaviour/events/date/{date}";
-        private string _connectionString;
-        private G4SContext _context;
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
 
-        public GETBehEvents(G4SContext context, string connectionString)
+        public GETBehEvents(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
+
         }
         public string EndPoint
         {
@@ -43,7 +47,7 @@ namespace G4SApiSync.Client.EndPoints
         {
             try
             {
-                APIRequest<GETBehEvents, BehEventDTO> getBehEvents = new APIRequest<GETBehEvents, BehEventDTO>(_endPoint, APIKey, AcYear, null, null, Date);
+                APIRequest<GETBehEvents, BehEventDTO> getBehEvents = new(_client, _endPoint, APIKey, AcYear, null, null, Date);
                 var behEventsDTO = getBehEvents.ToList();
 
                 // Table for Behaviour Events

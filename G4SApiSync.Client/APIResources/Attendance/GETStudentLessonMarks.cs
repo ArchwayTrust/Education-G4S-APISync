@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 namespace G4SApiSync.Client.EndPoints
 {
@@ -17,13 +18,15 @@ namespace G4SApiSync.Client.EndPoints
     public class GETStudentLessonMarks : IEndPoint<StudentLessonMarkDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/attendance/student-lesson-marks/date/{date}";
-        private string _connectionString;
-        private G4SContext _context;
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
 
-        public GETStudentLessonMarks(G4SContext context, string connectionString)
+        public GETStudentLessonMarks(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
         }
         public string EndPoint
         {
@@ -43,7 +46,7 @@ namespace G4SApiSync.Client.EndPoints
         {
             try
             {
-                APIRequest<GETStudentLessonMarks, StudentLessonMarkDTO> getStudentLessonMarks = new APIRequest<GETStudentLessonMarks, StudentLessonMarkDTO>(_endPoint, APIKey, AcYear, null, null, Date);
+                APIRequest<GETStudentLessonMarks, StudentLessonMarkDTO> getStudentLessonMarks = new(_client, _endPoint, APIKey, AcYear, null, null, Date);
                 var studentLessonMarksDTO = getStudentLessonMarks.ToList();
 
                 var dtStudentLessonMarks = new DataTable();

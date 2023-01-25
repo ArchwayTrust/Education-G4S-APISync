@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 
 namespace G4SApiSync.Client.EndPoints
@@ -18,13 +19,15 @@ namespace G4SApiSync.Client.EndPoints
     public class GETSubjects : IEndPoint<SubjectDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/teaching/subjects";
-        private string _connectionString;
-        private G4SContext _context;
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
 
-        public GETSubjects(G4SContext context, string connectionString)
+        public GETSubjects(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
         }
         public string EndPoint
         {
@@ -45,7 +48,7 @@ namespace G4SApiSync.Client.EndPoints
             try
             {
                 //Get data from G4S API
-                APIRequest<GETSubjects, SubjectDTO> getSubjects = new APIRequest<GETSubjects, SubjectDTO>(_endPoint, APIKey, AcYear);
+                APIRequest<GETSubjects, SubjectDTO> getSubjects = new(_client, _endPoint, APIKey, AcYear);
                 var subjectsDTO = getSubjects.ToList();
 
                 //Create datatable for subjects.

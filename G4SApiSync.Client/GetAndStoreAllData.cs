@@ -1,6 +1,7 @@
 ﻿using G4SApiSync.Client.EndPoints;
 using G4SApiSync.Data;
 using G4SApiSync.Data.Entities;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,19 @@ namespace G4SApiSync.Client
         private readonly List<AcademySecurity> _academyList;
         private readonly G4SContext _context;
         private readonly string _connectionString;
+        private readonly RestClient _client;
 
         public GetAndStoreAllData(G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+
+            var restOptions = new RestClientOptions("https://api.go4schools.com")
+            {
+                MaxTimeout = 360000
+            };
+
+            _client = new RestClient(restOptions);
 
             _academyList = _context.AcademySecurity.Where(i => i.Active == true).ToList();
         }
@@ -26,69 +35,57 @@ namespace G4SApiSync.Client
         //Sync Students
         public async Task<List<SyncResult>> SyncStudents()
         {
-            List<SyncResult> syncResults = new List<SyncResult>();
+            List<SyncResult> syncResults = new();
 
             //GET Student Details
             foreach (var academy in _academyList)
             {
-                using (var getStudentDetails = new GETStudentDetails(_context, _connectionString))
-                {
-                    bool result = await getStudentDetails.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentDetails.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETStudentDetails getStudentDetails = new(_client, _context, _connectionString);
+                bool result = await getStudentDetails.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentDetails.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
             }
 
             //GET Education Details
             foreach (var academy in _academyList)
             {
-                using (var getEducationDetails = new GETEducationDetails(_context, _connectionString))
-                {
-                    bool result = await getEducationDetails.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getEducationDetails.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETEducationDetails getEducationDetails = new(_client, _context, _connectionString);
+                bool result = await getEducationDetails.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getEducationDetails.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
             //GET General Attributes
             foreach (var academy in _academyList)
             {
-                using (var getGeneralAttributes = new GETGeneralAttributes(_context, _connectionString))
-                {
-                    bool result = await getGeneralAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGeneralAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETGeneralAttributes getGeneralAttributes = new(_client, _context, _connectionString);
+                bool result = await getGeneralAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGeneralAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
             //GET Demographic Attributes
             foreach (var academy in _academyList)
             {
-                using (var getDemographicAttributes = new GETDemographicAttributes(_context, _connectionString))
-                {
-                    bool result = await getDemographicAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getDemographicAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETDemographicAttributes getDemographicAttributes = new(_client, _context, _connectionString);
+                bool result = await getDemographicAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getDemographicAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
             //GET Send Attributes
             foreach (var academy in _academyList)
             {
-                using (var getSendAttributes = new GETSendAttributes(_context, _connectionString))
-                {
-                    bool result = await getSendAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getSendAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETSendAttributes getSendAttributes = new(_client, _context, _connectionString);
+                bool result = await getSendAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getSendAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
             }
 
             //GET Sensitive Attributes
             foreach (var academy in _academyList)
             {
-                using (var getSensitiveAttributes = new GETSensitiveAttributes(_context, _connectionString))
-                {
-                    bool result = await getSensitiveAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getSensitiveAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETSensitiveAttributes getSensitiveAttributes = new(_client, _context, _connectionString);
+                bool result = await getSensitiveAttributes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getSensitiveAttributes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
@@ -99,57 +96,47 @@ namespace G4SApiSync.Client
         //Sync Teaching
         public async Task<List<SyncResult>> SyncTeaching()
         {
-            List<SyncResult> syncResults = new List<SyncResult>();
+            List<SyncResult> syncResults = new();
 
             //GET Departments
             foreach (var academy in _academyList)
             {
-                using (var getDepartments = new GETDepartments(_context, _connectionString))
-                {
-                    bool result = await getDepartments.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getDepartments.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETDepartments getDepartments = new(_client, _context, _connectionString);
+                bool result = await getDepartments.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getDepartments.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
             }
 
             //GET Subjects
             foreach (var academy in _academyList)
             {
-                using (var getSubjects = new GETSubjects(_context, _connectionString))
-                {
-                    bool result = await getSubjects.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getSubjects.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETSubjects getSubjects = new(_client, _context, _connectionString);
+                bool result = await getSubjects.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getSubjects.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
             }
 
             //GET Groups
             foreach (var academy in _academyList)
             {
-                using (var getGroups = new GETGroups(_context, _connectionString))
-                {
-                    bool result = await getGroups.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGroups.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETGroups getGroups = new(_client, _context, _connectionString);
+                bool result = await getGroups.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGroups.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
             //GET Group Students
             foreach (var academy in _academyList)
             {
-                using (var getGroupStudents = new GETGroupStudents(_context, _connectionString))
-                {
-                    bool result = await getGroupStudents.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGroupStudents.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETGroupStudents getGroupStudents = new(_client, _context, _connectionString);
+                bool result = await getGroupStudents.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGroupStudents.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
             }
 
             //GET Teachers
             foreach (var academy in _academyList)
             {
-                using (var getTeachers = new GETTeachers(_context, _connectionString))
-                {
-                    bool result = await getTeachers.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getTeachers.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETTeachers getTeachers = new(_client, _context, _connectionString);
+                bool result = await getTeachers.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getTeachers.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
             }
 
             return syncResults;
@@ -158,38 +145,32 @@ namespace G4SApiSync.Client
         //Sync Assessments
         public async Task<List<SyncResult>> SyncAssessment()
         {
-            List<SyncResult> syncResults = new List<SyncResult>();
+            List<SyncResult> syncResults = new();
 
             //GET Markbooks
             foreach (var academy in _academyList)
             {
-                using (var getMarkbooks = new GETMarkbooks(_context, _connectionString))
-                {
-                    bool result = await getMarkbooks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getMarkbooks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETMarkbooks getMarkbooks = new(_client, _context, _connectionString);
+                bool result = await getMarkbooks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getMarkbooks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
             //GET Marksheet Grades
             foreach (var academy in _academyList)
             {
-                using (var getMarksheetGrades = new GETMarksheetGrades(_context, _connectionString))
-                {
-                    bool result = await getMarksheetGrades.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getMarksheetGrades.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETMarksheetGrades getMarksheetGrades = new(_client, _context, _connectionString);
+                bool result = await getMarksheetGrades.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getMarksheetGrades.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
             //GET Markslot Marks
             foreach (var academy in _academyList)
             {
-                using (var getMarkslotMarks = new GETMarkslotMarks(_context, _connectionString))
-                {
-                    bool result = await getMarkslotMarks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getMarkslotMarks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETMarkslotMarks getMarkslotMarks = new(_client, _context, _connectionString);
+                bool result = await getMarkslotMarks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getMarkslotMarks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
             }
 
             return syncResults;
@@ -198,49 +179,41 @@ namespace G4SApiSync.Client
         //Sync Attainment
         public async Task<List<SyncResult>> SyncAttainment()
         {
-            List<SyncResult> syncResults = new List<SyncResult>();
+            List<SyncResult> syncResults = new();
 
             //GET Prior Attainment
             foreach (var academy in _academyList)
             {
-                using (var getPA = new GETPriorAttainment(_context, _connectionString))
-                {
-                    bool result = await getPA.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getPA.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETPriorAttainment getPA = new(_client, _context, _connectionString);
+                bool result = await getPA.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getPA.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
             //GET Grade Names
             foreach (var academy in _academyList)
             {
-                using (var getGradeName = new GETGradeNames(_context, _connectionString))
-                {
-                    bool result = await getGradeName.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGradeName.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETGradeNames getGradeName = new(_client, _context, _connectionString);
+                bool result = await getGradeName.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGradeName.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
             //GET Grades
             foreach (var academy in _academyList)
             {
-                using (var getGrades = new GETGrades(_context, _connectionString))
-                {
-                    bool result = await getGrades.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGrades.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETGrades getGrades = new(_client, _context, _connectionString);
+                bool result = await getGrades.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getGrades.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
             }
 
 
             //GET Exam Results
             foreach (var academy in _academyList)
             {
-                using (var getExamResults = new GETExamResults(_context, _connectionString))
-                {
-                    bool result = await getExamResults.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getExamResults.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETExamResults getExamResults = new(_client, _context, _connectionString);
+                bool result = await getExamResults.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, academy.LowestYear, academy.HighestYear);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getExamResults.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
             }
 
             return syncResults;
@@ -248,26 +221,22 @@ namespace G4SApiSync.Client
         //Sync Attendance
         public async Task<List<SyncResult>> SyncAttendance()
         {
-            List<SyncResult> syncResults = new List<SyncResult>();
+            List<SyncResult> syncResults = new();
 
             //GET Student Session Summary
             foreach (var academy in _academyList)
             {
-                using (var getStudentSessionSummaries = new GETStudentSessionSummaries(_context, _connectionString))
-                {
-                    bool result = await getStudentSessionSummaries.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentSessionSummaries.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETStudentSessionSummaries getStudentSessionSummaries = new(_client, _context, _connectionString);
+                bool result = await getStudentSessionSummaries.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentSessionSummaries.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
             }
 
             //GET Attendance Codes
             foreach (var academy in _academyList)
             {
-                using (var getAttendanceCodes = new GETAttendanceCodes(_context, _connectionString))
-                {
-                    bool result = await getAttendanceCodes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getAttendanceCodes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETAttendanceCodes getAttendanceCodes = new(_client, _context, _connectionString);
+                bool result = await getAttendanceCodes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getAttendanceCodes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
             }
 
             //GET Lesson Attendance
@@ -303,11 +272,9 @@ namespace G4SApiSync.Client
 
                     foreach (var dt in dates)
                     {
-                        using (var getStudentLessonMarks = new GETStudentLessonMarks(_context, _connectionString))
-                        {
-                            bool result = await getStudentLessonMarks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, null, null, null, dt);
-                            syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentLessonMarks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                        }
+                        using GETStudentLessonMarks getStudentLessonMarks = new(_client, _context, _connectionString);
+                        bool result = await getStudentLessonMarks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, null, null, null, dt);
+                        syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentLessonMarks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                     }
                 }
 
@@ -346,11 +313,9 @@ namespace G4SApiSync.Client
 
                     foreach (var dt in dates)
                     {
-                        using (var getStudentSessionMarks = new GETStudentSessionMarks(_context, _connectionString))
-                        {
-                            bool result = await getStudentSessionMarks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, null, null, null, dt);
-                            syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentSessionMarks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                        }
+                        using GETStudentSessionMarks getStudentSessionMarks = new(_client, _context, _connectionString);
+                        bool result = await getStudentSessionMarks.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, null, null, null, dt);
+                        syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStudentSessionMarks.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                     }
                 }
 
@@ -362,38 +327,32 @@ namespace G4SApiSync.Client
         //Sync Timetable
         public async Task<List<SyncResult>> SyncTimetable()
         {
-            List<SyncResult> syncResults = new List<SyncResult>();
+            List<SyncResult> syncResults = new();
 
             //GET Periods
             foreach (var academy in _academyList)
             {
-                using (var getPeriods = new GETPeriods(_context, _connectionString))
-                {
-                    bool result = await getPeriods.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getPeriods.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETPeriods getPeriods = new(_client, _context, _connectionString);
+                bool result = await getPeriods.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getPeriods.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
             //GET TT Classes
             foreach (var academy in _academyList)
             {
-                using (var getTTClasses = new GETTTClasses(_context, _connectionString))
-                {
-                    bool result = await getTTClasses.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getTTClasses.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETTTClasses getTTClasses = new(_client, _context, _connectionString);
+                bool result = await getTTClasses.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getTTClasses.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
             //GET Calendar
             foreach (var academy in _academyList)
             {
-                using (var getCalendar = new GETCalendar(_context, _connectionString))
-                {
-                    bool result = await getCalendar.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getCalendar.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETCalendar getCalendar = new(_client, _context, _connectionString);
+                bool result = await getCalendar.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getCalendar.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
@@ -403,27 +362,23 @@ namespace G4SApiSync.Client
         //Sync Behaviour
         public async Task<List<SyncResult>> SyncBehaviour()
         {
-            List<SyncResult> syncResults = new List<SyncResult>();
+            List<SyncResult> syncResults = new();
 
             // GET Behaviour Classifications
             foreach (var academy in _academyList)
             {
-                using (var getBehClassifications = new GETBehClassifications(_context, _connectionString))
-                {
-                    bool result = await getBehClassifications.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehClassifications.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETBehClassifications getBehClassifications = new(_client, _context, _connectionString);
+                bool result = await getBehClassifications.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehClassifications.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
             // GET Behaviour Event Types
             foreach (var academy in _academyList)
             {
-                using (var getBehEventTypes = new GETBehEventTypes(_context, _connectionString))
-                {
-                    bool result = await getBehEventTypes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehEventTypes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                }
+                using GETBehEventTypes getBehEventTypes = new(_client, _context, _connectionString);
+                bool result = await getBehEventTypes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehEventTypes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
 
             }
 
@@ -460,11 +415,9 @@ namespace G4SApiSync.Client
 
                     foreach (var dt in dates)
                     {
-                        using (var getBehEvents = new GETBehEvents(_context, _connectionString))
-                        {
-                            bool result = await getBehEvents.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, null, null, null, dt);
-                            syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehEvents.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
-                        }
+                        using GETBehEvents getBehEvents = new(_client, _context, _connectionString);
+                        bool result = await getBehEvents.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode, null, null, null, dt);
+                        syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehEvents.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
                     }
                 }
 
@@ -478,16 +431,14 @@ namespace G4SApiSync.Client
         //Sync Users
         public async Task<List<SyncResult>> SyncUsers()
         {
-            List<SyncResult> syncResults = new List<SyncResult>();
+            List<SyncResult> syncResults = new();
 
             // GET Staff
             foreach (var academy in _academyList)
             {
-                using (var getStaff = new GETStaff(_context, _connectionString))
-                {
-                    bool result = await getStaff.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStaff.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = "N/A" });
-                }
+                using GETStaff getStaff = new(_client, _context, _connectionString);
+                bool result = await getStaff.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getStaff.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = "N/A" });
 
             }
             return syncResults;

@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 namespace G4SApiSync.Client.EndPoints
 {
@@ -23,13 +24,15 @@ namespace G4SApiSync.Client.EndPoints
             get { return _endPoint; }
         }
 
-        private string _connectionString;
-        private G4SContext _context;
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
 
-        public GETSendAttributes(G4SContext context, string connectionString)
+        public GETSendAttributes(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;  
         }
 
         [JsonProperty("students_and_attributes")]
@@ -45,10 +48,10 @@ namespace G4SApiSync.Client.EndPoints
         {
             try
             {
-                var getAttributes = new APIRequest<GETSendAttributes, AttributeDTO>(_endPoint, APIKey, AcYear);
+                var getAttributes = new APIRequest<GETSendAttributes, AttributeDTO>(_client, _endPoint, APIKey, AcYear);
                 var attributesDTO = getAttributes.ToList();
 
-                List<AttributeType> attributeTypes = new List<AttributeType>();
+                List<AttributeType> attributeTypes = new();
 
                 //Build a local data table for attribute values.
 
@@ -88,10 +91,9 @@ namespace G4SApiSync.Client.EndPoints
                     {
                         foreach (var attValue in attributeDTO.AttributeValues)
                         {
-                            DateTime dateValue;
                             DateTime? dateValueNullable;
 
-                            if (DateTime.TryParseExact(attValue.Date, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue))
+                            if (DateTime.TryParseExact(attValue.Date, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateValue))
                             {
                                 dateValueNullable = dateValue.Date;
                             }
@@ -191,7 +193,10 @@ namespace G4SApiSync.Client.EndPoints
         }
 
         //Implements IDisposable
-        public void Dispose() { }
+        public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
+        protected virtual void Dispose(bool disposing)
+        {
+        }
 
     }
 

@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 namespace G4SApiSync.Client.EndPoints
 {
@@ -17,13 +18,14 @@ namespace G4SApiSync.Client.EndPoints
     public class GETExamResults : IEndPoint<ExamResultDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/attainment/exam-results/year-group/{yearGroup}";
-        private string _connectionString;
-        private G4SContext _context;
-
-        public GETExamResults(G4SContext context, string connectionString)
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
+        public GETExamResults(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
         }
         public string EndPoint
         {
@@ -79,7 +81,7 @@ namespace G4SApiSync.Client.EndPoints
                     dtExamResults.Columns.Add(colAdmissionDate);
 
                     //Get data from G4S API
-                    APIRequest<GETExamResults, ExamResultDTO> getExamResults = new APIRequest<GETExamResults, ExamResultDTO>(_endPoint, APIKey, AcYear, yearGroup);
+                    APIRequest<GETExamResults, ExamResultDTO> getExamResults = new(_client, _endPoint, APIKey, AcYear, yearGroup);
                     var examResultsDTO = getExamResults.ToList();
 
 

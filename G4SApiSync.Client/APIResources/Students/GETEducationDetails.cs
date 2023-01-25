@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 namespace G4SApiSync.Client.EndPoints
 {
@@ -17,18 +18,19 @@ namespace G4SApiSync.Client.EndPoints
     public class GETEducationDetails : IEndPoint<StudentEducationDetailsDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/students/education-details";
-        private string _connectionString;
-        private G4SContext _context;
-
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
         public string EndPoint
         {
             get { return _endPoint; }
         }
 
-        public GETEducationDetails(G4SContext context, string connectionString)
+        public GETEducationDetails(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
         }
 
         [JsonProperty("students_and_education_details")]
@@ -44,7 +46,7 @@ namespace G4SApiSync.Client.EndPoints
         {
             try
             {
-                APIRequest<GETEducationDetails, StudentEducationDetailsDTO> getEducationDetails = new APIRequest<GETEducationDetails, StudentEducationDetailsDTO>(_endPoint, APIKey, AcYear);
+                APIRequest<GETEducationDetails, StudentEducationDetailsDTO> getEducationDetails = new(_client, _endPoint, APIKey, AcYear);
                 var educationDetailsDTOs = getEducationDetails.ToList();
 
                 var dtEdDetails = new DataTable();
@@ -107,10 +109,9 @@ namespace G4SApiSync.Client.EndPoints
                             foreach (var attribValue in stuAttrib.AttributeValues)
                             {
                                 //Populate Attribute Values Datatable
-                                DateTime dateAttrib;
                                 DateTime? dateAttribNullable;
 
-                                if (DateTime.TryParseExact(attribValue.Date, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateAttrib))
+                                if (DateTime.TryParseExact(attribValue.Date, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateAttrib))
                                 {
                                     dateAttribNullable = dateAttrib.Date;
                                 }
@@ -148,15 +149,14 @@ namespace G4SApiSync.Client.EndPoints
                             dtStuAttributes.Rows.Add(rowStuAttrib);
                         }
                     }
-                    
+
 
 
                     //Populate Education Details DataTable
 
-                    DateTime dateValueAdmission;
                     DateTime? dateValueNullableAdmission;
 
-                    if (DateTime.TryParseExact(item.AdmissionDate, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValueAdmission))
+                    if (DateTime.TryParseExact(item.AdmissionDate, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateValueAdmission))
                     {
                         dateValueNullableAdmission = dateValueAdmission.Date;
                     }
@@ -165,10 +165,9 @@ namespace G4SApiSync.Client.EndPoints
                         dateValueNullableAdmission = null;
                     }
 
-                    DateTime dateValueLeaving;
                     DateTime? dateValueNullableLeaving;
 
-                    if (DateTime.TryParseExact(item.LeavingDate, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValueLeaving))
+                    if (DateTime.TryParseExact(item.LeavingDate, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateValueLeaving))
                     {
                         dateValueNullableLeaving = dateValueLeaving.Date;
                     }

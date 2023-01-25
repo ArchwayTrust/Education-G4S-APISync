@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 namespace G4SApiSync.Client.EndPoints
 {
@@ -17,13 +18,15 @@ namespace G4SApiSync.Client.EndPoints
     public class GETGrades : IEndPoint<GradeDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/attainment/grades/year-group/{yearGroup}";
-        private string _connectionString;
-        private G4SContext _context;
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
 
-        public GETGrades(G4SContext context, string connectionString)
+        public GETGrades(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
         }
         public string EndPoint
         {
@@ -68,7 +71,7 @@ namespace G4SApiSync.Client.EndPoints
                     dtGrades.Columns.Add("Alias", typeof(String));
 
                     //Get data from G4S API
-                    APIRequest<GETGrades, GradeDTO> getGrades = new APIRequest<GETGrades, GradeDTO>(_endPoint, APIKey, AcYear, yearGroup);
+                    APIRequest<GETGrades, GradeDTO> getGrades = new(_client, _endPoint, APIKey, AcYear, yearGroup);
                     var gradesDTO = getGrades.ToList();
 
 

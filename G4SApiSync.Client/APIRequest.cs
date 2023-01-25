@@ -16,14 +16,16 @@ namespace G4SApiSync.Client
         private string pYearGroup;
         private string pReportId;
         private string pDate;
+        private RestClient pClient;
 
-        public APIRequest(string EndPointURL, string Bearer, string DataSet, string YearGroup = null, string ReportId = null, DateTime? Date = null)
+        public APIRequest(RestClient client, string EndPointURL, string Bearer, string DataSet, string YearGroup = null, string ReportId = null, DateTime? Date = null)
         {
             pResource = EndPointURL;
             pBearer = Bearer;
             pAcYear = DataSet;
             pYearGroup = YearGroup;
             pReportId = ReportId;
+
             if (Date != null)
             {
                 pDate = Date.Value.ToString("yyyy-MM-dd");
@@ -31,18 +33,22 @@ namespace G4SApiSync.Client
             else 
             {
                 pDate = null;
-            }
+            };
+
+            pClient = client;
         }
 
         public string ReturnedJSON(int? cursor)
         {
             //Use RestSharp to query G4S API
-            var restOptions = new RestClientOptions("https://api.go4schools.com")
-            {
-                MaxTimeout = 360000
-            };
+            //var restOptions = new RestClientOptions("https://api.go4schools.com")
+            //{
+            //    MaxTimeout = 360000
+            //};
 
-            var client = new RestClient(restOptions);
+            //var client = new RestClient(restOptions);
+
+
 
             string fullResource;
 
@@ -74,7 +80,7 @@ namespace G4SApiSync.Client
                 request.AddParameter("date", pDate);
             }
 
-            var response = client.Execute(request);
+            var response = pClient.Execute(request);
 
             //Check if api call suceeded and throw an exception if not.
             if ((int)response.StatusCode != 200)
