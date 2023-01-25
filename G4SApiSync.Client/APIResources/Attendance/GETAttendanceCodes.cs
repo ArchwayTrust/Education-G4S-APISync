@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 namespace G4SApiSync.Client.EndPoints
 {
@@ -17,13 +18,15 @@ namespace G4SApiSync.Client.EndPoints
     public class GETAttendanceCodes : IEndPoint<AttendanceCodeDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/attendance/codes";
-        private string _connectionString;
-        private G4SContext _context;
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
 
-        public GETAttendanceCodes(G4SContext context, string connectionString)
+        public GETAttendanceCodes(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
         }
         public string EndPoint
         {
@@ -43,7 +46,7 @@ namespace G4SApiSync.Client.EndPoints
         {
             try
             {
-                APIRequest<GETAttendanceCodes, AttendanceCodeDTO> getAttendanceCodes = new APIRequest<GETAttendanceCodes, AttendanceCodeDTO>(_endPoint, APIKey, AcYear);
+                APIRequest<GETAttendanceCodes, AttendanceCodeDTO> getAttendanceCodes = new(_client, _endPoint, APIKey, AcYear);
                 var attendanceCodesDTO = getAttendanceCodes.ToList();
 
                 //Build local data table for attendance codes

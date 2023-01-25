@@ -10,7 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
-
+using RestSharp;
 
 namespace G4SApiSync.Client.EndPoints
 {
@@ -18,13 +18,16 @@ namespace G4SApiSync.Client.EndPoints
     public class GETStaff : IEndPoint<StaffDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/users/staff";
-        private string _connectionString;
-        private G4SContext _context;
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
 
-        public GETStaff(G4SContext context, string connectionString)
+
+        public GETStaff(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
         }
         public string EndPoint
         {
@@ -45,7 +48,7 @@ namespace G4SApiSync.Client.EndPoints
             try
             {
                 //Get data from G4S API
-                APIRequest<GETStaff, StaffDTO> getStaff = new APIRequest<GETStaff, StaffDTO>(_endPoint, APIKey, AcYear);
+                APIRequest<GETStaff, StaffDTO> getStaff = new(_client, _endPoint, APIKey, AcYear);
                 var staffDTO = getStaff.ToList();
 
                 //Create datatable for subjects.

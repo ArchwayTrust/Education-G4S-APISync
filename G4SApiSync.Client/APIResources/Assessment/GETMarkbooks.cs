@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 //Teaching endpoints should run before this because markbook id is the same as subject id
 namespace G4SApiSync.Client.EndPoints
@@ -18,13 +19,15 @@ namespace G4SApiSync.Client.EndPoints
     public class GETMarkbooks : IEndPoint<MarkbookDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/assessment/markbooks";
-        private string _connectionString;
-        private G4SContext _context;
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
 
-        public GETMarkbooks(G4SContext context, string connectionString)
+        public GETMarkbooks(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
         }
         public string EndPoint
         {
@@ -45,7 +48,7 @@ namespace G4SApiSync.Client.EndPoints
             try
             {
                 //Get data from G4S API
-                APIRequest<GETMarkbooks, MarkbookDTO> getMarkbooks = new APIRequest<GETMarkbooks, MarkbookDTO>(_endPoint, APIKey, AcYear);
+                APIRequest<GETMarkbooks, MarkbookDTO> getMarkbooks = new(_client, _endPoint, APIKey, AcYear);
                 var markbookDTO = getMarkbooks.ToList();
 
                 //Create datatable for marksheets.

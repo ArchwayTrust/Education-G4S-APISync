@@ -10,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using RestSharp;
 
 namespace G4SApiSync.Client.EndPoints
 {
@@ -17,13 +18,15 @@ namespace G4SApiSync.Client.EndPoints
     public class GETStudentSessionSummaries : IEndPoint<StudentSessionSummaryDTO>, IDisposable
     {
         const string _endPoint = "/customer/v1/academic-years/{academicYear}/attendance/student-session-summary";
-        private string _connectionString;
-        private G4SContext _context;
+        private readonly string _connectionString;
+        private readonly G4SContext _context;
+        private readonly RestClient _client;
 
-        public GETStudentSessionSummaries(G4SContext context, string connectionString)
+        public GETStudentSessionSummaries(RestClient client, G4SContext context, string connectionString)
         {
             _context = context;
             _connectionString = connectionString;
+            _client = client;
         }
         public string EndPoint
         {
@@ -43,7 +46,7 @@ namespace G4SApiSync.Client.EndPoints
         {
             try
             {
-                APIRequest<GETStudentSessionSummaries, StudentSessionSummaryDTO> getSessionSummaries = new APIRequest<GETStudentSessionSummaries, StudentSessionSummaryDTO>(_endPoint, APIKey, AcYear);
+                APIRequest<GETStudentSessionSummaries, StudentSessionSummaryDTO> getSessionSummaries = new(_client, _endPoint, APIKey, AcYear);
                 var sessionSummariesDTO = getSessionSummaries.ToList();
 
                 var dtSessionSummaries = new DataTable();
