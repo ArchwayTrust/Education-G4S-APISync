@@ -11,7 +11,7 @@ Feel free to use and ammend under the terms of the GNU license but we are unable
 You will need a Microsoft SQL Server and initially an AD user account with privaledges for database creation.
 
 1. Ammend the connection string in appsettings.json to point to your server.
-2. Install https://dotnet.microsoft.com/download/dotnet/3.1/runtime (Any should do, but I use desktop)
+2. Install https://dotnet.microsoft.com/en-us/download/dotnet/7.0
 3. Using an account with sufficient privaledges run G4SApiSync.exe
 4. This first run either creates the database or updates it to the latest version.
 
@@ -48,6 +48,6 @@ To enable session attendance data you need to use SSMS to edit sec.AcademySecuri
   3. If you enter a date range within the currently selected dataset it will get data for those dates.
 
 ## SQL Scripts
-After initial setup you should run scripts in the SQL Scripts folder (Use SSMS). They will:
+After initial setup you should run scripts in the SQL Scripts folder. They will:
   1. Create views to help query database.
   2. Set recovery mode simple which will stop the log file getting too large.
