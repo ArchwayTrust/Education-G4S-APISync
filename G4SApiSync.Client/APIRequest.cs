@@ -37,7 +37,12 @@ namespace G4SApiSync.Client
         public string ReturnedJSON(int? cursor)
         {
             //Use RestSharp to query G4S API
-            var client = new RestClient("https://api.go4schools.com");
+            var restOptions = new RestClientOptions("https://api.go4schools.com")
+            {
+                MaxTimeout = 100000
+            };
+
+            var client = new RestClient(restOptions);
 
             string fullResource;
 
