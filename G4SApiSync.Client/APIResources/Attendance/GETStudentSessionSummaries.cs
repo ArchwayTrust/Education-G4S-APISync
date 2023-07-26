@@ -105,6 +105,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("Late", "Late");
 
                     sqlBulk.DestinationTableName = "g4s.StudentSessionSummaries";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtSessionSummaries);
                 }
 

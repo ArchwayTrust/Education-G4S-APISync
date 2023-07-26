@@ -4,6 +4,7 @@ using RestSharp;
 using Newtonsoft.Json;
 using System.Web;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace G4SApiSync.Client
 {
@@ -81,7 +82,8 @@ namespace G4SApiSync.Client
                 request.AddParameter("date", pDate);
             }
 
-            var response = pClient.Execute(request);
+            //var response = await pClient.Execute(request);
+            RestResponse response = pClient.Get(request);
 
             //Check if api call suceeded and throw an exception if not.
             if ((int)response.StatusCode != 200)

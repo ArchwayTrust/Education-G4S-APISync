@@ -119,6 +119,7 @@ namespace G4SApiSync.Client.EndPoints
 
 
                     sqlBulk.DestinationTableName = "g4s.Periods";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtPeriods);
                 }
 

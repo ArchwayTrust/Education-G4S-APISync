@@ -116,6 +116,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("PreferredTargetGrade", "PreferredTargetGrade");
 
                     sqlBulk.DestinationTableName = "g4s.GradeNames";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtGradeNames);
                 }
 

@@ -98,6 +98,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("Prioritise", "Prioritise");
 
                     sqlBulk.DestinationTableName = "g4s.BehEventTypes";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtEventTypes);
                 }
 

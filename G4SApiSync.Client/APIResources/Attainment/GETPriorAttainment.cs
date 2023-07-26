@@ -115,6 +115,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("ValueDate", "ValueDate");
 
                     sqlBulk.DestinationTableName = "g4s.PriorAttainment";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtPAValues);
                 }
 

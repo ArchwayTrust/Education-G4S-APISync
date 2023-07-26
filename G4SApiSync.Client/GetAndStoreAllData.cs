@@ -24,7 +24,7 @@ namespace G4SApiSync.Client
 
             var restOptions = new RestClientOptions("https://api.go4schools.com")
             {
-                MaxTimeout = 600000
+                ThrowOnAnyError = true
             };
 
             _client = new RestClient(restOptions);

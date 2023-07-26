@@ -83,6 +83,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
 
                     sqlBulk.DestinationTableName = "g4s.GroupStudents";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtGroupStudents);
                 }
 

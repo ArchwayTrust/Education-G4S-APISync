@@ -92,6 +92,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("PeriodId", "PeriodId");
 
                     sqlBulk.DestinationTableName = "g4s.TTClasses";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtTTClasses);
                 }
 

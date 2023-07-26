@@ -100,6 +100,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("Title", "Title");
 
                     sqlBulk.DestinationTableName = "g4s.Staff";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtStaff);
                 }
 

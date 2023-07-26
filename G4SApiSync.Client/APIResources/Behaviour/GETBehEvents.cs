@@ -169,6 +169,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("ModifiedByStaffId", "ModifiedByStaffId");
 
                     sqlBulk.DestinationTableName = "g4s.BehEvents";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtBehEvents);
                 }
 
@@ -180,6 +181,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
 
                     sqlBulk.DestinationTableName = "g4s.BehEventStudents";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtEventStus);
                 }
 

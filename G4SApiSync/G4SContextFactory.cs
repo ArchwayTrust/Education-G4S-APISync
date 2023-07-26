@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.IO;
 
 namespace G4SApiSync
@@ -19,7 +20,10 @@ namespace G4SApiSync
 
             //Set options for G4SContext
             var optionsBuilder = new DbContextOptionsBuilder<G4SContext>();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("G4SContext"));
+            optionsBuilder.UseSqlServer(
+                   configuration.GetConnectionString("G4SContext"),
+                   opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(5).TotalSeconds)
+            );
 
             return new G4SContext(optionsBuilder.Options);
         }

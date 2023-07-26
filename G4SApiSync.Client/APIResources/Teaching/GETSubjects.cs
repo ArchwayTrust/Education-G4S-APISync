@@ -108,6 +108,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("IncludeInStats", "IncludeInStats");
 
                     sqlBulk.DestinationTableName = "g4s.Subjects";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtSubjects);
                 }
 

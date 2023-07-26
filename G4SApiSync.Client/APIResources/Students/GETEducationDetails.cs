@@ -235,6 +235,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("LeavingDate", "LeavingDate");
 
                     sqlBulk.DestinationTableName = "g4s.EducationDetails";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtEdDetails);
                 }
 
@@ -252,6 +253,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("IsSystem", "IsSystem");
 
                     sqlBulk.DestinationTableName = "g4s.StudentAttributes";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtStuAttributes);
                 }
 
@@ -266,6 +268,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("Date", "Date");
 
                     sqlBulk.DestinationTableName = "g4s.StudentAttributeValues";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtStuAttribValues);
                 }
                 _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, DataSet = AcYear, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true });

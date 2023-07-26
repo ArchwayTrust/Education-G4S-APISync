@@ -106,6 +106,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("Mark", "Mark");
 
                     sqlBulk.DestinationTableName = "g4s.MarkslotMarks";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtMarkslotMarks);
                 }
 

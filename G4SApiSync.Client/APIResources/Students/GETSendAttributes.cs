@@ -156,6 +156,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("IsSystem", "IsSystem");
 
                     sqlBulk.DestinationTableName = "g4s.AttributeTypes";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtAttributeTypes);
                 }
 
@@ -169,6 +170,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("Date", "Date");
 
                     sqlBulk.DestinationTableName = "g4s.AttributeValues";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtAttributeValues);
                 }
 

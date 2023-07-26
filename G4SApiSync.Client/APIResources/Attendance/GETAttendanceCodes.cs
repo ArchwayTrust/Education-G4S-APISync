@@ -117,6 +117,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("ProtectBM", "ProtectBM");
 
                     sqlBulk.DestinationTableName = "g4s.AttendanceCodes";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtAttendanceCodes);
                 }
 
@@ -129,6 +130,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("Label", "Label");
 
                     sqlBulk.DestinationTableName = "g4s.AttendanceAliasCodes";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtAttendanceAliasCodes);
                 }
 

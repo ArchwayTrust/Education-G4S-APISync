@@ -87,6 +87,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("Alias", "Alias");
 
                     sqlBulk.DestinationTableName = "g4s.MarksheetGrades";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtMarksheetGrades);
                 }
 

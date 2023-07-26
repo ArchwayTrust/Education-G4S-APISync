@@ -87,6 +87,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("Score", "Score");
 
                     sqlBulk.DestinationTableName = "g4s.BehClassifications";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtClassification);
                 }
 

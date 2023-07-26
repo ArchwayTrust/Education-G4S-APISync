@@ -101,6 +101,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("PreferredLastName", "PreferredLastName");
                     sqlBulk.ColumnMappings.Add("MiddleNames", "MiddleNames");
                     sqlBulk.DestinationTableName = "g4s.Students";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtStudents);
                 }
 

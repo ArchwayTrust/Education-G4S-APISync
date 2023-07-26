@@ -113,6 +113,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("Date", "Date");
 
                     sqlBulk.DestinationTableName = "g4s.Calendar";
+                    sqlBulk.BulkCopyTimeout = 300;
                     sqlBulk.WriteToServer(dtCalendar);
                 }
 
