@@ -59,6 +59,7 @@ namespace G4SApiSync.Client.EndPoints
                 dtEdDetails.Columns.Add("NCYear", typeof(string));
                 dtEdDetails.Columns.Add("RegistrationGroup", typeof(string));
                 dtEdDetails.Columns.Add("House", typeof(string));
+                dtEdDetails.Columns.Add("RemovedFromSource", typeof(bool));
 
                 var colAdmissionDate = new DataColumn
                 {
@@ -187,6 +188,7 @@ namespace G4SApiSync.Client.EndPoints
                     row["NCYear"] = item.NCYear;
                     row["RegistrationGroup"] = item.RegistrationGroup;
                     row["House"] = item.House;
+                    row["RemovedFromSource"] = item.RemovedFromSource;
 
                     if (dateValueNullableAdmission == null)
                     {
@@ -233,6 +235,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("House", "House");
                     sqlBulk.ColumnMappings.Add("AdmissionDate", "AdmissionDate");
                     sqlBulk.ColumnMappings.Add("LeavingDate", "LeavingDate");
+                    sqlBulk.ColumnMappings.Add("RemovedFromSource", "RemovedFromSource");
 
                     sqlBulk.DestinationTableName = "g4s.EducationDetails";
                     sqlBulk.BulkCopyTimeout = 300;

@@ -65,6 +65,7 @@ namespace G4SApiSync.Client.EndPoints
                 dtMarkslots.Columns.Add("SubjectId", typeof(String));
                 dtMarkslots.Columns.Add("MarksheetId", typeof(String));
                 dtMarkslots.Columns.Add("Name", typeof(String));
+                dtMarkslots.Columns.Add("MaxMarks", typeof(Int32));
 
                 //Write the DTOs into the datatable.
                 foreach (var mb in markbookDTO)
@@ -77,6 +78,7 @@ namespace G4SApiSync.Client.EndPoints
                             mslRow["MarkslotId"] = AcademyCode + AcYear + "-" + msl.G4SMarkslotId.ToString();
                             mslRow["MarksheetId"] = AcademyCode + AcYear + "-" + msh.G4SMarksheetId.ToString();
                             mslRow["Name"] = msl.Name;
+                            mslRow["MaxMarks"] = msl.MaxMarks;
 
                             dtMarkslots.Rows.Add(mslRow);
                         }
@@ -118,6 +120,7 @@ namespace G4SApiSync.Client.EndPoints
                     sqlBulk.ColumnMappings.Add("MarkslotId", "MarkslotId");
                     sqlBulk.ColumnMappings.Add("MarksheetId", "MarksheetId");
                     sqlBulk.ColumnMappings.Add("Name", "Name");
+                    sqlBulk.ColumnMappings.Add("MaxMarks", "MaxMarks");
 
                     sqlBulk.DestinationTableName = "g4s.Markslots";
                     sqlBulk.BulkCopyTimeout = 300;

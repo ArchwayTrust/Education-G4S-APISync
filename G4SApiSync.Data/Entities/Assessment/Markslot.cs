@@ -14,6 +14,7 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(500)]
         public string Name { get; set; }
 
+        public int? MaxMarks { get; set; }
         public virtual Marksheet Marksheet { get; set; }
 
         public virtual ICollection<MarkslotMark> MarkslotMarks { get; set; }

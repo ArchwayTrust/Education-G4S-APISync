@@ -29,6 +29,9 @@ namespace G4SApiSync.Client.DTOs
             [JsonProperty("leaving_date")]
             public string LeavingDate { get; set; }
 
+            [JsonProperty("deleted_from_source")]
+            public bool RemovedFromSource { get; set; }
+
             [JsonProperty("student_education_attributes")]
             public IEnumerable<StudentEducationAttributesDTO> StuEdAttributes { get; set; }
     }

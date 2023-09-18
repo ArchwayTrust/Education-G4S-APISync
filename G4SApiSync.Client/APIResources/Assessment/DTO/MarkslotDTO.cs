@@ -12,5 +12,8 @@ namespace G4SApiSync.Client.DTOs
 
             [JsonProperty("name")]
             public string Name { get; set; }
+
+            [JsonProperty("max")]
+            public int MaxMarks { get; set; }
         }
 }
