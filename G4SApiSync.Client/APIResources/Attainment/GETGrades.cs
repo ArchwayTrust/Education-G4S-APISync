@@ -75,10 +75,10 @@ namespace G4SApiSync.Client.EndPoints
                     var gradesDTO = getGrades.ToList();
 
                     //Trap for actual grades that don't have linked subjects.
-                    var filtered = gradesDTO.Where(g => !string.IsNullOrEmpty(g.G4SSubjectId) && g.G4SSubjectId != "0").ToList();
+                    var filteredGradesDTO = gradesDTO.Where(g => !string.IsNullOrEmpty(g.G4SSubjectId) && g.G4SSubjectId != "0").ToList();
 
                     //Write the DTOs into the datatable.
-                    foreach (var grade in gradesDTO)
+                    foreach (var grade in filteredGradesDTO)
                     {
                         var row = dtGrades.NewRow();
 
