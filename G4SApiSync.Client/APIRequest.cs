@@ -63,7 +63,7 @@ namespace G4SApiSync.Client
             }
 
             var request = new RestRequest(fullResource, Method.Get);
-            request.Timeout = 600000;
+            request.Timeout = TimeSpan.FromMilliseconds(600000);
             request.AddHeader("Authorization", "Bearer " + pBearer);
             request.AddParameter("academicYear", pAcYear);
 
