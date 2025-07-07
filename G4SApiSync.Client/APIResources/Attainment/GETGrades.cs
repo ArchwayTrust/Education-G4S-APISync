@@ -78,6 +78,9 @@ namespace G4SApiSync.Client.EndPoints
                     //Write the DTOs into the datatable.
                     foreach (var grade in gradesDTO)
                     {
+                        //Trap for actual grades that don't have linked subjects.
+                        if (grade.G4SSubjectId == "0" || grade.G4SSubjectId is null) continue;
+
                         var row = dtGrades.NewRow();
 
                         row["GradeTypeId"] = grade.GradeTypeId;
