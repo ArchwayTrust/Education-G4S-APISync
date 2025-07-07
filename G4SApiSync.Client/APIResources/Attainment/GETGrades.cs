@@ -74,13 +74,12 @@ namespace G4SApiSync.Client.EndPoints
                     APIRequest<GETGrades, GradeDTO> getGrades = new(_client, _endPoint, APIKey, AcYear, yearGroup);
                     var gradesDTO = getGrades.ToList();
 
+                    //Trap for actual grades that don't have linked subjects.
+                    var filtered = gradesDTO.Where(g => !string.IsNullOrEmpty(g.G4SSubjectId) && g.G4SSubjectId != "0").ToList();
 
                     //Write the DTOs into the datatable.
                     foreach (var grade in gradesDTO)
                     {
-                        //Trap for actual grades that don't have linked subjects.
-                        if (grade.G4SSubjectId == "0" || grade.G4SSubjectId is null) continue;
-
                         var row = dtGrades.NewRow();
 
                         row["GradeTypeId"] = grade.GradeTypeId;
