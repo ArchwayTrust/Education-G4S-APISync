@@ -75,7 +75,7 @@ namespace G4SApiSync.Client.EndPoints
                     var gradesDTO = getGrades.ToList();
 
                     //Trap for actual grades that don't have linked subjects.
-                    var filteredGradesDTO = gradesDTO.Where(g => !string.IsNullOrEmpty(g.G4SSubjectId) && g.G4SSubjectId != "0").ToList();
+                    var filteredGradesDTO = gradesDTO.Where(g => g.GradeTypeId != 6).ToList();
 
                     //Write the DTOs into the datatable.
                     foreach (var grade in filteredGradesDTO)
@@ -99,26 +99,26 @@ namespace G4SApiSync.Client.EndPoints
                     _context.Grades.RemoveRange(currentGrades);
                     await _context.SaveChangesAsync();
 
-                //Write prior attainment data table to sql
-                using (var sqlBulk = new SqlBulkCopy(_connectionString))
-                {
-                    sqlBulk.ColumnMappings.Add("GradeTypeId", "GradeTypeId");
-                    sqlBulk.ColumnMappings.Add("SubjectId", "SubjectId");
-                    sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
-                    sqlBulk.ColumnMappings.Add("DataSet", "DataSet");
-                    sqlBulk.ColumnMappings.Add("Academy", "Academy");
-                    sqlBulk.ColumnMappings.Add("NCYear", "NCYear");
-                    sqlBulk.ColumnMappings.Add("Name", "Name");
-                    sqlBulk.ColumnMappings.Add("Alias", "Alias");
+                    //Write prior attainment data table to sql
+                    using (var sqlBulk = new SqlBulkCopy(_connectionString))
+                    {
+                        sqlBulk.ColumnMappings.Add("GradeTypeId", "GradeTypeId");
+                        sqlBulk.ColumnMappings.Add("SubjectId", "SubjectId");
+                        sqlBulk.ColumnMappings.Add("StudentId", "StudentId");
+                        sqlBulk.ColumnMappings.Add("DataSet", "DataSet");
+                        sqlBulk.ColumnMappings.Add("Academy", "Academy");
+                        sqlBulk.ColumnMappings.Add("NCYear", "NCYear");
+                        sqlBulk.ColumnMappings.Add("Name", "Name");
+                        sqlBulk.ColumnMappings.Add("Alias", "Alias");
 
-                    sqlBulk.DestinationTableName = "g4s.Grades";
-                    sqlBulk.BulkCopyTimeout = 300;
-                    sqlBulk.WriteToServer(dtGrades);
-                }
+                        sqlBulk.DestinationTableName = "g4s.Grades";
+                        sqlBulk.BulkCopyTimeout = 300;
+                        sqlBulk.WriteToServer(dtGrades);
+                    }
 
-                _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, DataSet = AcYear, YearGroup = yearGroupInt });
+                    _context.SyncResults.Add(new SyncResult { AcademyCode = AcademyCode, EndPoint = _endPoint, LoggedAt = DateTime.Now, Result = true, DataSet = AcYear, YearGroup = yearGroupInt });
                     await _context.SaveChangesAsync();
-            }
+                }
                 catch (Exception e)
             {
                     if (e.InnerException != null)
