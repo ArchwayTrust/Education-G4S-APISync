@@ -367,18 +367,26 @@ namespace G4SApiSync.Client
             // GET Behaviour Classifications
             foreach (var academy in _academyList)
             {
-                using GETBehClassifications getBehClassifications = new(_client, _context, _connectionString);
-                bool result = await getBehClassifications.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehClassifications.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                bool getBehaviour = academy.GetBehaviour;
+                if (getBehaviour)
+                {
+                    using GETBehClassifications getBehClassifications = new(_client, _context, _connectionString);
+                    bool result = await getBehClassifications.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehClassifications.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                }
 
             }
 
             // GET Behaviour Event Types
             foreach (var academy in _academyList)
             {
-                using GETBehEventTypes getBehEventTypes = new(_client, _context, _connectionString);
-                bool result = await getBehEventTypes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
-                syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehEventTypes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                bool getBehaviour = academy.GetBehaviour;
+                if (getBehaviour)
+                {
+                    using GETBehEventTypes getBehEventTypes = new(_client, _context, _connectionString);
+                    bool result = await getBehEventTypes.UpdateDatabase(academy.APIKey, academy.CurrentAcademicYear, academy.AcademyCode);
+                    syncResults.Add(new SyncResult { AcademyCode = academy.AcademyCode, EndPoint = getBehEventTypes.EndPoint, Result = result, LoggedAt = DateTime.Now, DataSet = academy.CurrentAcademicYear });
+                }
 
             }
 
