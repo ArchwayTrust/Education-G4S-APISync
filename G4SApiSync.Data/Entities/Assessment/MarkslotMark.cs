@@ -12,10 +12,10 @@ namespace G4SApiSync.Data.Entities
         [MaxLength(100)]
         public string StudentId { get; set; }
         
-        [MaxLength(50)]
+        [MaxLength(250)]
         public string Grade { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(250)]
         public string Alias { get; set; }
         public float? Mark { get; set; }
 
